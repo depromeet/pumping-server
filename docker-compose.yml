@@ -7,15 +7,19 @@ services:
       - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
+      # MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       MONGO_INITDB_ROOT_PASSWORD: 1234
+      MONGO_INITDB_DATABASE: pumping
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
 
   kotlin:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: src/
     ports:
       - "8080:8080"
     depends_on:
       - mongo
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://root:1234@mongo:27017
+      SPRING_DATA_MONGODB_URI: mongodb://root:1234@mongo:27017`
