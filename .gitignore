@@ -1,6 +1,10 @@
 ### MAC ###
 .DS_Store
 
+### IDE ###
+.vscode
+.idea
+
 ### Source ###
 .env
 
