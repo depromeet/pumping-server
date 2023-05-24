@@ -1,11 +1,11 @@
-package com.pumping.dpm
+package com.dpm.pumping
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class DpmApplication
+class PumpingApplication
 
 fun main(args: Array<String>) {
-	runApplication<DpmApplication>(*args)
+	runApplication<PumpingApplication>(*args)
 }
