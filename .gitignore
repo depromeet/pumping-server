@@ -9,6 +9,8 @@
 .env
 
 ### Kotlin ###
+*.properties
+
 # Compiled class file
 *.class
 
