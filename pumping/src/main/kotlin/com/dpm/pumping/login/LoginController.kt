@@ -1,22 +1,21 @@
-package com.dpm.pumping
+package com.dpm.pumping.login
 
-import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class LoginController {
 
     @GetMapping("/login")
-    fun showLoginForm(): String {
-        return "login"
+    fun getLogin(): String {
+        return "Get Login"
     }
 
     @PostMapping("/login")
     fun processLogin(): String {
         // @RequestParam("username") username: String,
         // @RequestParam("password") password: String,
-        return "login"
+        return "Post Login"
     }
 }
