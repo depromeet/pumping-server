@@ -1,0 +1,16 @@
+config:
+  type: aws-parameterstore:/config/pumping
+
+spring:
+  config:
+    import: ${config.type}
+
+  main:
+    allow-bean-definition-overriding: true
+
+mongodb:
+  databaseName: pumping
+  mongoUri: ${.mongo.uri}
+  username: ${.mongo.username}
+  password: ${.mongo.password}
+
