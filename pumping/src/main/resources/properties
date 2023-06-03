@@ -1,7 +1,0 @@
-server.port=
-spring.main.allow-bean-definition-overriding=true
-
-mongodb.databaseName="pumping"
-mongodb.mongoUri=
-mongodb.username=
-mongodb.password=
