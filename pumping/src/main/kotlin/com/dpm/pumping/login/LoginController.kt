@@ -14,8 +14,6 @@ class LoginController {
 
     @PostMapping("/login")
     fun processLogin(): String {
-        // @RequestParam("username") username: String,
-        // @RequestParam("password") password: String,
         return "Post Login"
     }
 }

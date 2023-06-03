@@ -1,10 +1,10 @@
-package com.dpm.pumping.common.driver
-
+import com.mongodb.ConnectionString
+import com.mongodb.MongoClientSettings
 import com.mongodb.MongoCredential
+import com.mongodb.client.MongoClients
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.mongodb.core.MongoClientFactoryBean
 
 @Configuration
 class MongoConfig(
@@ -22,10 +22,14 @@ class MongoConfig(
 ) {
 
     @Bean
-    fun mongo(): MongoClientFactoryBean {
-        val mongo = MongoClientFactoryBean()
-        mongo.setHost(mongoUri)
-        mongo.setCredential(arrayOf(MongoCredential.createCredential(username, databaseName, password.toCharArray())))
-        return mongo
+    fun mongoClient(): com.mongodb.client.MongoClient {
+        val connectionString = ConnectionString(mongoUri)
+        val credential = MongoCredential.createCredential(username, databaseName, password.toCharArray())
+        val settings = MongoClientSettings.builder()
+            .applyConnectionString(connectionString)
+            .credential(credential)
+            .build()
+
+        return MongoClients.create(settings)
     }
 }

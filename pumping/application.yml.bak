@@ -1,5 +1,5 @@
 config:
-  type: aws-parameterstore:/config/pumping
+type: aws-parameterstore:/config/pumping
 
 spring:
   config:
@@ -10,4 +10,3 @@ mongodb:
   mongoUri: ${.mongo.uri}
   username: ${.mongo.username}
   password: ${.mongo.password}
-
