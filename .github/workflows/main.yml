@@ -1,10 +1,10 @@
-name: remote ssh command
+name: Github Action for NCP SSH
 on:
     push:
         branches:
             - deploy
 jobs:
-    build:
+    deploy:
         name:
         runs-on: ubuntu-latest
         steps:
@@ -18,14 +18,8 @@ jobs:
                   script: |
                       whoami
                       echo "Action runtime history: $(date)" >> /root/history.txt
-
-            - name: Checkout repository
-              uses: actions/checkout@v3
-            - run: touch ./pumping/src/main/resources/application.properties
-            - run: echo "${{ secrets.APPLICATION }}" > ./pumping/src/main/resources/application.properties
-            - run: cat ./pumping/src/main/resources/application.properties
-
-            - name: Deploy to NCP
-              run: |
-                  cd pumping
-                  make run
+                      cd /root/pumping-server
+                      git fetch --all
+                      git pull
+                      cd /root/pumping-server/pumping
+                      make run
