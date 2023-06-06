@@ -1,20 +1,31 @@
 name: remote ssh command
 on:
-  push:
-    branches:
-      - deploy
+    push:
+        branches:
+            - deploy
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.NCP_HOST_IP }}
-          username: ${{ secrets.NCP_USERNAME }}
-          password: ${{ secrets.NCP_PASSWORD }}
-          port: ${{ secrets.NCP_PORT }}
-          script: |
-            whoami
-            echo "Action runtime history: $(date)" >> /root/history.txt
+    build:
+        name:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Executing remote ssh commands using password
+              uses: appleboy/ssh-action@v0.1.10
+              with:
+                  host: ${{ secrets.NCP_HOST_IP }}
+                  username: ${{ secrets.NCP_USERNAME }}
+                  password: ${{ secrets.NCP_PASSWORD }}
+                  port: ${{ secrets.NCP_PORT }}
+                  script: |
+                      whoami
+                      echo "Action runtime history: $(date)" >> /root/history.txt
+
+            - name: Checkout repository
+              uses: actions/checkout@v3
+            - run: touch ./pumping/src/main/resources/application.properties
+            - run: echo "${{ secrets.APPLICATION }}" > ./pumping/src/main/resources/application.properties
+            - run: cat ./pumping/src/main/resources/application.properties
+
+            - name: Deploy to NCP
+              run: |
+                  cd pumping
+                  make run
