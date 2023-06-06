@@ -20,7 +20,7 @@ jobs:
                       echo "Action runtime history: $(date)" >> /root/history.txt
                       cd /root/pumping-server
                       git fetch --all
-                      git pull origin deploy
+                      git reset --hard origin/deploy
                       kill -9 $(sudo lsof -t -i:8080)
                       cd /root/pumping-server/pumping
                       cat Makefile

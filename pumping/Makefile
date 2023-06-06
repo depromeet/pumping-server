@@ -4,7 +4,6 @@ run:
 	gradlew bootRun
 
 ncp-deploy:
-	gradle wrapper
 	chmod +x $(CUR_DIR)/gradlew
-	$(CUR_DIR)/gradlew bootRun
+	nohup $(CUR_DIR)/gradlew bootRun > log.log 2>&1 &
 
