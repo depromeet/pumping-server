@@ -1,24 +1,22 @@
 package com.dpm.pumping.login
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/login")
 class LoginController {
 
-    @GetMapping("/login")
-    fun getLogin(): String {
-        return "Get Login"
+    @PostMapping("/apple")
+    fun appleLogin(@RequestBody appleLoginRequest: AppleLoginRequest): String {
+        // Logic for Apple Sign-In
+        // Validate the Apple login request and process the login
+        return "Apple login successful"
     }
 
-    @PostMapping("/login")
-    fun processLogin(@RequestBody loginRequest: LoginRequest): String {
-        return "Post Login"
+    @PostMapping("/basic")
+    fun basicLogin(@RequestBody basicLoginRequest: BasicLoginRequest): String {
+        // Logic for Basic Login
+        // Validate the basic login request and process the login
+        return "Basic login successful"
     }
-
-    data class LoginRequest(val username: String, val password: String)
-
-    data class Error(val code: Int, val message: String)
 }
