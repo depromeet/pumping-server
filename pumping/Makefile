@@ -1,2 +1,6 @@
 run:
-	gradle bootRun
+	gradlew bootRun
+
+run-ncp:
+	./gradle bootRun
+
