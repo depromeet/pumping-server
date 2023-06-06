@@ -22,6 +22,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
+	implementation("io.swagger:swagger-annotations:1.6.8")
 //	implementation(platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.0"))
 //	implementation("io.awspring.cloud:spring-cloud-aws-starter-parameter-store")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
