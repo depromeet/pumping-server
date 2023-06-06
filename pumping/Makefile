@@ -1,6 +1,6 @@
 run:
 	gradlew bootRun
 
-run-ncp:
+ncp-deploy:
 	./gradle bootRun
 

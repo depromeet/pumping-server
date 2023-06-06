@@ -24,4 +24,4 @@ jobs:
                       kill -9 $(sudo lsof -t -i:8080)
                       cd /root/pumping-server/pumping
                       cat Makefile
-                      make ncp-run
+                      make ncp-deploy
