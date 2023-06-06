@@ -17,4 +17,4 @@ jobs:
           port: ${{ secrets.NCP_PORT }}
           script: |
             whoami
-            echo "Action runtime history: $(date)" >> /path/to/history.txt
+            echo "Action runtime history: $(date)" >> /root/history.txt
