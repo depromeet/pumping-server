@@ -22,5 +22,5 @@ jobs:
                       git fetch --all
                       git pull origin deploy
                       kill -9 $(sudo lsof -t -i:8080)
-                      cd /root/pumping-server
-                      make run
+                      cd /root/pumping-server/pumping
+                      make ncp-run
