@@ -54,6 +54,7 @@ tasks {
 	asciidoctor {
 		dependsOn(test)
 		inputs.dir(snippetsDir)
+		baseDirFollowsSourceFile()
 		configurations("asciidoctorExt")
 	}
 
