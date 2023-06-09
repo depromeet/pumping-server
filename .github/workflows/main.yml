@@ -5,8 +5,8 @@ on:
             - deploy
             - ci/*
 jobs:
-    deploy:
-        name:
+    ncp-direct-deploy:
+        name: NCP-DIRECT-DEPLOY
         runs-on: ubuntu-latest
         steps:
             - name: Executing remote ssh commands using password
@@ -24,7 +24,7 @@ jobs:
                       git reset --hard origin/deploy
                       kill -9 $(sudo lsof -t -i:8080)
                       cd /root/pumping-server/pumping
-                      cat Makefile
+                      mkdir -p /root/pumping-server/pumping/src/resources
                       echo "${{ secrets.APPLICATION }}" > /root/pumping-server/pumping/src/resources/application.properties
                       make ncp-deploy
     ci:
