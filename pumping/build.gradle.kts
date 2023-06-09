@@ -52,15 +52,21 @@ tasks.withType<Test> {
 
 tasks {
 	asciidoctor {
-		configurations("asciidoctorExt")
-		inputs.dir(snippetsDir)
 		dependsOn(test)
+		inputs.dir(snippetsDir)
+		configurations("asciidoctorExt")
+	}
+
+	register<Copy>("copy") {
+		dependsOn(asciidoctor)
+		from(file("build/docs/asciidoc"))
+		into("src/main/resources/static/docs")
 	}
 
 	bootJar {
-		dependsOn(asciidoctor)
-		from ("${asciidoctor.get().outputDir}/html5") {
-			into("/BOOT-INF/classes/static/docs")
+		dependsOn("copy")
+		from (asciidoctor.get().outputDir) {
+			into("BOOT-INF/classes/static/docs")
 		}
 	}
 }
