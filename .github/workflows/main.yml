@@ -1,18 +1,27 @@
-name: remote ssh command
+name: Github Action for NCP SSH
 on:
-  push:            
-      branches:
-        - deploy
+    push:
+        branches:
+            - deploy
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v0.1.10
-      with:
-        host: ${{ secrets.NCP_HOST_IP }}
-        username: ${{ secrets.NCP_USERNAME }}
-        password: ${{ secrets.NCP_PASSWORD }}
-        port: ${{ secrets.NCP_PORT }}
-        script: whoami
+    deploy:
+        name:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Executing remote ssh commands using password
+              uses: appleboy/ssh-action@v0.1.10
+              with:
+                  host: ${{ secrets.NCP_HOST_IP }}
+                  username: ${{ secrets.NCP_USERNAME }}
+                  password: ${{ secrets.NCP_PASSWORD }}
+                  port: ${{ secrets.NCP_PORT }}
+                  script: |
+                      whoami
+                      echo "Action runtime history: $(date)" >> /root/history.txt
+                      cd /root/pumping-server
+                      git fetch --all
+                      git reset --hard origin/deploy
+                      kill -9 $(sudo lsof -t -i:8080)
+                      cd /root/pumping-server/pumping
+                      cat Makefile
+                      make ncp-deploy

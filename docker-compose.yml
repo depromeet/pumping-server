@@ -1,6 +1,7 @@
 version: '3'
 services:
   mongo:
+    container_name: pumping-mongo
     image: mongo:5.0.17
     restart: always
     ports:

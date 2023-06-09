@@ -4,12 +4,10 @@ import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.MongoCredential
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
 
-//@Component
 class Mongo(
     @Value("\${mongodb.databaseName}")
     private val databaseName: String,

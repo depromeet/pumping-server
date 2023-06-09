@@ -1,0 +1,6 @@
+server.port=
+
+mongodb.databaseName=
+mongodb.mongoUri=
+mongodb.username=
+mongodb.password=
