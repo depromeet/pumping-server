@@ -3,6 +3,7 @@ on:
     push:
         branches:
             - deploy
+            - ci/*
 jobs:
     deploy:
         name:
@@ -25,3 +26,14 @@ jobs:
                       cd /root/pumping-server/pumping
                       cat Makefile
                       make ncp-deploy
+    ci:
+        name: CI
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Display branch name and commit hash
+              run: |
+                  echo "Current branch: ${{ github.ref }}"
+                  echo "Commit hash: ${{ github.sha }}"
