@@ -58,17 +58,10 @@ tasks {
 		configurations("asciidoctorExt")
 	}
 
-	register<Copy>("copy") {
-		dependsOn(asciidoctor)
-		from(file("build/docs/asciidoc"))
-		into("src/main/resources/static/docs")
-	}
-
 	bootJar {
-		dependsOn("copy")
+		dependsOn(asciidoctor)
 		from (asciidoctor.get().outputDir) {
 			into("BOOT-INF/classes/static/docs")
 		}
-		duplicatesStrategy = DuplicatesStrategy.INCLUDE
 	}
 }
