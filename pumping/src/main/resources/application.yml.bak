@@ -1,5 +1,5 @@
 config:
-type: aws-parameterstore:/config/pumping
+  type: aws-parameterstore:/config/pumping
 
 spring:
   config:
