@@ -28,8 +28,8 @@ dependencies {
 	implementation("io.swagger:swagger-annotations:1.6.8")
 	asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-	//	implementation(platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.0"))
-	//	implementation("io.awspring.cloud:spring-cloud-aws-starter-parameter-store")
+//	implementation(platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.0"))
+//	implementation("io.awspring.cloud:spring-cloud-aws-starter-parameter-store")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
@@ -69,5 +69,6 @@ tasks {
 		from (asciidoctor.get().outputDir) {
 			into("BOOT-INF/classes/static/docs")
 		}
+		duplicatesStrategy = DuplicatesStrategy.INCLUDE
 	}
 }
