@@ -1,8 +1,10 @@
 server:
-    port: 8088
+    port: 8080
 
-mongodb:
-    database: pumping
-    uri: mongodb://localhost:27017
-    username: root
-    passowrd: passw0rd
+spring:
+    data:
+        mongodb:
+            uri: mongodb://127.0.0.1:27017
+            # username: admin
+            # password: password
+            database: pumping
