@@ -9,10 +9,10 @@ import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
 
 class Mongo(
-    @Value("\${mongodb.databaseName}")
+    @Value("\${mongodb.database}")
     private val databaseName: String,
 
-    @Value("\${mongodb.mongoUri}")
+    @Value("\${mongodb.uri}")
     private val mongoUri: String,
 
     @Value("\${mongodb.username}")

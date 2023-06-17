@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class MongoConfig(
-    @Value("\${mongodb.databaseName}")
+    @Value("\${mongodb.database}")
     private val databaseName: String,
 
-    @Value("\${mongodb.mongoUri}")
+    @Value("\${mongodb.uri}")
     private val mongoUri: String,
 
     @Value("\${mongodb.username}")

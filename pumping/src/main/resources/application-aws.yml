@@ -1,3 +1,6 @@
+server:
+    port: 8080
+
 config:
   type: aws-parameterstore:/config/pumping
 
@@ -6,7 +9,7 @@ spring:
     import: ${config.type}
 
 mongodb:
-  databaseName: pumping
-  mongoUri: ${.mongo.uri}
+  database: pumping
+  uri: ${.mongo.uri}
   username: ${.mongo.username}
   password: ${.mongo.password}

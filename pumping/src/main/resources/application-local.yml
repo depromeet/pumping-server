@@ -1,0 +1,8 @@
+server:
+    port: 8088
+
+mongodb:
+    database: pumping
+    uri: mongodb://localhost:27017
+    username: root
+    passowrd: passw0rd
