@@ -49,5 +49,4 @@ class AuthService(
         userRepository.save(user)
         return jwtTokenProvider.generateAccessToken(user.uid)
     }
-
 }
