@@ -25,7 +25,7 @@ class AuthController(
 
     @PostMapping("/oauth2/apple/login")
     fun login(@RequestBody request: AppleLoginRequest): ResponseEntity<OAuth2LoginResponse> {
-        val appleUserId = oAuth2AppleClient.getAppleUserId(request.idToken)
+        val appleUserId = oAuth2AppleClient.getAppleUserId(request)
         return ResponseEntity.ok(authService.login(appleUserId))
     }
 

@@ -1,5 +1,6 @@
 package com.dpm.pumping.auth.oauth2
 
+import com.dpm.pumping.auth.oauth2.dtos.AppleLoginRequest
 import com.dpm.pumping.auth.oauth2.dtos.AppleLoginUrlResponse
 import com.dpm.pumping.auth.oauth2.vo.OAuth2ApplePublicKeys
 import com.fasterxml.jackson.core.JsonProcessingException
@@ -30,10 +31,10 @@ class OAuth2AppleClient(
         return AppleLoginUrlResponse(String.format(AUTH_URL, clientId, redirectUrl))
     }
 
-    fun getAppleUserId(idToken: String): String {
-        val extractHeader = extractHeader(idToken)
+    fun getAppleUserId(request: AppleLoginRequest): String {
+        val extractHeader = extractHeader(request.idToken)
         val generatePublicKey = OAuth2AppleKeyGenerator.generatePublicKey(extractHeader, getOAuth2AppleKeys())
-        val claims: Claims = parsePublicKeyAndGetClaims(idToken, generatePublicKey)
+        val claims: Claims = parsePublicKeyAndGetClaims(request.idToken, generatePublicKey)
         validateClaims(claims)
         return claims.subject
     }
@@ -67,7 +68,7 @@ class OAuth2AppleClient(
         return response.body!!
     }
 
-    fun parsePublicKeyAndGetClaims(idToken: String, publicKey: PublicKey): Claims {
+    private fun parsePublicKeyAndGetClaims(idToken: String, publicKey: PublicKey): Claims {
         return Jwts.parserBuilder()
             .setSigningKey(publicKey)
             .build()
