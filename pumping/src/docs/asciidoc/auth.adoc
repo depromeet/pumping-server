@@ -1,0 +1,53 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= OAuth2
+---
+= 기본 API
+
+== 리다이렉트 URL 조회
+
+`GET /api/v1/oauth2/apple`
+
+=== Request
+
+include::{snippets}/oauth2-apple-get-login-url/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/oaut/http-response.adoc[]
+include::{snippets}/oauth2-apple-get-login-url/response-fields.adoc[]
+
+== OAuth2 애플 로그인 ACCESS TOKEN 생성
+
+`POST /api/v1/oauth2/apple/login`
+
+=== Request
+
+include::{snippets}/oauth2-apple-login/http-response.adoc[]
+include::{snippets}/oauth2-apple-login/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/oauth2-apple-login/http-response.adoc[]
+include::{snippets}/oauth2-apple-login/response-fields.adoc[]
+
+== REFRESH TOKEN 재발급
+
+`GET /api/v1/sign-up'
+
+=== Request
+
+include::{snippets}/signup/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/signup/http-response.adoc[]
+include::{snippets}/signup/response-fields.adoc[]
