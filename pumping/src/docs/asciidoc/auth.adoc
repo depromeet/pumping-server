@@ -18,12 +18,12 @@ endif::[]
 
 === Request
 
-include::{snippets}/oauth2-apple-get-login-url/http-request.adoc[]
+include::{snippets}/oauth2-apple-redirect-url/http-request.adoc[]
 
 === Response
 
-include::{snippets}/oaut/http-response.adoc[]
-include::{snippets}/oauth2-apple-get-login-url/response-fields.adoc[]
+include::{snippets}/oauth2-apple-redirect-url/http-response.adoc[]
+include::{snippets}/oauth2-apple-redirect-url/response-fields.adoc[]
 
 == OAuth2 애플 로그인 ACCESS TOKEN 생성
 

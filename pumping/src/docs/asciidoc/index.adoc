@@ -1,3 +1,5 @@
 === Pumping
 
 include::test/hello.adoc[]
+
+- link:/docs/auth.html[로그인 관련 API]

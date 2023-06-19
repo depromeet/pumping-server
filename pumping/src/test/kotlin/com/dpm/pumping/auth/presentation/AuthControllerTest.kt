@@ -62,11 +62,13 @@ class AuthControllerTest(
             .andExpect { status { isOk() } }
             .andDo { prettyPrint() }
             .andDo {
-                document(
-                    "oauth2-apple-get-login-url",
-                    responseFields(
-                        fieldWithPath("redirectUrl").type(JsonFieldType.STRING)
-                            .description("여기로 요청보내고 반환값으로 redirect url 뒤에 code, id_token을 줄텐데 id_token만 필요함")
+                handle(
+                    document(
+                        "oauth2-apple-redirect-url",
+                        responseFields(
+                            fieldWithPath("redirectUrl").type(JsonFieldType.STRING)
+                                .description("여기로 요청보내고 반환값으로 redirect url 뒤에 code, id_token을 줄텐데 id_token만 필요함")
+                        )
                     )
                 )
             }
@@ -92,21 +94,23 @@ class AuthControllerTest(
             .andExpect { status { isOk() } }
             .andDo { prettyPrint() }
             .andDo {
-                document(
-                    "oauth2-apple-login",
-                    requestFields(
-                        fieldWithPath("idToken").type(JsonFieldType.STRING).description("redirectUrl에서 받은 id_token")
-                    ),
-                    relaxedResponseFields(
-                        fieldWithPath("accessToken").type(JsonFieldType.STRING)
-                            .description("login했던 사용자면 accessToken, 최초 로그인 사용자면 null; 즉, null이면 회원가입 api 호출")
-                            .optional(),
-                        fieldWithPath("expiredTime").type(JsonFieldType.STRING)
-                            .description("accessToken만료일, 최초 로그인이면 null").optional(),
-                        fieldWithPath("loginType").type(JsonFieldType.STRING)
-                            .description("loginType으로 애플 로그인이면 APPLE"),
-                        fieldWithPath("oauth2Id").type(JsonFieldType.STRING)
-                            .description("애플 로그인한 사용자의 애플 고유 id").optional(),
+                handle(
+                    document(
+                        "oauth2-apple-login",
+                        requestFields(
+                            fieldWithPath("idToken").type(JsonFieldType.STRING).description("redirectUrl에서 받은 id_token")
+                        ),
+                        relaxedResponseFields(
+                            fieldWithPath("accessToken").type(JsonFieldType.STRING)
+                                .description("login했던 사용자면 accessToken, 최초 로그인 사용자면 null; 즉, null이면 회원가입 api 호출")
+                                .optional(),
+                            fieldWithPath("expiredTime").type(JsonFieldType.STRING)
+                                .description("accessToken만료일, 최초 로그인이면 null").optional(),
+                            fieldWithPath("loginType").type(JsonFieldType.STRING)
+                                .description("loginType으로 애플 로그인이면 APPLE"),
+                            fieldWithPath("oauth2Id").type(JsonFieldType.STRING)
+                                .description("애플 로그인한 사용자의 애플 고유 id").optional(),
+                        )
                     )
                 )
             }
