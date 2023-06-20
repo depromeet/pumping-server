@@ -1,7 +1,7 @@
 package com.dpm.pumping.auth.oauth2
 
-import com.dpm.pumping.auth.oauth2.dtos.AppleLoginRequest
-import com.dpm.pumping.auth.oauth2.dtos.AppleLoginUrlResponse
+import com.dpm.pumping.auth.oauth2.dto.AppleLoginRequest
+import com.dpm.pumping.auth.oauth2.dto.AppleLoginUrlResponse
 import com.dpm.pumping.auth.oauth2.vo.OAuth2ApplePublicKeys
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper

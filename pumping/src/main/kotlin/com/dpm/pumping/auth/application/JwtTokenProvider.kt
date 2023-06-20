@@ -1,6 +1,6 @@
 package com.dpm.pumping.auth.application
 
-import com.dpm.pumping.auth.dtos.AccessTokenResponse
+import com.dpm.pumping.auth.dto.AccessTokenResponse
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value

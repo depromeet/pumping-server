@@ -1,4 +1,4 @@
-package com.dpm.pumping.auth.oauth2.dtos
+package com.dpm.pumping.auth.oauth2.dto
 
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.user.domain.Gender

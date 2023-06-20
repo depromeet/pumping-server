@@ -1,4 +1,4 @@
-package com.dpm.pumping.auth.dtos
+package com.dpm.pumping.auth.dto
 
 import java.util.*
 

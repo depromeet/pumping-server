@@ -2,17 +2,15 @@ package com.dpm.pumping.auth.application
 
 import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
-import com.dpm.pumping.auth.oauth2.dtos.SignUpRequest
+import com.dpm.pumping.auth.oauth2.dto.SignUpRequest
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
-import org.apache.juli.logging.Log
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.assertAll
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
