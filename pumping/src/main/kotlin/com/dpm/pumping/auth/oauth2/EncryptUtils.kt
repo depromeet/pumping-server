@@ -5,7 +5,6 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 object EncryptUtils {
-
     private const val ALGORITHM = "SHA-256"
     fun encrypt(value: String): String {
         return try {
