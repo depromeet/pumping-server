@@ -31,9 +31,9 @@ object OAuth2AppleKeyGenerator {
             val keyFactory: KeyFactory = KeyFactory.getInstance(applePublicKey.kty)
             keyFactory.generatePublic(publicKeySpec)
         } catch (exception: NoSuchAlgorithmException) {
-            throw IllegalArgumentException("응답 받은 Apple Public Key로 PublicKey를 생성할 수 없습니다.")
+            throw IllegalArgumentException("알맞은 알고리즘을 찾을 수 없습니다.", exception)
         } catch (exception: InvalidKeySpecException) {
-            throw IllegalArgumentException("응답 받은 Apple Public Key로 PublicKey를 생성할 수 없습니다.")
+            throw IllegalArgumentException("유효하지 않은 키 스펙입니다.", exception)
         }
     }
 }
