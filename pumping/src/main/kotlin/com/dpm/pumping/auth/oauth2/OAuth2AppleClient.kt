@@ -46,9 +46,9 @@ class OAuth2AppleClient(
             val decodedHeader = String(decodedBytes, StandardCharsets.UTF_8)
             return objectMapper.readValue(decodedHeader)
         } catch (e: JsonProcessingException) {
-            throw IllegalArgumentException("Invalid Apple OAuth Identity Token", e)
+            throw IllegalArgumentException("json 처리 도중 예외가 발생했습니다.", e)
         } catch (e: ArrayIndexOutOfBoundsException) {
-            throw IllegalArgumentException("Invalid Apple OAuth Identity Token", e)
+            throw IllegalArgumentException("배열의 index가 범위를 벗어납니다.", e)
         }
     }
 
@@ -62,10 +62,7 @@ class OAuth2AppleClient(
         )
 
         require(response.statusCode.is2xxSuccessful)
-        if (response.body == null) {
-            throw IllegalStateException("응답값에 null이 들어옵니다.")
-        }
-        return response.body!!
+        return response.body ?: throw IllegalStateException("응답값에 null이 들어옵니다.")
     }
 
     private fun parsePublicKeyAndGetClaims(idToken: String, publicKey: PublicKey): Claims {
