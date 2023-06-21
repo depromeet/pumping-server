@@ -46,12 +46,6 @@ class AuthControllerTest(
     @MockBean
     private lateinit var authService: AuthService
 
-    @MockBean
-    private lateinit var jwtTokenProvider: JwtTokenProvider
-
-    @MockBean
-    private lateinit var oAuth2AppleClaimsValidator: OAuth2AppleClaimsValidator
-
     @Test
     fun login() {
         val request = AppleLoginRequest("tokenId")
