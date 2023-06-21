@@ -26,7 +26,7 @@ class AuthServiceTest @Autowired constructor(
     }
 
     @Test
-    fun `최초 로그인한 사용자면 token값을 null로 준다`() {
+    fun `최초 로그인한 사용자면 token값으로 null을 반환한다`() {
         val response = authService.login("appleUserId")
 
         assertThat(response.accessToken).isNull()
@@ -35,13 +35,13 @@ class AuthServiceTest @Autowired constructor(
     }
 
     @Test
-    fun `기존에 로그인한 사용자면 token을 발급해 준다`() {
+    fun `기존에 로그인한 사용자여도 회원가입이 안되어있으면 token값으로 null을 반환한다`() {
         val savedUser = userRepository.save(User.createWithOAuth(LoginPlatform(LoginType.APPLE, "OauthId")))
 
         val token = authService.login(savedUser.platform.oauth2Id!!)
 
-        assertThat(token.accessToken).isNotNull()
-        assertThat(token.expiredTime).isNotNull()
+        assertThat(token.accessToken).isNull()
+        assertThat(token.expiredTime).isNull()
     }
 
     @Test

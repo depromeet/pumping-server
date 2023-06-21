@@ -39,4 +39,8 @@ data class User(
         this.platform = platform
         this.currentCrew = null
     }
+
+    fun isRegistered(): Boolean {
+        return (name != null && gender != null && height != null && weight != null)
+    }
 }
