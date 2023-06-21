@@ -9,6 +9,7 @@ import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import software.amazon.awssdk.utils.Platform
 
 @Transactional
 @Service
@@ -24,13 +25,7 @@ class AuthService(
                 userRepository.save(User.createWithOAuth(platform))
                 return OAuth2LoginResponse(null, null, platform.loginType, platform.oauth2Id)
             }
-        val token = jwtTokenProvider.generateAccessToken(user.uid)
-        return OAuth2LoginResponse(
-            accessToken = token.accessToken,
-            expiredTime = token.expiredTime,
-            loginType = user.platform.loginType,
-            oauth2Id = user.platform.oauth2Id
-        )
+        return OAuth2LoginResponse(null, null, user.platform.loginType, user.platform.oauth2Id)
     }
 
     fun signUp(request: SignUpRequest): AccessTokenResponse {
