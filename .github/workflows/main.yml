@@ -42,11 +42,11 @@ jobs:
                   port: ${{ secrets.AWS_SSH_PORT }}
                   script: |
                       whoami
-                      echo "Action runtime history: $(date)" >> /root/history.txt
-                      cd /root/pumping-server
+                      echo "Action runtime history: $(date)" >> ~/history.txt
+                      cd ~/pumping-server
                       git fetch --all
                       git reset --hard origin/deploy
                       kill -9 $(sudo lsof -t -i:8080)
-                      cd /root/pumping-server/pumping
+                      cd ~/pumping-server/pumping
                       cat Makefile
                       make build-and-run-aws
