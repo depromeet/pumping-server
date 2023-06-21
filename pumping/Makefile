@@ -9,4 +9,3 @@ run-local-aws:
 ncp-deploy:
 	chmod +x $(CUR_DIR)/gradlew
 	nohup $(CUR_DIR)/gradlew bootRun > log.log 2>&1 &
-

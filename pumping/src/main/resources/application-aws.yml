@@ -13,3 +13,15 @@ mongodb:
   uri: ${.mongo.uri}
   username: ${.mongo.username}
   password: ${.mongo.password}
+
+security:
+  jwt:
+    access:
+      expire-length: 1000
+      secret-key: secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet1
+
+oauth2:
+  apple:
+    iss: iss
+    client-id: client-id
+    redirect-url: redirect-url

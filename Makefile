@@ -1,8 +1,10 @@
+CUR_DIR=$(shell pwd)
+
 mongo-up:
-	docker-compose -f docker-compose.local.yml up -d
+	docker-compose -f ${CUR_DIR}/docker-compose.local.yml up -d
 
 mongo-down:
-	docker-compose -f docker-compose.local.yml down
+	docker-compose -f ${CUR_DIR}/docker-compose.local.yml down
 
 copy-env:
 	cp env ./.env

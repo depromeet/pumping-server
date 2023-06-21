@@ -1,3 +1,12 @@
+server:
+    port: 8080
+spring:
+    data:
+        mongodb:
+            uri: mongodb://127.0.0.1:27017
+            username: admin
+            password: password
+            database: pumping
 security:
   jwt:
     access:
@@ -8,4 +17,3 @@ oauth2:
     iss: iss
     client-id: client-id
     redirect-url: redirect-url
-    nonce: nonce
