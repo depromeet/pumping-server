@@ -53,28 +53,6 @@ class AuthControllerTest(
     private lateinit var oAuth2AppleClaimsValidator: OAuth2AppleClaimsValidator
 
     @Test
-    fun transferLoginUrl() {
-        given(oAuth2AppleClient.getRedirectUrl()).willReturn(AppleLoginUrlResponse("login-url"))
-
-        mockMvc.get("/api/v1/oauth2/apple") {
-            accept = MediaType.APPLICATION_JSON
-        }
-            .andExpect { status { isOk() } }
-            .andDo { prettyPrint() }
-            .andDo {
-                handle(
-                    document(
-                        "oauth2-apple-redirect-url",
-                        responseFields(
-                            fieldWithPath("redirectUrl").type(JsonFieldType.STRING)
-                                .description("여기로 요청보내고 반환값으로 redirect url 뒤에 code, id_token을 줄텐데 id_token만 필요함")
-                        )
-                    )
-                )
-            }
-    }
-
-    @Test
     fun login() {
         val request = AppleLoginRequest("tokenId")
         val response = OAuth2LoginResponse(

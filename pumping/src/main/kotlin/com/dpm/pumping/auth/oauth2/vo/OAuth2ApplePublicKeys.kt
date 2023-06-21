@@ -6,7 +6,7 @@ data class OAuth2ApplePublicKeys(
 ) {
     fun getMatchesKey(alg: String?, kid: String?): OAuth2ApplePublicKey {
         return keys.stream()
-            .filter { k -> k.alg == alg && k.kid == kid }
+            .filter { key -> key.alg == alg && key.kid == kid }
             .findFirst()
             .orElseThrow { IllegalArgumentException("Apple JWT 값의 alg, kid 정보가 올바르지 않습니다.") }
     }

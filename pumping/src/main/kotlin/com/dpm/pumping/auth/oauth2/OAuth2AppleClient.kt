@@ -22,14 +22,8 @@ import java.util.*
 class OAuth2AppleClient(
     private val claimsValidator: OAuth2AppleClaimsValidator,
     private val objectMapper: ObjectMapper,
-    @Value("\${oauth2.apple.client-id}") private val clientId: String,
-    @Value("\${oauth2.apple.redirect-url}") private val redirectUrl: String
 ) {
     private val restTemplate = RestTemplate()
-
-    fun getRedirectUrl(): AppleLoginUrlResponse {
-        return AppleLoginUrlResponse(String.format(AUTH_URL, clientId, redirectUrl))
-    }
 
     fun getAppleUserId(request: AppleLoginRequest): String {
         val extractHeader = extractHeader(request.idToken)
@@ -81,7 +75,5 @@ class OAuth2AppleClient(
     companion object {
         private const val IDENTITY_TOKEN_DELIMITER = "."
         private const val HEADER_INDEX = 0
-        private const val AUTH_URL: String =
-            "https://appleid.apple.com/auth/authorize?client_id=%s&redirect_uri=%s&response_type=code id_token&response_mode=fragment"
     }
 }

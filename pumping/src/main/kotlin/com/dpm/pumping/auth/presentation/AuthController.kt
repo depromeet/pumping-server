@@ -18,11 +18,6 @@ class AuthController(
     private val authService: AuthService,
 ) {
 
-    @GetMapping("/oauth2/apple")
-    fun transferLoginUrl(): ResponseEntity<AppleLoginUrlResponse> {
-        return ResponseEntity.ok(oAuth2AppleClient.getRedirectUrl())
-    }
-
     @PostMapping("/oauth2/apple/login")
     fun login(@RequestBody request: AppleLoginRequest): ResponseEntity<OAuth2LoginResponse> {
         val appleUserId = oAuth2AppleClient.getAppleUserId(request)

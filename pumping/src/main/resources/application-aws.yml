@@ -24,4 +24,3 @@ oauth2:
   apple:
     iss: iss
     client-id: client-id
-    redirect-url: redirect-url
