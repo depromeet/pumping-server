@@ -12,19 +12,6 @@ endif::[]
 ---
 = 기본 API
 
-== 리다이렉트 URL 조회
-
-`GET /api/v1/oauth2/apple`
-
-=== Request
-
-include::{snippets}/oauth2-apple-redirect-url/http-request.adoc[]
-
-=== Response
-
-include::{snippets}/oauth2-apple-redirect-url/http-response.adoc[]
-include::{snippets}/oauth2-apple-redirect-url/response-fields.adoc[]
-
 == OAuth2 애플 로그인 ACCESS TOKEN 생성
 
 `POST /api/v1/oauth2/apple/login`
@@ -39,7 +26,7 @@ include::{snippets}/oauth2-apple-login/request-fields.adoc[]
 include::{snippets}/oauth2-apple-login/http-response.adoc[]
 include::{snippets}/oauth2-apple-login/response-fields.adoc[]
 
-== REFRESH TOKEN 재발급
+=== 회원가입
 
 `GET /api/v1/sign-up'
 
