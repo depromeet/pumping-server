@@ -46,6 +46,8 @@ jobs:
                       cd ~/pumping-server
                       git fetch --all
                       git reset --hard origin/deploy
+                      make mongo-down
+                      make mongo-up
                       kill -9 $(sudo lsof -t -i:8080)
                       cd ~/pumping-server/pumping
                       cat Makefile

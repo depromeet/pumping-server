@@ -1,6 +1,11 @@
 server:
     port: 8080
 
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/pumping
+
 security:
   jwt:
     access:
