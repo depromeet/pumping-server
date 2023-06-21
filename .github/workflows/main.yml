@@ -3,10 +3,11 @@ on:
     push:
         branches:
             - deploy
-            - ci/*
+            - feature/28
 jobs:
-    ncp-direct-deploy:
-        name: NCP-DIRECT-DEPLOY
+    ### Deprecate Deploy to NCP
+    deploy-ncp:
+        name:
         runs-on: ubuntu-latest
         steps:
             - name: Executing remote ssh commands using password
@@ -24,14 +25,28 @@ jobs:
                       git reset --hard origin/deploy
                       kill -9 $(sudo lsof -t -i:8080)
                       cd /root/pumping-server/pumping
-                      mkdir -p /root/pumping-server/pumping/src/resources
-                      echo "${{ secrets.APPLICATION }}" > /root/pumping-server/pumping/src/resources/application.properties
+                      cat Makefile
                       make ncp-deploy
-    ci:
-        name: CI
+
+    ### Deploy to AWS
+    deploy-aws:
+        name:
         runs-on: ubuntu-latest
         steps:
-            - name: Display branch name and commit hash
-              run: |
-                  echo "Current branch: ${{ github.ref }}"
-                  echo "Commit hash: ${{ github.sha }}"
+            - name: Executing remote ssh commands using password
+              uses: appleboy/ssh-action@v0.1.10
+              with:
+                  host: ${{ secrets.AWS_HOST_IP }}
+                  username: ${{ secrets.AWS_USERNAME }}
+                  key: ${{ secrets.AWS_SSH_KEY }}
+                  port: ${{ secrets.AWS_SSH_PORT }}
+                  script: |
+                      whoami
+                      echo "Action runtime history: $(date)" >> /root/history.txt
+                      cd /root/pumping-server
+                      git fetch --all
+                      git reset --hard origin/deploy
+                      kill -9 $(sudo lsof -t -i:8080)
+                      cd /root/pumping-server/pumping
+                      cat Makefile
+                      make build-and-run-aws
