@@ -1,9 +1,12 @@
 CUR_DIR=${shell pwd}
 
 run-local:
-	gradle bootRun --args='--spring.profiles.active=local'
+	gradle bootRun
 
-run-local-aws:
+build-and-run-local:
+	gradle build && java -jar build/libs/pumping-0.0.1-SNAPSHOT.jar
+
+run-aws:
 	gradle bootRun --args='--spring.profiles.active=aws'
 
 ncp-deploy:
