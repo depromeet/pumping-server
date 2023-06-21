@@ -42,9 +42,8 @@ class OAuth2AppleClient(
     private fun extractHeader(idToken: String): Map<String, String> {
         try {
             val encodedHeader: String = idToken.split(IDENTITY_TOKEN_DELIMITER)[HEADER_INDEX]
-            val decodedBytes = Base64.getDecoder().decode(encodedHeader)
-            val decodedHeader = String(decodedBytes, StandardCharsets.UTF_8)
-            return objectMapper.readValue(decodedHeader)
+            val decodedBytes = String(Base64.getDecoder().decode(encodedHeader))
+            return objectMapper.readValue(decodedBytes)
         } catch (e: JsonProcessingException) {
             throw IllegalArgumentException("json 처리 도중 예외가 발생했습니다.", e)
         } catch (e: ArrayIndexOutOfBoundsException) {
@@ -80,7 +79,7 @@ class OAuth2AppleClient(
     }
 
     companion object {
-        private const val IDENTITY_TOKEN_DELIMITER = "\\."
+        private const val IDENTITY_TOKEN_DELIMITER = "."
         private const val HEADER_INDEX = 0
         private const val AUTH_URL: String =
             "https://appleid.apple.com/auth/authorize?client_id=%s&redirect_uri=%s&response_type=code id_token&response_mode=fragment"

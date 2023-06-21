@@ -24,8 +24,8 @@ object OAuth2AppleKeyGenerator {
 
     private fun generatePublicKeyWithApplePublicKey(applePublicKey: OAuth2ApplePublicKey): PublicKey {
 
-        val n = Base64.getDecoder().decode(applePublicKey.n)
-        val e = Base64.getDecoder().decode(applePublicKey.e)
+        val n = Base64.getUrlDecoder().decode(applePublicKey.n)
+        val e = Base64.getUrlDecoder().decode(applePublicKey.e)
         val publicKeySpec = RSAPublicKeySpec(BigInteger(POSITIVE_NUM, n), BigInteger(POSITIVE_NUM, e))
         return try {
             val keyFactory: KeyFactory = KeyFactory.getInstance(applePublicKey.kty)
