@@ -39,9 +39,24 @@ class CrewService(@Autowired private val crewRepository: CrewRepository) {
         return code
     }
 
+    // 크루 조회 함수 (by crewId)
     fun getCrew(crewId: String): CrewResponse {
         val crew = crewRepository.findById(crewId)
-            .orElseThrow { RuntimeException("Crew not found") }
+            .orElseThrow { RuntimeException("해당 크루 아이디로 찾을 수 없습니다.") }
+
+        return CrewResponse(
+            crewId = crew.crewId,
+            crewName = crew.crewName,
+            goalCount = crew.goalCount,
+            code = crew.code,
+            participants = crew.participants
+        )
+    }
+
+    // 크루 조회 함수 (by code)
+    fun getCrewByCode(code: String): CrewResponse {
+        val crew = crewRepository.findByCode(code)
+            ?: throw RuntimeException("해당 코드로 찾을 수 없습니다.")
 
         return CrewResponse(
             crewId = crew.crewId,
