@@ -3,3 +3,4 @@
 include::test/hello.adoc[]
 
 - link:/docs/auth.html[로그인 관련 API]
+- link:/docs/crud.html[크루 관련 API]
