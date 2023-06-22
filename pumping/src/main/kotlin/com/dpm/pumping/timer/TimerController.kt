@@ -50,4 +50,32 @@ class TimerController {
         val userTimers = timerRepository.findByUserId(userId)
         return ResponseEntity.ok(userTimers)
     }
+
+    // 특정 타이머 업데이트 API
+    @PutMapping("/{timerId}")
+    fun updateTimer(
+        @PathVariable timerId: String,
+        @RequestBody timerBody: Map<String, Any>
+    ): ResponseEntity<Timer> {
+        val existingTimer = timerRepository.findById(timerId)
+
+        if (existingTimer.isPresent) {
+            val updatedTimer = existingTimer.get()
+            updatedTimer.time = timerBody["time"]?.toString() ?: updatedTimer.time
+            updatedTimer.category = (timerBody["category"] as? List<*>)?.mapNotNull { it?.toString() }
+                ?: updatedTimer.category
+            updatedTimer.calories = timerBody["calories"]?.toString() ?: updatedTimer.calories
+            updatedTimer.count = timerBody["count"]?.toString() ?: updatedTimer.count
+            updatedTimer.heartbeat = timerBody["heartbeat"]?.toString() ?: updatedTimer.heartbeat
+            updatedTimer.kg = timerBody["kg"]?.toString() ?: updatedTimer.kg
+            updatedTimer.sets = timerBody["sets"]?.toString() ?: updatedTimer.sets
+            updatedTimer.machineType = timerBody["machineType"]?.toString() ?: updatedTimer.machineType
+
+            val savedTimer = timerRepository.save(updatedTimer)
+            return ResponseEntity.ok(savedTimer)
+        } else {
+            return ResponseEntity.notFound().build()
+        }
+    }
+
 }
