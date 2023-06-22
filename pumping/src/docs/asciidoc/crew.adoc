@@ -1,0 +1,29 @@
+= 크루 관련 API
+
+이 문서는 크루 생성 API에 대한 문서입니다.
+
+== HTTP 메서드
+
+=== POST /crew/create
+
+크루를 생성하는 API입니다.
+
+==== 요청 필드
+
+- `crewName` (문자열) - 크루의 이름입니다.
+- `goalCount` (정수) - 목표 횟수입니다.
+
+==== 응답 필드
+
+- `crewId` (문자열) - 크루의 ID입니다.
+- `crewName` (문자열) - 크루의 이름입니다.
+- `goalCount` (정수) - 목표 횟수입니다.
+- `code` (문자열) - 크루 코드입니다.
+
+==== 요청 예시
+
+include::{snippets}/crew/create/http-request.adoc[]
+
+==== 응답 예시
+
+include::{snippets}/crew/create/http-response.adoc[]

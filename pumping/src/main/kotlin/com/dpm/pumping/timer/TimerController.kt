@@ -43,4 +43,11 @@ class TimerController {
         return timer.map { ResponseEntity.ok(it) }
             .orElse(ResponseEntity.notFound().build())
     }
+
+    // 특정 유저가 생성한 타이머 목록 조회
+    @GetMapping("/user/{userId}")
+    fun getUserTimers(@PathVariable userId: String): ResponseEntity<List<Timer>> {
+        val userTimers = timerRepository.findByUserId(userId)
+        return ResponseEntity.ok(userTimers)
+    }
 }
