@@ -25,4 +25,11 @@ class CrewController(private val crewService: CrewService) {
         val response = crewService.getCrew(crewId)
         return ResponseEntity(response, HttpStatus.OK)
     }
+
+    // 크루 조회 API (by code)
+    @GetMapping("/code/{code}")
+    fun getCrewByCode(@PathVariable code: String): ResponseEntity<CrewResponse> {
+        val response = crewService.getCrewByCode(code)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
 }
