@@ -35,4 +35,12 @@ class TimerController {
         val createdTimer = timerRepository.save(newTimer)
         return ResponseEntity(createdTimer, HttpStatus.CREATED)
     }
+
+    // 타이머 ID 를 통한 조회 API
+    @GetMapping("/{timerId}")
+    fun getTimer(@PathVariable timerId: String): ResponseEntity<Timer> {
+        val timer = timerRepository.findById(timerId)
+        return timer.map { ResponseEntity.ok(it) }
+            .orElse(ResponseEntity.notFound().build())
+    }
 }
