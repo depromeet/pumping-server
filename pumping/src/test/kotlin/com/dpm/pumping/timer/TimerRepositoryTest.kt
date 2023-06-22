@@ -22,7 +22,7 @@ class TimerRepositoryTest(
             timerId = "timer1",
             userId = "user1",
             time = "2023-06-22T10:00:00+09:00",
-            category = "whole",
+            category = listOf("whole"),
             calories = "100",
             count = "10",
             heartbeat = "80",
