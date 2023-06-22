@@ -1,10 +1,18 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
 = 크루 관련 API
 
 이 문서는 크루 생성 API에 대한 문서입니다.
 
-== HTTP 메서드
-
-=== POST /crew/create
+== 크루 생성 API
+`POST /crew/create`
 
 크루를 생성하는 API입니다.
 
@@ -27,3 +35,6 @@ include::{snippets}/crew/create/http-request.adoc[]
 ==== 응답 예시
 
 include::{snippets}/crew/create/http-response.adoc[]
+
+== 크루 조회 API
+`GET /crew/{crewId}`
