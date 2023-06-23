@@ -16,8 +16,8 @@ class AuthInterceptor(
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val accessToken: String = TokenParser.extract(request.getHeader(HttpHeaders.AUTHORIZATION))
         validateAccessToken(accessToken)
-        val payload: String = jwtTokenProvider.getAccessTokenPayload(accessToken)
-        request.setAttribute("PAYLOAD", payload)
+        val uid = jwtTokenProvider.getAccessTokenPayload(accessToken)
+        request.setAttribute("PAYLOAD", uid)
         return true
     }
 
