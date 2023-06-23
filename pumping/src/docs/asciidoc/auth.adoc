@@ -26,9 +26,9 @@ include::{snippets}/oauth2-apple-login/request-fields.adoc[]
 include::{snippets}/oauth2-apple-login/http-response.adoc[]
 include::{snippets}/oauth2-apple-login/response-fields.adoc[]
 
-=== 회원가입
+== 회원가입
 
-`GET /api/v1/sign-up'
+`GET /api/v1/sign-up`
 
 === Request
 
