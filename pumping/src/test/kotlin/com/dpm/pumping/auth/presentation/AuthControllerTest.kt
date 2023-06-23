@@ -11,6 +11,7 @@ import com.dpm.pumping.auth.oauth2.dto.AppleLoginUrlResponse
 import com.dpm.pumping.auth.oauth2.dto.OAuth2LoginResponse
 import com.dpm.pumping.auth.oauth2.dto.SignUpRequest
 import com.dpm.pumping.user.domain.Gender
+import com.dpm.pumping.user.domain.UserRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -45,6 +46,13 @@ class AuthControllerTest(
 
     @MockBean
     private lateinit var authService: AuthService
+
+    @MockBean
+    private lateinit var jwtTokenProvider: JwtTokenProvider
+
+    @MockBean
+    private lateinit var userRepository: UserRepository
+
 
     @Test
     fun login() {
