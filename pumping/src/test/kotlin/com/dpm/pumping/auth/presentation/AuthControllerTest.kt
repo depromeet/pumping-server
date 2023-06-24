@@ -53,7 +53,6 @@ class AuthControllerTest(
     @MockBean
     private lateinit var userRepository: UserRepository
 
-
     @Test
     fun login() {
         val request = AppleLoginRequest("tokenId")

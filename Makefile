@@ -6,6 +6,10 @@ mongo-up:
 mongo-down:
 	docker-compose -f ${CUR_DIR}/docker-compose.local.yml down
 
+mongo-reset:
+	docker-compose -f ${CUR_DIR}/docker-compose.local.yml down
+	docker-compose -f ${CUR_DIR}/docker-compose.local.yml up -d
+	
 copy-env:
 	cp env ./.env
 

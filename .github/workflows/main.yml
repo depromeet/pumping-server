@@ -5,7 +5,8 @@ on:
             - deploy
             - feature/28
 jobs:
-    deploy:
+    ### Deprecate Deploy to NCP
+    deploy-ncp:
         name:
         runs-on: ubuntu-latest
         steps:
@@ -26,3 +27,26 @@ jobs:
                       cd /root/pumping-server/pumping
                       cat Makefile
                       make ncp-deploy
+
+    ### Deploy to AWS
+    deploy-aws:
+        name:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Executing remote ssh commands using password
+              uses: appleboy/ssh-action@v0.1.10
+              with:
+                  host: ${{ secrets.AWS_HOST_IP }}
+                  username: ${{ secrets.AWS_USERNAME }}
+                  key: ${{ secrets.AWS_SSH_KEY }}
+                  port: ${{ secrets.AWS_SSH_PORT }}
+                  script: |
+                      whoami
+                      echo "Action runtime history: $(date)" >> ~/history.txt
+                      cd ~/pumping-server
+                      git fetch --all
+                      git reset --hard origin/deploy
+                      kill -9 $(sudo lsof -t -i:8080)
+                      cd ~/pumping-server/pumping
+                      cat Makefile
+                      make build-and-run-aws
