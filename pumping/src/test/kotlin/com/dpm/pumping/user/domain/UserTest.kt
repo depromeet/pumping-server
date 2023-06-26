@@ -12,7 +12,7 @@ class UserTest {
     @Test
     fun `유저가 회원가입을 한 상태면 액세스 토큰을 발급한다`() {
         val platform = LoginPlatform(LoginType.APPLE, "appleId")
-        val user = User("uid", "gc", Gender.MALE, "190", "90", platform, null)
+        val user = User("uid", "gc", Gender.MALE, "190", "90", platform, CharacterType.A, null)
 
         assertThat(user.isRegistered()).isTrue
     }

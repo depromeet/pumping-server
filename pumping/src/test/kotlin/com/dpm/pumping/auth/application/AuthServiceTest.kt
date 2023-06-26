@@ -3,6 +3,7 @@ package com.dpm.pumping.auth.application
 import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.auth.oauth2.dto.SignUpRequest
+import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
@@ -47,7 +48,7 @@ class AuthServiceTest @Autowired constructor(
     @Test
     fun `애플 로그인으로 인증되지 않은 사용자가 회원가입을 시도하면 예외가 발생한다`() {
 
-        assertThatThrownBy { authService.signUp(SignUpRequest("haha", Gender.MALE, "12", "13.3", LoginType.APPLE, null)) }
+        assertThatThrownBy { authService.signUp(SignUpRequest("haha", Gender.MALE, "12", "13.3", CharacterType.A, LoginType.APPLE, null)) }
             .hasMessageContaining("인증되지 않은")
     }
 
@@ -55,7 +56,7 @@ class AuthServiceTest @Autowired constructor(
     fun `회원가입에 성공하면 accessToken을 반환한다`() {
         val loginResponse = authService.login("apple")
         val response =
-            authService.signUp(SignUpRequest("haha", Gender.MALE, "12", "43", loginResponse.loginType, loginResponse.oauth2Id))
+            authService.signUp(SignUpRequest("haha", Gender.MALE, "12", "43", CharacterType.A, loginResponse.loginType, loginResponse.oauth2Id))
 
         assertThat(response.accessToken).isNotNull()
         assertThat(response.expiredTime).isNotNull()
