@@ -10,6 +10,7 @@ import com.dpm.pumping.auth.oauth2.dto.AppleLoginRequest
 import com.dpm.pumping.auth.oauth2.dto.AppleLoginUrlResponse
 import com.dpm.pumping.auth.oauth2.dto.OAuth2LoginResponse
 import com.dpm.pumping.auth.oauth2.dto.SignUpRequest
+import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.UserRepository
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -98,7 +99,7 @@ class AuthControllerTest(
 
     @Test
     fun signUp() {
-        val request = SignUpRequest("name", Gender.MALE, "180.2", "90.4", LoginType.APPLE, "id")
+        val request = SignUpRequest("name", Gender.MALE, "180.2", "90.4", CharacterType.A, LoginType.APPLE, "id")
         val response = AccessTokenResponse("accessToken", Date.from(Instant.now()))
         given(authService.signUp(request)).willReturn(response)
 
@@ -118,6 +119,7 @@ class AuthControllerTest(
                             fieldWithPath("gender").type(JsonFieldType.STRING).description("유저 성별"),
                             fieldWithPath("height").type(JsonFieldType.STRING).description("유저 키"),
                             fieldWithPath("weight").type(JsonFieldType.STRING).description("유저 몸무게"),
+                            fieldWithPath("characterType").type(JsonFieldType.STRING).description("케릭터 타입"),
                             fieldWithPath("loginType").type(JsonFieldType.STRING)
                                 .description("loginType으로 애플 로그인이면 APPLE"),
                             fieldWithPath("oauth2Id").type(JsonFieldType.STRING)
