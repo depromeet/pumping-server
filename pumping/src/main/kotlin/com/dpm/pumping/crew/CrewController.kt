@@ -1,5 +1,7 @@
 package com.dpm.pumping.crew
 
+import com.dpm.pumping.auth.config.LoginUser
+import com.dpm.pumping.user.domain.User
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.web.bind.annotation.*
@@ -11,7 +13,7 @@ class CrewController {
 
     @PostMapping("/create")
     @ApiOperation("크루 생성", notes = "크루를 생성합니다.")
-    fun createCrew(@RequestBody crew: Crew): String {
+    fun createCrew(@RequestBody crew: Crew, @LoginUser user: User): String {
         return "Crew created successfully"
     }
 

@@ -1,5 +1,5 @@
 package com.dpm.pumping.auth.config
 
-@Target(AnnotationTarget.TYPE_PARAMETER)
+@Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class LoginUser
