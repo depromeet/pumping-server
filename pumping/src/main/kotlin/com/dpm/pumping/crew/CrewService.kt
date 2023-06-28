@@ -75,11 +75,11 @@ class CrewService(@Autowired private val crewRepository: CrewRepository) {
             ?: throw RuntimeException("해당 코드로 찾을 수 없습니다.")
 
         // 크루 참여
-        val updatedCrew = crewRepository.save(
-            crew.copy(
-                participants = crew.participants + user.userId
-            )
-        )
+//        val updatedCrew = crewRepository.save(
+//            crew.copy(
+//                participants = crew.participants + user.userId
+//            )
+//        )
 
         // 크루 정보 반환
         return CrewResponse(
