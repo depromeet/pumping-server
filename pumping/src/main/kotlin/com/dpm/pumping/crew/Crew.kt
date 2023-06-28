@@ -11,7 +11,7 @@ data class Crew(
     val code: String?,
     val createDate: String?,
     val goalCount: Int?,
-    val participants: List<String>?
+    val participants: List<String?>
 )
 
 

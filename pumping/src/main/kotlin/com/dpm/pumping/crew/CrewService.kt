@@ -11,7 +11,9 @@ import java.time.format.DateTimeFormatter
 @Service
 class CrewService(@Autowired private val crewRepository: CrewRepository) {
 
-    fun createCrew(request: CreateCrewRequest, user:User): CrewResponse {
+    fun createCrew(request: CreateCrewRequest, user: User): CrewResponse {
+        val userId = user.uid
+
         // 크루 생성 및 저장
         val crew = Crew(
             crewId = null,
@@ -19,7 +21,7 @@ class CrewService(@Autowired private val crewRepository: CrewRepository) {
             code = generateCrewCode(), // 크루 코드 생성
             createDate = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
             goalCount = request.goalCount,
-            participants = emptyList()
+            participants = listOf(userId) // 크루 생성자는 참여자로 자동 등록
         )
         val createdCrew = crewRepository.save(crew)
 
@@ -70,24 +72,28 @@ class CrewService(@Autowired private val crewRepository: CrewRepository) {
 
     // 크루 참여 함수 (by code)
     fun joinCrew(code: String, user: User): CrewResponse {
+        val userId = user.uid
         // 크루 조회
         val crew = crewRepository.findByCode(code)
             ?: throw RuntimeException("해당 코드로 찾을 수 없습니다.")
 
-        // 크루 참여
-//        val updatedCrew = crewRepository.save(
-//            crew.copy(
-//                participants = crew.participants + user.userId
-//            )
-//        )
+        // 참여자 추가
+        val updatedParticipants = crew.participants.toMutableList()
+        if (!updatedParticipants.contains(userId)) {
+            updatedParticipants.add(userId.toString())
+        }
 
-        // 크루 정보 반환
+        // 크루 업데이트
+        val updatedCrew = crew.copy(participants = updatedParticipants)
+        val savedCrew = crewRepository.save(updatedCrew)
+
+        // 업데이트된 크루 정보 반환
         return CrewResponse(
-            crewId = updatedCrew.crewId,
-            crewName = updatedCrew.crewName,
-            goalCount = updatedCrew.goalCount,
-            code = updatedCrew.code,
-            participants = updatedCrew.participants
+            crewId = savedCrew.crewId,
+            crewName = savedCrew.crewName,
+            goalCount = savedCrew.goalCount,
+            code = savedCrew.code,
+            participants = savedCrew.participants
         )
     }
 }

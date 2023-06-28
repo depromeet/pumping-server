@@ -10,5 +10,5 @@ data class CrewResponse(
     val crewName: String?,
     val goalCount: Int?,
     val code: String?,
-    val participants: List<String>?
+    val participants: List<String?>
 )
