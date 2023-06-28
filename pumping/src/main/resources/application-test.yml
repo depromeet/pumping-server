@@ -4,14 +4,16 @@ spring:
     data:
         mongodb:
             uri: mongodb://127.0.0.1:27017
-            username: admin
-            password: password
             database: pumping
 security:
     jwt:
         access:
             expire-length: 1000
             secret-key: secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet1
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/feature/48
 oauth2:
     apple:
         iss: iss

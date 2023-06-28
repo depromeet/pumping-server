@@ -2,6 +2,7 @@ package com.dpm.pumping.crew
 
 import com.dpm.pumping.crew.dto.CreateCrewRequest
 import com.dpm.pumping.crew.dto.CrewResponse
+import com.dpm.pumping.user.domain.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -10,7 +11,7 @@ import java.time.format.DateTimeFormatter
 @Service
 class CrewService(@Autowired private val crewRepository: CrewRepository) {
 
-    fun createCrew(request: CreateCrewRequest): CrewResponse {
+    fun createCrew(request: CreateCrewRequest, user:User): CrewResponse {
         // 크루 생성 및 저장
         val crew = Crew(
             crewId = null,
@@ -40,7 +41,7 @@ class CrewService(@Autowired private val crewRepository: CrewRepository) {
     }
 
     // 크루 조회 함수 (by crewId)
-    fun getCrew(crewId: String): CrewResponse {
+    fun getCrew(crewId: String, user: User): CrewResponse {
         val crew = crewRepository.findById(crewId)
             .orElseThrow { RuntimeException("해당 크루 아이디로 찾을 수 없습니다.") }
 
@@ -54,7 +55,7 @@ class CrewService(@Autowired private val crewRepository: CrewRepository) {
     }
 
     // 크루 조회 함수 (by code)
-    fun getCrewByCode(code: String): CrewResponse {
+    fun getCrewByCode(code: String, user: User): CrewResponse {
         val crew = crewRepository.findByCode(code)
             ?: throw RuntimeException("해당 코드로 찾을 수 없습니다.")
 
@@ -64,6 +65,29 @@ class CrewService(@Autowired private val crewRepository: CrewRepository) {
             goalCount = crew.goalCount,
             code = crew.code,
             participants = crew.participants
+        )
+    }
+
+    // 크루 참여 함수 (by code)
+    fun joinCrew(code: String, user: User): CrewResponse {
+        // 크루 조회
+        val crew = crewRepository.findByCode(code)
+            ?: throw RuntimeException("해당 코드로 찾을 수 없습니다.")
+
+        // 크루 참여
+//        val updatedCrew = crewRepository.save(
+//            crew.copy(
+//                participants = crew.participants + user.userId
+//            )
+//        )
+
+        // 크루 정보 반환
+        return CrewResponse(
+            crewId = updatedCrew.crewId,
+            crewName = updatedCrew.crewName,
+            goalCount = updatedCrew.goalCount,
+            code = updatedCrew.code,
+            participants = updatedCrew.participants
         )
     }
 }
