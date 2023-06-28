@@ -20,7 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
-import org.springframework.restdocs.operation.preprocess.Preprocessors
+import org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.test.web.servlet.MockMvc
@@ -90,10 +90,11 @@ class WorkoutControllerTest(
         )
 
         result.andExpect { status().isOk }
-            .andDo { Preprocessors.prettyPrint() }
-            .andDo {
+            .andDo (
                 document(
                     "create-workout",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
                     requestFields(
                         fieldWithPath("timers[].time").type(JsonFieldType.NUMBER).description("운동 시간"),
                         fieldWithPath("timers[].heartbeat").type(JsonFieldType.NUMBER).description("심박수"),
@@ -111,7 +112,7 @@ class WorkoutControllerTest(
                         fieldWithPath("uid").type(JsonFieldType.STRING).description("생성된 운동 ID")
                     )
                 )
-            }
+            )
     }
 
     fun <T> any(): T {

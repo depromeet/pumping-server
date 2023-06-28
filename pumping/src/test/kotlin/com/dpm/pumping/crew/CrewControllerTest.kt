@@ -16,7 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
-import org.springframework.restdocs.operation.preprocess.Preprocessors
+import org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
@@ -68,11 +68,12 @@ class CrewControllerTest(
             content = objectMapper.writeValueAsString(requestBody)
             header(HttpHeaders.AUTHORIZATION, "Bearer token" )
         }
-            .andDo { Preprocessors.prettyPrint() }
             .andDo {
                 handle(
                     document(
                         "crew-create",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                             fieldWithPath("crewName").description("크루 이름"),
                             fieldWithPath("goalCount").description("목표 횟수")

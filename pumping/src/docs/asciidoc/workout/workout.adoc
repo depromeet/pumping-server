@@ -16,7 +16,7 @@ endif::[]
 
 === Request
 
-include::{snippets}/create-workout/http-response.adoc[]
+include::{snippets}/create-workout/http-request.adoc[]
 include::{snippets}/create-workout/request-fields.adoc[]
 
 === Response
