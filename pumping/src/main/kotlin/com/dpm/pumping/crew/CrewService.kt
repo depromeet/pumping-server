@@ -69,4 +69,21 @@ class CrewService(@Autowired private val crewRepository: CrewRepository) {
             participants = savedCrew.participants
         )
     }
+
+    // 내가 참여한 모든 크루 조회 (by userId)
+    // 가장 최신 순 정렬 후 반환
+    fun getCrews(user: User): List<Map<String, String?>> {
+        val userId = user.uid
+        val crews = crewRepository.findAllCrewsByParticipantsContains(userId.toString())
+        val sortedCrews = crews.sortedByDescending { it.createDate }
+        val result = sortedCrews.map { crew: Crew ->
+            mapOf(
+                "crewName" to crew.crewName,
+                "crewId" to crew.crewId,
+                "createDate" to crew.createDate
+            )
+        }
+
+        return result
+    }
 }

@@ -6,6 +6,7 @@ import com.dpm.pumping.crew.dto.CreateCrewRequest
 import com.dpm.pumping.crew.dto.CrewResponse
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
@@ -40,7 +41,7 @@ class CrewServiceIntegrationTest {
         val request = CreateCrewRequest("0번크루", 10)
         val user = User(
             uid = "user01",
-            name = "name",
+            name = "name1",
             gender = Gender.FEMALE,
             height = "160",
             weight = "50",
@@ -65,9 +66,9 @@ class CrewServiceIntegrationTest {
     @Test
     fun testJoinCrew() {
         val request = CreateCrewRequest("1번크루", 10)
-        val user1 = User(
-            uid = "user03",
-            name = "name3",
+        val user2 = User(
+            uid = "user02",
+            name = "name2",
             gender = Gender.FEMALE,
             height = "160",
             weight = "50",
@@ -75,8 +76,8 @@ class CrewServiceIntegrationTest {
             characterType = null,
             currentCrew = null
         )
-        val user2 = User(
-            uid = "user04",
+        val user3 = User(
+            uid = "user03",
             name = "name4",
             gender = Gender.FEMALE,
             height = "160",
@@ -87,12 +88,31 @@ class CrewServiceIntegrationTest {
         )
 
         // Create a crew
-        val response = crewService.createCrew(request, user1)
+        val response = crewService.createCrew(request, user2)
         logger.info("Create Crew Response: $response")
 
         // Join the crew
         val joinResponse = response.code?.let { crewService.joinCrew(it, user2) }
         logger.info("Join Crew Response: $joinResponse")
+    }
+
+    @Test
+    fun testGetCrewsByUserId(){
+        val user = User(
+            uid = "user01",
+            name = "name1",
+            gender = Gender.FEMALE,
+            height = "160",
+            weight = "50",
+            platform = LoginPlatform(LoginType.APPLE, "oauth2Id"),
+            characterType = null,
+            currentCrew = null
+        )
+        crewService.createCrew(CreateCrewRequest("1번크루", 11), user)
+        crewService.createCrew(CreateCrewRequest("2번크루", 22), user)
+        crewService.createCrew(CreateCrewRequest("3번크루", 33), user)
+        val response = crewService.getCrews(user)
+        logger.info("Get Crews Response: $response")
     }
 
 

@@ -28,4 +28,11 @@ class CrewController(private val crewService: CrewService) {
         return ResponseEntity(response, HttpStatus.OK)
     }
 
+    // 참여한 크루 조회 (by userId)
+    @GetMapping
+    fun getCrews(@LoginUser user: User): ResponseEntity<List<Map<String, String?>>> {
+        val response = crewService.getCrews(user)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
 }
