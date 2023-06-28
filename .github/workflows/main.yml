@@ -2,8 +2,8 @@ name: Github Action for NCP SSH
 on:
     push:
         branches:
-            - deploy
-            - feature/28
+            - develop
+            
 jobs:
     ### Deprecate Deploy to NCP
     deploy-ncp:
