@@ -1,0 +1,25 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Workout
+
+=== 운동 기록 저장 API
+
+`POST /api/v1/workout`
+
+=== Request
+
+include::{snippets}/create-workout/http-request.adoc[]
+include::{snippets}/create-workout/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/create-workout/http-response.adoc[]
+include::{snippets}/create-workout/response-fields.adoc[]

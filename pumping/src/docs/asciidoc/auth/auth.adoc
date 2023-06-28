@@ -18,7 +18,7 @@ endif::[]
 
 === Request
 
-include::{snippets}/oauth2-apple-login/http-response.adoc[]
+include::{snippets}/oauth2-apple-login/http-request.adoc[]
 include::{snippets}/oauth2-apple-login/request-fields.adoc[]
 
 === Response

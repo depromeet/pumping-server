@@ -4,34 +4,27 @@ import com.dpm.pumping.auth.application.AuthService
 import com.dpm.pumping.auth.application.JwtTokenProvider
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.auth.dto.AccessTokenResponse
-import com.dpm.pumping.auth.oauth2.OAuth2AppleClaimsValidator
 import com.dpm.pumping.auth.oauth2.OAuth2AppleClient
 import com.dpm.pumping.auth.oauth2.dto.AppleLoginRequest
-import com.dpm.pumping.auth.oauth2.dto.AppleLoginUrlResponse
 import com.dpm.pumping.auth.oauth2.dto.OAuth2LoginResponse
 import com.dpm.pumping.auth.oauth2.dto.SignUpRequest
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.UserRepository
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.*
-import org.mockito.BDDMockito.*
+import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
-import org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
+import org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers.*
 import java.time.Instant
 import java.util.*
 
@@ -54,7 +47,6 @@ class AuthControllerTest(
     @MockBean
     private lateinit var userRepository: UserRepository
 
-
     @Test
     fun login() {
         val request = AppleLoginRequest("tokenId")
@@ -73,11 +65,12 @@ class AuthControllerTest(
             content = objectMapper.writeValueAsString(request)
         }
             .andExpect { status { isOk() } }
-            .andDo { prettyPrint() }
             .andDo {
                 handle(
                     document(
                         "oauth2-apple-login",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                             fieldWithPath("idToken").type(JsonFieldType.STRING).description("redirectUrl에서 받은 id_token")
                         ),
@@ -109,11 +102,12 @@ class AuthControllerTest(
         }.andExpect {
             status { isOk() }
         }
-            .andDo { prettyPrint() }
             .andDo {
                 handle(
                     document(
                         "signup",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                             fieldWithPath("name").type(JsonFieldType.STRING).description("유저 이름"),
                             fieldWithPath("gender").type(JsonFieldType.STRING).description("유저 성별"),
