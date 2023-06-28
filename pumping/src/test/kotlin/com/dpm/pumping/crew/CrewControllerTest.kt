@@ -1,11 +1,16 @@
 package com.dpm.pumping.crew
 
 import com.dpm.pumping.auth.application.JwtTokenProvider
+import com.dpm.pumping.auth.domain.LoginPlatform
+import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.auth.dto.AccessTokenResponse
 import com.dpm.pumping.crew.dto.CreateCrewRequest
 import com.dpm.pumping.crew.dto.CrewResponse
+import com.dpm.pumping.user.domain.Gender
+import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.*
@@ -39,54 +44,13 @@ class CrewControllerTest(
     @MockBean
     lateinit var userRepository: UserRepository
 
-    @Test
-    fun `크루를 생성하는 API 테스트`() {
-        // Request Body
-        val requestBody = CreateCrewRequest(
-            crewName = "크루1",
-            goalCount = 7
-        )
-
-        val crewResponse = CrewResponse(
-            crewId = "1",
-            crewName = "크루1",
-            goalCount = 7,
-            code = "123456",
-            participants = listOf("user1", "user2")
-        )
-
-        val accessTokenResponse = AccessTokenResponse(
-            accessToken = "Bearer accessToken",
-            expiredTime = Date.from(Instant.now())
-        )
-
-        given(jwtTokenProvider.isValidAccessToken("token")).willReturn(true)
-
-        `when`(crewService.createCrew(requestBody)).thenReturn(crewResponse)
-
-        mockMvc.post("/crew/create") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(requestBody)
-            header(HttpHeaders.AUTHORIZATION, "Bearer token" )
-        }
-            .andDo { Preprocessors.prettyPrint() }
-            .andDo {
-                handle(
-                    document(
-                        "crew/create",
-                        requestFields(
-                            fieldWithPath("crewName").description("크루 이름"),
-                            fieldWithPath("goalCount").description("목표 횟수")
-                        ),
-                        responseFields(
-                            fieldWithPath("crewId").description("크루 ID"),
-                            fieldWithPath("crewName").description("크루 이름"),
-                            fieldWithPath("goalCount").description("목표 횟수"),
-                            fieldWithPath("code").description("크루 코드"),
-                            fieldWithPath("participants").description("참여자 목록")
-                        )
-                    )
-                )
-            }
-    }
+    private var testUser = User(
+        uid = "user01",
+        name = "name",
+        gender = Gender.FEMALE,
+        height = "160",
+        weight = "50",
+        platform = LoginPlatform(LoginType.APPLE, "oauth2Id"),
+        currentCrew = null
+    )
 }

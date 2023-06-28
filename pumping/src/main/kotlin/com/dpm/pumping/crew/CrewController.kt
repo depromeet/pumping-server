@@ -16,22 +16,30 @@ class CrewController(private val crewService: CrewService) {
 
     // 크루 생성 API
     @PostMapping("/create")
-    fun createCrew(@RequestBody request: CreateCrewRequest): ResponseEntity<CrewResponse> {
-        val response = crewService.createCrew(request)
+    fun createCrew(@RequestBody request: CreateCrewRequest, @LoginUser user: User): ResponseEntity<CrewResponse> {
+        val response = crewService.createCrew(request, user)
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
     // 크루 조회 API (by crewId)
     @GetMapping("/{crewId}")
-    fun getCrew(@PathVariable crewId: String): ResponseEntity<CrewResponse> {
-        val response = crewService.getCrew(crewId)
+    fun getCrew(@PathVariable crewId: String, @LoginUser user: User): ResponseEntity<CrewResponse> {
+        val response = crewService.getCrew(crewId, user)
         return ResponseEntity(response, HttpStatus.OK)
     }
 
     // 크루 조회 API (by code)
     @GetMapping("/code/{code}")
-    fun getCrewByCode(@PathVariable code: String): ResponseEntity<CrewResponse> {
-        val response = crewService.getCrewByCode(code)
+    fun getCrewByCode(@PathVariable code: String, @LoginUser user: User): ResponseEntity<CrewResponse> {
+        val response = crewService.getCrewByCode(code, user)
         return ResponseEntity(response, HttpStatus.OK)
     }
+
+    // 크루 참여 API (by code)
+    @PostMapping("/join/{code}")
+    fun joinCrew(@PathVariable code: String, @LoginUser user: User): ResponseEntity<CrewResponse> {
+        val response = crewService.joinCrew(code, user)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
 }

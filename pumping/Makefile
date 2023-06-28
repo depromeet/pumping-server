@@ -1,7 +1,7 @@
 CUR_DIR=${shell pwd}
 
 run-local:
-	gradle bootRun
+	gradle clean build && gradle bootRun
 
 build-and-run-local:
 	gradle build && java -jar build/libs/pumping-0.0.1-SNAPSHOT.jar
