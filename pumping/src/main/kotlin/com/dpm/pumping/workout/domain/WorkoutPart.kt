@@ -23,7 +23,7 @@ enum class WorkoutPart(
 
 
     companion object {
-        fun of(name: String): WorkoutPart {
+        fun from(name: String): WorkoutPart {
             return values()
                 .firstOrNull { value -> value.partName == name }
                 ?: throw IllegalArgumentException("${name}과 일치하는 부위가 존재하지 않습니다.")
@@ -31,7 +31,7 @@ enum class WorkoutPart(
 
         fun getWorkOutPartByMachine(machineName: String): WorkoutPart {
             return values()
-                .firstOrNull { it.isIncluded(MachineType.of(machineName)) }
+                .firstOrNull { it.isIncluded(MachineType.from(machineName)) }
                 ?: throw IllegalArgumentException("${machineName}이 속해있는 운동 부위가 존재하지 않습니다.")
         }
     }

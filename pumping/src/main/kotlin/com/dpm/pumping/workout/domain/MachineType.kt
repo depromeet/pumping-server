@@ -16,7 +16,7 @@ enum class MachineType(
     LEG_EXTENSION("레그 익스텐션");
 
     companion object {
-        fun of(name: String): MachineType {
+        fun from(name: String): MachineType {
             return values()
                 .firstOrNull { value -> value.machineName == name }
                 ?: throw IllegalArgumentException("${name}과 일치하는 운동 기구가 존재하지 않습니다.")

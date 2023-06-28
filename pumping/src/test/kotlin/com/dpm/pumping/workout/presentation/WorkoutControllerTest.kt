@@ -11,6 +11,7 @@ import com.dpm.pumping.workout.dto.WorkoutCreateDto.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -100,7 +101,7 @@ class WorkoutControllerTest(
                         fieldWithPath("timers[].heartbeat").type(JsonFieldType.NUMBER).description("심박수"),
                         fieldWithPath("timers[].calories").type(JsonFieldType.NUMBER).description("소모 칼로리"),
                         fieldWithPath("timers[].workoutPart").type(JsonFieldType.STRING)
-                            .description("운동 부위 EX) 유신소 / 어깨 / 가슴 / 엉덩이"),
+                            .description("운동 부위 EX) 유산소 / 어깨 / 가슴 / 엉덩이"),
                         fieldWithPath("timers[].workoutSets[].machine").type(JsonFieldType.STRING)
                             .description("기구 이름 EX) 체스트 프레스").optional(),
                         fieldWithPath("timers[].workoutSets[].kg").type(JsonFieldType.NUMBER).description("무게")

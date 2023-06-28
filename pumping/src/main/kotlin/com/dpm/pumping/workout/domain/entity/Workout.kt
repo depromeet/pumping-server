@@ -19,7 +19,7 @@ data class Workout(
                 workoutId = UUID.randomUUID().toString(),
                 userId = userId,
                 timers = request.timers.map {
-                    Timer.of(it)
+                    Timer.from(it)
                 }
             )
         }
