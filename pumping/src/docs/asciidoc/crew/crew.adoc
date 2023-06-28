@@ -30,11 +30,13 @@ endif::[]
 
 ==== 요청 예시
 
-include::{snippets}/crew/create/http-request.adoc[]
+include::{snippets}/crew-create/http-request.adoc[]
+include::{snippets}/crew-create/request-fields.adoc[]
 
 ==== 응답 예시
 
-include::{snippets}/crew/create/http-response.adoc[]
+include::{snippets}/crew-create/http-response.adoc[]
+include::{snippets}/crew-create/response-fields.adoc[]
 
 == 크루 조회 API
 `GET /crew/{crewId}`

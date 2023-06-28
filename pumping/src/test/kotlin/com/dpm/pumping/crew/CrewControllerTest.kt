@@ -8,7 +8,7 @@ import com.dpm.pumping.user.domain.UserRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -18,7 +18,6 @@ import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.restdocs.payload.PayloadDocumentation.*
-import org.springframework.restdocs.request.RequestDocumentation.*
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import java.time.Instant
@@ -73,7 +72,7 @@ class CrewControllerTest(
             .andDo {
                 handle(
                     document(
-                        "crew/create",
+                        "crew-create",
                         requestFields(
                             fieldWithPath("crewName").description("크루 이름"),
                             fieldWithPath("goalCount").description("목표 횟수")

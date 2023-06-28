@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/timer")
+@RequestMapping("/api/v1/workout")
 class WorkoutController(
     private val workoutService: WorkoutService
 ){
 
-    @PostMapping()
+    @PostMapping
     fun createTimer(
         @RequestBody request: WorkoutCreateDto.Request, @LoginUser user: User
     ): ResponseEntity<WorkoutCreateDto.Response> {
