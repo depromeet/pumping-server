@@ -51,6 +51,7 @@ class WorkoutControllerTest(
         height = "160",
         weight = "50",
         platform = LoginPlatform(LoginType.APPLE, "oauth2Id"),
+        characterType = null,
         currentCrew = null
     )
 
