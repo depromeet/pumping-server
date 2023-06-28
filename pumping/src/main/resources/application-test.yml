@@ -8,11 +8,11 @@ spring:
             password: password
             database: pumping
 security:
-  jwt:
-    access:
-      expire-length: 1000
-      secret-key: secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet1
+    jwt:
+        access:
+            expire-length: 1000
+            secret-key: secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet1
 oauth2:
-  apple:
-    iss: iss
-    client-id: client-id
+    apple:
+        iss: iss
+        client-id: client-id
