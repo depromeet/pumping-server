@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter
 @Service
 class CrewService(@Autowired private val crewRepository: CrewRepository) {
 
+    // 크루 생성 후 참여
     fun createCrew(request: CreateCrewRequest, user: User): CrewResponse {
         val userId = user.uid
 
@@ -35,39 +36,11 @@ class CrewService(@Autowired private val crewRepository: CrewRepository) {
         )
     }
 
-    // 크루 코드 생성 함수
+    // 크루 코드 생성
     private fun generateCrewCode(): String {
         // 6자리의 랜덤한 숫자로 코드 생성
         val code = (1..999999).random().toString().padStart(6, '0')
         return code
-    }
-
-    // 크루 조회 함수 (by crewId)
-    fun getCrew(crewId: String, user: User): CrewResponse {
-        val crew = crewRepository.findById(crewId)
-            .orElseThrow { RuntimeException("해당 크루 아이디로 찾을 수 없습니다.") }
-
-        return CrewResponse(
-            crewId = crew.crewId,
-            crewName = crew.crewName,
-            goalCount = crew.goalCount,
-            code = crew.code,
-            participants = crew.participants
-        )
-    }
-
-    // 크루 조회 함수 (by code)
-    fun getCrewByCode(code: String, user: User): CrewResponse {
-        val crew = crewRepository.findByCode(code)
-            ?: throw RuntimeException("해당 코드로 찾을 수 없습니다.")
-
-        return CrewResponse(
-            crewId = crew.crewId,
-            crewName = crew.crewName,
-            goalCount = crew.goalCount,
-            code = crew.code,
-            participants = crew.participants
-        )
     }
 
     // 크루 참여 함수 (by code)

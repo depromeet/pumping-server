@@ -21,20 +21,6 @@ class CrewController(private val crewService: CrewService) {
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
-    // 크루 조회 API (by crewId)
-    @GetMapping("/{crewId}")
-    fun getCrew(@PathVariable crewId: String, @LoginUser user: User): ResponseEntity<CrewResponse> {
-        val response = crewService.getCrew(crewId, user)
-        return ResponseEntity(response, HttpStatus.OK)
-    }
-
-    // 크루 조회 API (by code)
-    @GetMapping("/code/{code}")
-    fun getCrewByCode(@PathVariable code: String, @LoginUser user: User): ResponseEntity<CrewResponse> {
-        val response = crewService.getCrewByCode(code, user)
-        return ResponseEntity(response, HttpStatus.OK)
-    }
-
     // 크루 참여 API (by code)
     @PostMapping("/join/{code}")
     fun joinCrew(@PathVariable code: String, @LoginUser user: User): ResponseEntity<CrewResponse> {
