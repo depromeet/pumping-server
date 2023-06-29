@@ -13,14 +13,14 @@ class Timer(
     var workSets: List<WorkoutSet>? = emptyList()
 ) {
     companion object {
-        fun of(request: WorkoutCreateDto.TimerDto): Timer {
+        fun from(request: WorkoutCreateDto.TimerDto): Timer {
             return Timer(
                 timerId = UUID.randomUUID().toString(),
-                workoutPart = WorkoutPart.of(request.workoutPart).toString(),
+                workoutPart = WorkoutPart.from(request.workoutPart).toString(),
                 time = request.time.toString(),
                 calories = request.calories.toString(),
                 heartbeat = request.heartbeat.toString(),
-                workSets = request.workoutSets?.map { WorkoutSet.of(it) }
+                workSets = request.workoutSets?.map { WorkoutSet.from(it) }
             )
         }
     }

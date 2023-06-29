@@ -45,7 +45,7 @@ jobs:
                       echo "Action runtime history: $(date)" >> ~/history.txt
                       cd ~/pumping-server
                       git fetch --all
-                      git reset --hard origin/deploy
+                      git reset --hard origin/develop
                       kill -9 $(sudo lsof -t -i:8080)
                       cd ~/pumping-server/pumping
                       cat Makefile
