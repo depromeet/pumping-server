@@ -17,7 +17,7 @@ class Timer(
             return Timer(
                 timerId = UUID.randomUUID().toString(),
                 workoutPart = WorkoutPart.from(request.workoutPart).toString(),
-                time = request.time.toString(), 
+                time = request.time.toString(),
                 calories = request.calories.toString(),
                 heartbeat = request.heartbeat.toString(),
                 workSets = request.workoutSets?.map { WorkoutSet.from(it) }

@@ -46,6 +46,7 @@ class AuthService(
             gender = request.gender,
             height = request.height,
             weight = request.weight,
+            characterType = request.characterType,
             platform = platform
         )
         userRepository.save(user)

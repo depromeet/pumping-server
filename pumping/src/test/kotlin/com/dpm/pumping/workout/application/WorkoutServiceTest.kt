@@ -2,6 +2,7 @@ package com.dpm.pumping.workout.application
 
 import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
+import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.workout.dto.WorkoutCreateDto
@@ -21,7 +22,8 @@ class WorkoutServiceTest(
             height = "160",
             weight = "50",
             platform = LoginPlatform(LoginType.APPLE, "oauth2Id"),
-            currentCrew = null
+            currentCrew = null,
+            characterType = CharacterType.A
         )
 
     @Test

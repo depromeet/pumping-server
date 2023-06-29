@@ -14,5 +14,5 @@ security:
 
 oauth2:
   apple:
-    iss: iss
-    client-id: client-id
+    iss: https://appleid.apple.com
+    client-id: com.depromeet.pumping

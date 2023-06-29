@@ -15,12 +15,22 @@ data class User(
     var height: String?,
     var weight: String?,
     var platform: LoginPlatform,
+    var characterType: CharacterType?,
     var currentCrew: Crew?
 ) {
 
     companion object {
         fun createWithOAuth(platform: LoginPlatform): User {
-            return User(null, null, null, null, null, platform, null)
+            return User(
+                uid = null,
+                name = null,
+                gender = null,
+                height = null,
+                weight = null,
+                platform = platform,
+                characterType = null,
+                currentCrew = null
+            )
         }
     }
 
@@ -29,6 +39,7 @@ data class User(
         gender: Gender,
         height: String,
         weight: String,
+        characterType: CharacterType,
         platform: LoginPlatform
     ) {
         this.uid = UUID.randomUUID().toString()
@@ -37,10 +48,11 @@ data class User(
         this.height = height
         this.weight = weight
         this.platform = platform
+        this.characterType = characterType
         this.currentCrew = null
     }
 
     fun isRegistered(): Boolean {
-        return (name != null && gender != null && height != null && weight != null)
+        return (name != null && gender != null && height != null && weight != null && characterType != null)
     }
 }

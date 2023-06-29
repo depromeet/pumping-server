@@ -3,6 +3,7 @@ package com.dpm.pumping.workout.presentation
 import com.dpm.pumping.auth.application.JwtTokenProvider
 import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
+import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
@@ -11,7 +12,6 @@ import com.dpm.pumping.workout.dto.WorkoutCreateDto.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,7 +52,8 @@ class WorkoutControllerTest(
         height = "160",
         weight = "50",
         platform = LoginPlatform(LoginType.APPLE, "oauth2Id"),
-        currentCrew = null
+        currentCrew = null,
+        characterType = CharacterType.A
     )
 
     @BeforeEach
