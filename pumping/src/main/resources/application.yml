@@ -9,7 +9,7 @@ spring:
 security:
   jwt:
     access:
-      expire-length: 604800000
+      expire-length: 1000
       secret-key: secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet1
 
 oauth2:

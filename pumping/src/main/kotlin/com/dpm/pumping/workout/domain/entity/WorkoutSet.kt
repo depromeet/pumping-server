@@ -9,9 +9,9 @@ class WorkoutSet(
     val sets: String
 ) {
     companion object {
-        fun of(request: WorkoutCreateDto.WorkoutSetDto): WorkoutSet {
+        fun from(request: WorkoutCreateDto.WorkoutSetDto): WorkoutSet {
             return WorkoutSet(
-                machineType = MachineType.of(request.machine).toString(),
+                machineType = MachineType.from(request.machine).toString(),
                 kg = request.kg.toString(),
                 sets = request.sets.toString()
             )
