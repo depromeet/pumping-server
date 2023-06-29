@@ -51,7 +51,7 @@ class AuthControllerTest(
     fun login() {
         val request = AppleLoginRequest("tokenId")
         val response = OAuth2LoginResponse(
-            "null",
+            null,
             null,
             LoginType.APPLE,
             "OAauth_id"
