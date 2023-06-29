@@ -10,15 +10,16 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/crew")
+@RequestMapping("/api/v1/crews")
 @Api(tags = ["크루 관련 API"])
-class CrewController(private val crewService: CrewService) {
+class CrewController(
+    private val crewService: CrewService
+) {
 
-    // 크루 생성 API
-    @PostMapping("/create")
+    @PostMapping
     fun createCrew(@RequestBody request: CreateCrewRequest, @LoginUser user: User): ResponseEntity<CrewResponse> {
-        val response = crewService.createCrew(request, user)
-        return ResponseEntity(response, HttpStatus.CREATED)
+        val response = crewService.create(request, user)
+        return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
     // 크루 참여 API (by code)
