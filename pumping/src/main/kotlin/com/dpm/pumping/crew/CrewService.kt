@@ -11,7 +11,7 @@ class CrewService(
 ) {
 
     fun create(request: CreateCrewRequest, user: User): CrewResponse {
-        val crew = Crew.create(request.crewName, goalCount = request.goalCount, userId = user.uid!!)
+        val crew = Crew.create(name = request.crewName, goalCount = request.goalCount, userId = user.uid!!)
         val createdCrew = crewRepository.save(crew)
 
         return CrewResponse(
