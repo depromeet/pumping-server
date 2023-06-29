@@ -117,8 +117,8 @@ class CrewServiceIntegrationTest {
 
 
     // To Do - Fix this test
-    // @AfterEach
-    // fun cleanUp() {
-    //     mongoTemplate.dropCollection(Crew::class.java)
-    // }
+    @AfterEach
+    fun cleanUp() {
+        mongoTemplate.dropCollection(Crew::class.java)
+    }
 }
