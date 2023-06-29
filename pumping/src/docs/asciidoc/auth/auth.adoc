@@ -33,6 +33,7 @@ include::{snippets}/oauth2-apple-login/response-fields.adoc[]
 === Request
 
 include::{snippets}/signup/http-request.adoc[]
+include::{snippets}/signup/request-fields.adoc[]
 
 === Response
 
