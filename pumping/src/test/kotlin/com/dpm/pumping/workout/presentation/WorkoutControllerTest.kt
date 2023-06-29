@@ -101,9 +101,9 @@ class WorkoutControllerTest(
                         fieldWithPath("timers[].heartbeat").type(JsonFieldType.NUMBER).description("심박수"),
                         fieldWithPath("timers[].calories").type(JsonFieldType.NUMBER).description("소모 칼로리"),
                         fieldWithPath("timers[].workoutPart").type(JsonFieldType.STRING)
-                            .description("운동 부위 EX) 유산소 / 어깨 / 가슴 / 엉덩이"),
+                            .description("운동 부위 : AEROBIC, SHOULDER, CHEST, ARM, BACK, HIP, LEG"),
                         fieldWithPath("timers[].workoutSets[].machine").type(JsonFieldType.STRING)
-                            .description("기구 이름 EX) 체스트 프레스").optional(),
+                            .description("운동 기구 : SP, SLL, DSP, AHP, CP, MP, MF, BP, SIB, DK, BK, KK, AM, MK, LD, LOP, SD, BR, HA, HS, STD, LE, LGP, LK, DL, SQ").optional(),
                         fieldWithPath("timers[].workoutSets[].kg").type(JsonFieldType.NUMBER).description("무게")
                             .optional(),
                         fieldWithPath("timers[].workoutSets[].sets").type(JsonFieldType.NUMBER).description("세트")
