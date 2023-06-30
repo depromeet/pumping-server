@@ -29,11 +29,17 @@ class CrewController(
         return ResponseEntity(response, HttpStatus.OK)
     }
 
+    // 크루 탈퇴 API
+    @PostMapping("/leave/{crewId}")
+    fun leaveCrew(@PathVariable crewId: String, @LoginUser user: User): ResponseEntity<CrewResponse> {
+        val response = crewService.leaveCrew(crewId, user)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
     // 참여한 크루 조회 (by userId)
     @GetMapping
     fun getCrews(@LoginUser user: User): ResponseEntity<List<Map<String, String?>>> {
         val response = crewService.getCrews(user)
         return ResponseEntity(response, HttpStatus.OK)
     }
-
 }

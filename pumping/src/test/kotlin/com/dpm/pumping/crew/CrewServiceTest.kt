@@ -42,6 +42,12 @@ class CrewServiceTest @Autowired constructor(
     }
 
     @Test
+    fun `크루 탈퇴 테스트`(){
+        val crewResponse = crewService.create(CreateCrewRequest("HI crew", 5), user)
+        val response = crewService.leaveCrew(crewResponse.crewId!!, user)
+    }
+
+    @Test
     fun `코드로 크루 참여 테스트`() {
         val newUser = userRepository.save(User.createWithOAuth(LoginPlatform(LoginType.APPLE, "OAUTH_ID2")))
 

@@ -50,6 +50,33 @@ class CrewService(
         )
     }
 
+    // 크루 탈퇴 함수
+    fun leaveCrew(crewId: String, user: User): CrewResponse {
+        val userId = user.uid
+        // 크루 조회
+        val crew = crewRepository.findByCrewId(crewId)
+            ?: throw RuntimeException("해당 크루를 찾을 수 없습니다.")
+
+        // 참여자 제거
+        val updatedParticipants = crew.participants.toMutableList()
+        if (updatedParticipants.contains(userId)) {
+            updatedParticipants.remove(userId)
+        }
+
+        // 크루 업데이트
+        val updatedCrew = crew.copy(participants = updatedParticipants)
+        val savedCrew = crewRepository.save(updatedCrew)
+
+        // 업데이트된 크루 정보 반환
+        return CrewResponse(
+            crewId = savedCrew.crewId,
+            crewName = savedCrew.crewName,
+            goalCount = savedCrew.goalCount,
+            code = savedCrew.code,
+            participants = savedCrew.participants
+        )
+    }
+
     // 내가 참여한 모든 크루 조회 (by userId)
     // 가장 최신 순 정렬 후 반환
     fun getCrews(user: User): List<Map<String, String?>> {

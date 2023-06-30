@@ -21,7 +21,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
-import org.springframework.restdocs.headers.HeaderDocumentation
 import org.springframework.restdocs.headers.HeaderDocumentation.*
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.operation.preprocess.Preprocessors.*
@@ -180,9 +179,9 @@ class CrewControllerTest (
                         "get-crews",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        responseFields(
-                            //TODO: dto 변환 후, 적용
-                        )
+//                        responseFields(
+//                            //TODO: dto 변환 후, 적용
+//                        )
                     )
                 )
             }

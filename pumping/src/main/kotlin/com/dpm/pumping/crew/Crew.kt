@@ -1,7 +1,5 @@
 package com.dpm.pumping.crew
 
-import com.dpm.pumping.auth.domain.LoginPlatform
-import com.dpm.pumping.user.domain.User
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
