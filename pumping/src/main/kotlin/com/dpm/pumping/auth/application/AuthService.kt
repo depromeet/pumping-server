@@ -41,15 +41,16 @@ class AuthService(
         val user = userRepository.findByPlatform(platform) ?: throw IllegalArgumentException(
             "인증되지 않은 사용자입니다. oauth 로그인을 다시하세요"
         )
-        user.register(
+        val updateFields = user.register(
             name = request.name,
             gender = request.gender,
             height = request.height,
             weight = request.weight,
             characterType = request.characterType,
-            platform = platform
+            platform = LoginPlatform(request.loginType, request.oauth2Id)
         )
-        userRepository.save(user)
-        return jwtTokenProvider.generateAccessToken(user.uid)
+
+        val updatedUser = userRepository.update(user.uid!!, updateFields)
+        return jwtTokenProvider.generateAccessToken(updatedUser.uid)
     }
 }

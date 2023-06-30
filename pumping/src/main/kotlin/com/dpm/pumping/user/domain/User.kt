@@ -41,15 +41,15 @@ data class User(
         weight: String,
         characterType: CharacterType,
         platform: LoginPlatform
-    ) {
-        this.uid = UUID.randomUUID().toString()
-        this.name = name
-        this.gender = gender
-        this.height = height
-        this.weight = weight
-        this.platform = platform
-        this.characterType = characterType
-        this.currentCrew = null
+    ): Map<String, Any> {
+        return mapOf(
+            "name" to name,
+            "gender" to gender,
+            "height" to height,
+            "weight" to weight,
+            "characterType" to characterType,
+            "platform" to platform
+        )
     }
 
     fun isRegistered(): Boolean {
