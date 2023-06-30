@@ -9,24 +9,24 @@ ifndef::snippets[]
 endif::[]
 = 크루 관련 API
 
-이 문서는 크루 생성 API에 대한 문서입니다.
-
 == 크루 생성 API
-`POST /crew/create`
 
-크루를 생성하는 API입니다.
+`POST /api/v1/crews`
 
-==== 요청 필드
+=== Header
+크루 관련 api의 모든 헤더에 적용
+include::{snippets}/create-crew/request-headers.adoc[]
 
-- `crewName` (문자열) - 크루의 이름입니다.
-- `goalCount` (정수) - 목표 횟수입니다.
+=== Request
 
-==== 응답 필드
+include::{snippets}/create-crew/http-request.adoc[]
+include::{snippets}/create-crew/request-fields.adoc[]
 
-- `crewId` (문자열) - 크루의 ID입니다.
-- `crewName` (문자열) - 크루의 이름입니다.
-- `goalCount` (정수) - 목표 횟수입니다.
-- `code` (문자열) - 크루 코드입니다.
+=== Response
+
+include::{snippets}/create-crew/http-response.adoc[]
+include::{snippets}/create-crew/response-fields.adoc[]
+
 
 ==== 요청 예시
 
