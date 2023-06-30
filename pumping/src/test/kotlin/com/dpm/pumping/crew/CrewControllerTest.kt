@@ -28,6 +28,7 @@ import org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import java.util.*
 
@@ -152,6 +153,41 @@ class CrewControllerTest (
                 )
             }
     }
+
+    @Test
+    fun getCrews(){
+        val code = "123456"
+
+        val crewResponse = CrewResponse(
+            crewId = "crewId",
+            crewName = "new Crew",
+            goalCount = 5,
+            code = code,
+            participants = listOf(dummyUser.uid)
+        )
+
+        given(crewService.getCrews(dummyUser)).willReturn(any())
+
+
+        mockMvc.get("/api/v1/crews"){
+            header(HttpHeaders.AUTHORIZATION, "Bearer <Access Token>")
+            contentType = MediaType.APPLICATION_JSON
+        }
+            .andExpect { status{ isOk() } }
+            .andDo {
+                handle(
+                    document(
+                        "get-crews",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                            //TODO: dto 변환 후, 적용
+                        )
+                    )
+                )
+            }
+    }
+
     fun <T> any(): T {
         Mockito.any<T>()
         return null as T
