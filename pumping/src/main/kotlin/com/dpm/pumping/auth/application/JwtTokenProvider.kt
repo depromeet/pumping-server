@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.security.Key
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 
 @Component
@@ -35,8 +37,11 @@ class JwtTokenProvider(
             .signWith(tokenSecretKey, SignatureAlgorithm.HS256)
             .compact()
 
-        return AccessTokenResponse(accessToken, validity)
+        return AccessTokenResponse(accessToken, localDateTime(validity))
     }
+
+    private fun localDateTime(validity: Date): LocalDateTime? =
+        LocalDateTime.ofInstant(validity.toInstant(), ZoneId.of("Asia/Seoul"))
 
     fun getAccessTokenPayload(token: String): String {
         return getClaimsJws(token, tokenSecretKey)
