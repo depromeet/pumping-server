@@ -54,11 +54,6 @@ class CrewControllerTest(
             participants = listOf("user1", "user2")
         )
 
-        val accessTokenResponse = AccessTokenResponse(
-            accessToken = "Bearer accessToken",
-            expiredTime = Date.from(Instant.now())
-        )
-
         given(jwtTokenProvider.isValidAccessToken("token")).willReturn(true)
 
         `when`(crewService.createCrew(requestBody)).thenReturn(crewResponse)
