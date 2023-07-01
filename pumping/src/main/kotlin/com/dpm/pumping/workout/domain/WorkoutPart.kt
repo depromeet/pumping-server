@@ -28,7 +28,7 @@ enum class WorkoutPart(
                 ?: throw IllegalArgumentException("${name}과 일치하는 부위가 존재하지 않습니다.")
         }
 
-        fun getWorkOutPartByMachine(machineName: String): WorkoutPart {
+        fun getByMachine(machineName: String): WorkoutPart {
             return values()
                 .firstOrNull { it.isIncluded(MachineType.from(machineName)) }
                 ?: throw IllegalArgumentException("${machineName}이 속해있는 운동 부위가 존재하지 않습니다.")

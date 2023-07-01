@@ -7,3 +7,4 @@ interface CrewRepository : MongoRepository<Crew, String> {
     fun findByCode(code: String): Crew?
     fun findAllCrewsByParticipantsContains(userId: String): List<Crew>
 }
+

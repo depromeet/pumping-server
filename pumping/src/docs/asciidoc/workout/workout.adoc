@@ -23,3 +23,17 @@ include::{snippets}/create-workout/request-fields.adoc[]
 
 include::{snippets}/create-workout/http-response.adoc[]
 include::{snippets}/create-workout/response-fields.adoc[]
+
+=== 운동 기록 전체 조회 API
+
+`GET /api/v1/workout/{userId}`
+
+=== Request
+
+include::{snippets}/create-workout/http-request.adoc[]
+include::{snippets}/create-workout/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/create-workout/http-response.adoc[]
+include::{snippets}/create-workout/response-fields.adoc[]
