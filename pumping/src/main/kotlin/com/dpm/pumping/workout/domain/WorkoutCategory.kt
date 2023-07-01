@@ -15,7 +15,7 @@ enum class WorkoutCategory(
     DOWN("하체", listOf(HIP, LEG));
 
     companion object {
-        fun getWorkOutCategory(name: String): WorkoutCategory {
+        fun getByPart(name: String): WorkoutCategory {
             return values()
                 .firstOrNull { it.isIncluded(WorkoutPart.from(name)) }
                 ?: throw IllegalArgumentException("${name}이 속해있는 카테고리가 존재하지 않습니다.")

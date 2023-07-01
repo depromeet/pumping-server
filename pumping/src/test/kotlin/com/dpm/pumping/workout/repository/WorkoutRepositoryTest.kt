@@ -8,10 +8,11 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
+import java.time.LocalDateTime
 
 @DataMongoTest
 class WorkoutRepositoryTest(
-    @Autowired val workoutRepository: WorkoutRepository,
+    @Autowired val workoutRepository: WorkoutRepository
 ) {
 
     @BeforeEach
@@ -24,7 +25,7 @@ class WorkoutRepositoryTest(
         val timer = Timer(
             timerId = "timer01",
             workoutPart = WorkoutPart.CHEST.toString(),
-            time = "2023-06-22T10:00:00+09:00",
+            time = "60",
             calories = "100",
             heartbeat = "80"
         )
@@ -32,7 +33,9 @@ class WorkoutRepositoryTest(
         val workout = Workout(
             workoutId = "workout01",
             userId = "user01",
-            timers = listOf(timer)
+            timers = listOf(timer),
+            createDate = LocalDateTime.now(),
+            currentCrew = "crew01"
         )
 
         val savedRecord = workoutRepository.save(workout)

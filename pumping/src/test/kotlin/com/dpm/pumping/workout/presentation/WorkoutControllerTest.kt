@@ -8,7 +8,9 @@ import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
 import com.dpm.pumping.workout.application.WorkoutService
+import com.dpm.pumping.workout.domain.WorkoutCategory
 import com.dpm.pumping.workout.dto.WorkoutCreateDto.*
+import com.dpm.pumping.workout.dto.WorkoutGetDto
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -20,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import org.springframework.restdocs.payload.JsonFieldType
@@ -66,6 +69,7 @@ class WorkoutControllerTest(
     @Test
     fun createWorkout() {
         val request = Request(
+            currentCrew = "crew01",
             timers = listOf(
                 TimerDto(
                     time = 600,
@@ -98,6 +102,7 @@ class WorkoutControllerTest(
                     preprocessRequest(prettyPrint()),
                     preprocessResponse(prettyPrint()),
                     requestFields(
+                        fieldWithPath("currentCrew").type(JsonFieldType.STRING).description("현재 참여중인 크루 아이디"),
                         fieldWithPath("timers[].time").type(JsonFieldType.NUMBER).description("운동 시간"),
                         fieldWithPath("timers[].heartbeat").type(JsonFieldType.NUMBER).description("심박수"),
                         fieldWithPath("timers[].calories").type(JsonFieldType.NUMBER).description("소모 칼로리"),
@@ -116,6 +121,48 @@ class WorkoutControllerTest(
                 )
             )
     }
+
+    @Test
+    fun getWorkouts() {
+        val response = WorkoutGetDto.Response(
+            listOf(
+                WorkoutGetDto.WorkoutByDay(
+                    workoutDate = "2023-06-22T10:00:00",
+                    totalTime = 60,
+                    averageHeartbeat = 120,
+                    totalCalories = 500,
+                    maxWorkoutPart = WorkoutCategory.UP.name,
+                    maxWorkoutPartTime = 100
+                )
+            )
+        )
+
+        given(workoutService.getWorkouts(testUser)).willReturn(response)
+
+        val result = mockMvc.perform(
+            get("/api/v1/workout")
+                .header("Authorization", "Bearer <Access Token>")
+                .accept(MediaType.APPLICATION_JSON)
+        )
+
+        result.andExpect { status().isOk }
+            .andDo (
+                document(
+                    "get-workouts",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    responseFields(
+                        fieldWithPath("workouts[].workoutDate").type(JsonFieldType.STRING).description("운동 날짜"),
+                        fieldWithPath("workouts[].totalTime").type(JsonFieldType.NUMBER).description("하루 동안 누적 운동 시간"),
+                        fieldWithPath("workouts[].averageHeartbeat").type(JsonFieldType.NUMBER).description("하루 동안 평균 심박수"),
+                        fieldWithPath("workouts[].totalCalories").type(JsonFieldType.NUMBER).description("하루 동안 누적 소모 칼로리"),
+                        fieldWithPath("workouts[].maxWorkoutPart").type(JsonFieldType.STRING).description("하루 동안 최대 운동한 부위"),
+                        fieldWithPath("workouts[].maxWorkoutPartTime").type(JsonFieldType.NUMBER).description("하루 동안 최대 운동한 부위 시간")
+                    )
+                )
+            )
+    }
+
 
     fun <T> any(): T {
         Mockito.any<T>()
