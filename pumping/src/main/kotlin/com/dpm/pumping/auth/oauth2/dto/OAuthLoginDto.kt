@@ -3,11 +3,8 @@ package com.dpm.pumping.auth.oauth2.dto
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
+import java.time.LocalDateTime
 import java.util.*
-
-data class AppleLoginUrlResponse(
-    val redirectUrl: String
-)
 
 data class AppleLoginRequest(
     val idToken: String
@@ -25,7 +22,7 @@ data class SignUpRequest(
 
 data class OAuth2LoginResponse(
     val accessToken: String?,
-    val expiredTime: Date?,
+    val expiredTime: LocalDateTime?,
     val loginType: LoginType,
     val oauth2Id: String?
 )

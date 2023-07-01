@@ -1,5 +1,7 @@
 package com.dpm.pumping.crew
 
+import com.dpm.pumping.auth.config.LoginUser
+import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.crew.dto.CreateCrewRequest
 import com.dpm.pumping.crew.dto.CrewResponse
 import io.swagger.annotations.Api
@@ -8,28 +10,36 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/crew")
+@RequestMapping("/api/v1/crews")
 @Api(tags = ["크루 관련 API"])
-class CrewController(private val crewService: CrewService) {
+class CrewController(
+    private val crewService: CrewService
+) {
 
-    // 크루 생성 API
-    @PostMapping("/create")
-    fun createCrew(@RequestBody request: CreateCrewRequest): ResponseEntity<CrewResponse> {
-        val response = crewService.createCrew(request)
-        return ResponseEntity(response, HttpStatus.CREATED)
+    @PostMapping
+    fun createCrew(@RequestBody request: CreateCrewRequest, @LoginUser user: User): ResponseEntity<CrewResponse> {
+        val response = crewService.create(request, user)
+        return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
-    // 크루 조회 API (by crewId)
-    @GetMapping("/{crewId}")
-    fun getCrew(@PathVariable crewId: String): ResponseEntity<CrewResponse> {
-        val response = crewService.getCrew(crewId)
+    // 크루 참여 API (by code)
+    @PostMapping("/join/{code}")
+    fun joinCrew(@PathVariable code: String, @LoginUser user: User): ResponseEntity<CrewResponse> {
+        val response = crewService.joinCrew(code, user)
         return ResponseEntity(response, HttpStatus.OK)
     }
 
-    // 크루 조회 API (by code)
-    @GetMapping("/code/{code}")
-    fun getCrewByCode(@PathVariable code: String): ResponseEntity<CrewResponse> {
-        val response = crewService.getCrewByCode(code)
+    // 크루 탈퇴 API
+    @PostMapping("/leave/{crewId}")
+    fun leaveCrew(@PathVariable crewId: String, @LoginUser user: User): ResponseEntity<CrewResponse> {
+        val response = crewService.leaveCrew(crewId, user)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    // 참여한 크루 조회 (by userId)
+    @GetMapping
+    fun getCrews(@LoginUser user: User): ResponseEntity<List<Map<String, String?>>> {
+        val response = crewService.getCrews(user)
         return ResponseEntity(response, HttpStatus.OK)
     }
 }

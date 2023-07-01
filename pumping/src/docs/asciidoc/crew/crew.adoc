@@ -9,34 +9,33 @@ ifndef::snippets[]
 endif::[]
 = 크루 관련 API
 
-이 문서는 크루 생성 API에 대한 문서입니다.
-
 == 크루 생성 API
-`POST /crew/create`
 
-크루를 생성하는 API입니다.
+`POST /api/v1/crews`
 
-==== 요청 필드
+=== Header
+크루 관련 api의 모든 헤더에 적용
+include::{snippets}/create-crew/request-headers.adoc[]
 
-- `crewName` (문자열) - 크루의 이름입니다.
-- `goalCount` (정수) - 목표 횟수입니다.
+=== Request
 
-==== 응답 필드
+include::{snippets}/create-crew/http-request.adoc[]
+include::{snippets}/create-crew/request-fields.adoc[]
 
-- `crewId` (문자열) - 크루의 ID입니다.
-- `crewName` (문자열) - 크루의 이름입니다.
-- `goalCount` (정수) - 목표 횟수입니다.
-- `code` (문자열) - 크루 코드입니다.
+=== Response
 
-==== 요청 예시
+include::{snippets}/create-crew/http-response.adoc[]
+include::{snippets}/create-crew/response-fields.adoc[]
 
-include::{snippets}/crew-create/http-request.adoc[]
-include::{snippets}/crew-create/request-fields.adoc[]
+== 크루 참여 API
 
-==== 응답 예시
+`POST /api/v1/crews/join/{code}`
 
-include::{snippets}/crew-create/http-response.adoc[]
-include::{snippets}/crew-create/response-fields.adoc[]
+=== Request
 
-== 크루 조회 API
-`GET /crew/{crewId}`
+include::{snippets}/join-crew/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/join-crew/http-response.adoc[]
+include::{snippets}/join-crew/response-fields.adoc[]

@@ -26,6 +26,7 @@ import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import java.time.Instant
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -51,7 +52,7 @@ class AuthControllerTest(
     fun login() {
         val request = AppleLoginRequest("tokenId")
         val response = OAuth2LoginResponse(
-            "null",
+            null,
             null,
             LoginType.APPLE,
             "OAauth_id"
@@ -93,7 +94,7 @@ class AuthControllerTest(
     @Test
     fun signUp() {
         val request = SignUpRequest("name", Gender.MALE, "180.2", "90.4", CharacterType.A, LoginType.APPLE, "id")
-        val response = AccessTokenResponse("accessToken", Date.from(Instant.now()))
+        val response = AccessTokenResponse("accessToken", LocalDateTime.now().plusDays(5))
         given(authService.signUp(request)).willReturn(response)
 
         mockMvc.post("/api/v1/sign-up") {

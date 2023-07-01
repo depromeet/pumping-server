@@ -1,19 +1,16 @@
 package com.dpm.pumping.auth.oauth2
 
 import com.dpm.pumping.auth.oauth2.dto.AppleLoginRequest
-import com.dpm.pumping.auth.oauth2.dto.AppleLoginUrlResponse
 import com.dpm.pumping.auth.oauth2.vo.OAuth2ApplePublicKeys
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
-import java.nio.charset.StandardCharsets
 import java.security.PublicKey
 import java.util.*
 
