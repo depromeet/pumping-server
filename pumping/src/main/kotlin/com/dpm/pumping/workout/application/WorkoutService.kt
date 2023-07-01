@@ -1,6 +1,7 @@
 package com.dpm.pumping.workout.application
 
 import com.dpm.pumping.user.domain.User
+import com.dpm.pumping.user.domain.UserRepository
 import com.dpm.pumping.workout.domain.entity.Workout
 import com.dpm.pumping.workout.dto.WorkoutCreateDto
 import com.dpm.pumping.workout.dto.WorkoutGetDto
@@ -13,7 +14,8 @@ import java.time.format.DateTimeFormatter
 @Service
 @Transactional(readOnly = true)
 class WorkoutService(
-    private val workoutRepository: WorkoutRepository
+    private val workoutRepository: WorkoutRepository,
+    private val userRepository: UserRepository
 ){
 
     companion object {
@@ -30,7 +32,10 @@ class WorkoutService(
         return WorkoutCreateDto.Response(created.workoutId)
     }
 
-    fun getWorkouts(user: User): WorkoutGetDto.Response {
+    fun getWorkouts(userId: String): WorkoutGetDto.Response {
+        val user = userRepository.findById(userId)
+            .orElseThrow { throw IllegalArgumentException("${userId}에 해당하는 유저를 찾을 수 없습니다.") }
+
         val crew = user.currentCrew
             ?: throw IllegalArgumentException("아직 크루에 참여하지 않아 운동 기록이 존재하지 않습니다.")
 

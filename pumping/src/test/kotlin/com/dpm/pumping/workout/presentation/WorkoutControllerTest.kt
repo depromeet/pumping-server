@@ -27,6 +27,8 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.pos
 import org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
+import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
+import org.springframework.restdocs.request.RequestDocumentation.pathParameters
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
@@ -137,10 +139,10 @@ class WorkoutControllerTest(
             )
         )
 
-        given(workoutService.getWorkouts(testUser)).willReturn(response)
+        given(workoutService.getWorkouts(testUser.uid!!)).willReturn(response)
 
         val result = mockMvc.perform(
-            get("/api/v1/workout")
+            get("/api/v1/workout/{userId}", testUser.uid)
                 .header("Authorization", "Bearer <Access Token>")
                 .accept(MediaType.APPLICATION_JSON)
         )
@@ -151,6 +153,9 @@ class WorkoutControllerTest(
                     "get-workouts",
                     preprocessRequest(prettyPrint()),
                     preprocessResponse(prettyPrint()),
+                    pathParameters(
+                        parameterWithName("userId").description("유저 아이디")
+                    ),
                     responseFields(
                         fieldWithPath("workouts[].workoutDate").type(JsonFieldType.STRING).description("운동 날짜"),
                         fieldWithPath("workouts[].totalTime").type(JsonFieldType.NUMBER).description("하루 동안 누적 운동 시간"),

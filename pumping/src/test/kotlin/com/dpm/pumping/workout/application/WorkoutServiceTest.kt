@@ -6,6 +6,7 @@ import com.dpm.pumping.crew.Crew
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
+import com.dpm.pumping.user.domain.UserRepository
 import com.dpm.pumping.workout.domain.WorkoutCategory
 import com.dpm.pumping.workout.domain.WorkoutPart
 import com.dpm.pumping.workout.domain.entity.Timer
@@ -16,16 +17,23 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.BDDMockito.given
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 @SpringBootTest
 class WorkoutServiceTest(
     @Autowired private val workoutService: WorkoutService,
     @Autowired private val workoutRepository: WorkoutRepository
 ) {
+
+    @MockBean
+    lateinit var userRepository: UserRepository
 
     @BeforeEach
     fun init(){
@@ -61,10 +69,13 @@ class WorkoutServiceTest(
 
     @Test
     fun 크루에_참여하지_않았다면_예외가_발생한다() {
+        // given
         val testUser = createUser(currentCrew = null)
+        given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
+        // when + then
         assertThatThrownBy {
-            workoutService.getWorkouts(testUser)
+            workoutService.getWorkouts(testUser.uid!!)
         }.hasMessageContaining("아직 크루에 참여하지 않아 운동 기록이 존재하지 않습니다.")
     }
 
@@ -80,9 +91,10 @@ class WorkoutServiceTest(
         val crew2FirstDayWorkout = createWorkout(listOf(timer), "2023-06-23T10:00:00", crew2.crewId!!, testUser)
 
         workoutRepository.saveAll(listOf(crew1FirstDayWorkout, crew1SecondDayWorkout, crew2FirstDayWorkout))
+        given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
         // when
-        val response = workoutService.getWorkouts(testUser)
+        val response = workoutService.getWorkouts(testUser.uid!!)
 
         // then
         val result = response.workouts!!.toList()
@@ -101,9 +113,10 @@ class WorkoutServiceTest(
         val workout = createWorkout(listOf(timer1, timer2), "2023-06-22T10:00:00", crew.crewId!!, testUser)
 
         workoutRepository.save(workout)
+        given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
         // when
-        val result = workoutService.getWorkouts(testUser)
+        val result = workoutService.getWorkouts(testUser.uid!!)
 
         // then
         val values = result.workouts!!.toList()
@@ -123,9 +136,10 @@ class WorkoutServiceTest(
         val workout = createWorkout(listOf(timer1, timer2, timer3), "2023-06-22T10:00:00", crew.crewId!!, testUser)
 
         workoutRepository.save(workout)
+        given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
         // when
-        val result = workoutService.getWorkouts(testUser)
+        val result = workoutService.getWorkouts(testUser.uid!!)
 
         // then
         val values = result.workouts!!.toList()
@@ -175,6 +189,11 @@ class WorkoutServiceTest(
             currentCrew = currentCrew,
             characterType = CharacterType.A
         )
+    }
+
+    fun <T> any(): T {
+        Mockito.any<T>()
+        return null as T
     }
 }
 
