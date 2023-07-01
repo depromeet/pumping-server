@@ -17,7 +17,7 @@ class WorkoutService(
     fun createWorkout(
         request: WorkoutCreateDto.Request, user: User
     ): WorkoutCreateDto.Response {
-        val workout = Workout.of(user.uid!!, request)
+        val workout = Workout.of(user.uid!!, request.currentCrew, request.timers)
         val created = workoutRepository.save(workout)
         return WorkoutCreateDto.Response(created.workoutId)
     }
