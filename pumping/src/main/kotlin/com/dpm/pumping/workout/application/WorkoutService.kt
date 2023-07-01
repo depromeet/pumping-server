@@ -45,7 +45,7 @@ class WorkoutService(
             .findAllByCurrentCrewAndUserIdAndCreateDateBetween(crew.crewId!!, user.uid!!, startDate, endDate)
 
         val response = workoutDatas
-            ?.map{ workout -> getWorkoutByDay(workout) }
+            ?.map { workout -> getWorkoutByDay(workout) }
             ?.toList()
 
         return WorkoutGetDto.Response(response)

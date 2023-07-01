@@ -34,22 +34,22 @@ data class Workout(
     }
 
     fun getTotalTime(): Int {
-        return timers.sumOf{ x -> x.time.toInt()}
+        return timers.sumOf { x -> x.time.toInt()}
     }
 
     fun getAverageHeartbeat(): Int {
-        val totalHeartbeat = timers.sumOf{ x -> x.heartbeat.toInt()}
+        val totalHeartbeat = timers.sumOf { x -> x.heartbeat.toInt()}
         return totalHeartbeat / timers.size
     }
 
     fun getTotalCalories(): Int {
-        return timers.sumOf{ x -> x.calories.toInt()}
+        return timers.sumOf { x -> x.calories.toInt()}
     }
 
     fun getMaxWorkoutPart(): Pair<WorkoutCategory, Int> {
-        return timers.groupBy{ WorkoutCategory.getByPart(it.workoutPart) }
-            .map{ it.key to it.value.sumOf{ timer -> timer.time.toInt() } }
-            .maxByOrNull{ v -> v.second }!!
+        return timers.groupBy { WorkoutCategory.getByPart(it.workoutPart) }
+            .map { it.key to it.value.sumOf{ timer -> timer.time.toInt() } }
+            .maxByOrNull { v -> v.second }!!
     }
 
 
