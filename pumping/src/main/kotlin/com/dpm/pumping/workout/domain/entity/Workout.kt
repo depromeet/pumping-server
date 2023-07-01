@@ -48,7 +48,7 @@ data class Workout(
 
     fun getMaxWorkoutPart(): Pair<WorkoutCategory, Int> {
         return timers.groupBy{ WorkoutCategory.getByPart(it.workoutPart) }
-            .map{ it.key to it.value.sumOf{ timer->timer.time.toInt() } }
+            .map{ it.key to it.value.sumOf{ timer -> timer.time.toInt() } }
             .maxByOrNull{ v -> v.second }!!
     }
 
