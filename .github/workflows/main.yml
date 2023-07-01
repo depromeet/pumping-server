@@ -3,7 +3,7 @@ on:
     push:
         branches:
             - develop
-            
+
 jobs:
     ### Deprecate Deploy to NCP
     deploy-ncp:

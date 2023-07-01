@@ -4,7 +4,6 @@ import com.dpm.pumping.auth.application.AuthService
 import com.dpm.pumping.auth.dto.*
 import com.dpm.pumping.auth.oauth2.OAuth2AppleClient
 import com.dpm.pumping.auth.oauth2.dto.AppleLoginRequest
-import com.dpm.pumping.auth.oauth2.dto.AppleLoginUrlResponse
 import com.dpm.pumping.auth.oauth2.dto.OAuth2LoginResponse
 import com.dpm.pumping.auth.oauth2.dto.SignUpRequest
 import org.springframework.http.ResponseEntity

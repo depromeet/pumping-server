@@ -22,7 +22,7 @@ class AuthServiceTest @Autowired constructor(
 ){
 
     @BeforeEach
-    fun `tear down`(){
+    fun `setUp`(){
         userRepository.deleteAll()
     }
 

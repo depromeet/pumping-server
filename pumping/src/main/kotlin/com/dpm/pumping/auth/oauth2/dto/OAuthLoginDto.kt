@@ -6,10 +6,6 @@ import com.dpm.pumping.user.domain.Gender
 import java.time.LocalDateTime
 import java.util.*
 
-data class AppleLoginUrlResponse(
-    val redirectUrl: String
-)
-
 data class AppleLoginRequest(
     val idToken: String
 )

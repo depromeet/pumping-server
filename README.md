@@ -4,6 +4,8 @@
 
 ### Settings
 
+-   DB
+
 ```bash
 # Local MongoDB
 # 도커 데몬이 실행되어 있어야 합니다.
@@ -17,3 +19,15 @@ pumping-server$ make mongo-up
 pumping-server$ make mongo-down
 ```
 
+-   application.yml
+
+```bash
+# Local
+$ application.yml
+
+# AWS Parameterstore
+$ application-aws.yml
+
+# Test
+$ application-test.yml
+```
