@@ -30,10 +30,10 @@ include::{snippets}/create-workout/response-fields.adoc[]
 
 === Request
 
-include::{snippets}/create-workout/http-request.adoc[]
-include::{snippets}/create-workout/path-parameters.adoc[]
+include::{snippets}/get-workouts/http-request.adoc[]
+include::{snippets}/get-workouts/path-parameters.adoc[]
 
 === Response
 
-include::{snippets}/create-workout/http-response.adoc[]
-include::{snippets}/create-workout/response-fields.adoc[]
+include::{snippets}/get-workouts/http-response.adoc[]
+include::{snippets}/get-workouts/response-fields.adoc[]

@@ -139,7 +139,7 @@ class WorkoutControllerTest(
             )
         )
 
-        given(workoutService.getWorkouts(testUser.uid!!)).willReturn(response)
+        given(workoutService.getWorkouts(any(), any())).willReturn(response)
 
         val result = mockMvc.perform(
             get("/api/v1/workout/{userId}", testUser.uid)
@@ -154,7 +154,7 @@ class WorkoutControllerTest(
                     preprocessRequest(prettyPrint()),
                     preprocessResponse(prettyPrint()),
                     pathParameters(
-                        parameterWithName("userId").description("유저 아이디")
+                        parameterWithName("userId").description("친구 아이디: 본인 운동 데이터 조회에서는 필요 X").optional()
                     ),
                     responseFields(
                         fieldWithPath("workouts[].workoutDate").type(JsonFieldType.STRING).description("운동 날짜"),
