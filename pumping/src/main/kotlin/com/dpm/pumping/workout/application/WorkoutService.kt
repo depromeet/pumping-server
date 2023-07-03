@@ -27,9 +27,12 @@ class WorkoutService(
     fun createWorkout(
         request: WorkoutCreateDto.Request, user: User
     ): WorkoutCreateDto.Response {
-        val workout = Workout.of(user.uid!!, request.currentCrew, request.timers)
+        val crew = user.currentCrew
+            ?: throw IllegalArgumentException("아직 크루에 참여하지 않아 운동 기록을 저장할 수 없습니다.")
+
+        val workout = Workout.of(user.uid!!, crew.crewId!!, request.timers)
         val created = workoutRepository.save(workout)
-        return WorkoutCreateDto.Response(created.workoutId)
+        return WorkoutCreateDto.Response(created.workoutId!!)
     }
 
     fun getWorkouts(userId: String?, loginUser: User): WorkoutGetDto.Response {

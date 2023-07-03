@@ -12,7 +12,7 @@ import java.util.*
 @Document(collection = "workout")
 data class Workout(
     @Id
-    var workoutId: String,
+    var workoutId: String? = null,
     var userId: String,
     val currentCrew: String,
     var timers: List<Timer> = listOf(),

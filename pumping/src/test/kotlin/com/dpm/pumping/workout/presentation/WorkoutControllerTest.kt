@@ -71,7 +71,6 @@ class WorkoutControllerTest(
     @Test
     fun createWorkout() {
         val request = Request(
-            currentCrew = "crew01",
             timers = listOf(
                 TimerDto(
                     time = 600,
@@ -104,7 +103,6 @@ class WorkoutControllerTest(
                     preprocessRequest(prettyPrint()),
                     preprocessResponse(prettyPrint()),
                     requestFields(
-                        fieldWithPath("currentCrew").type(JsonFieldType.STRING).description("현재 참여중인 크루 아이디"),
                         fieldWithPath("timers[].time").type(JsonFieldType.NUMBER).description("운동 시간"),
                         fieldWithPath("timers[].heartbeat").type(JsonFieldType.NUMBER).description("심박수"),
                         fieldWithPath("timers[].calories").type(JsonFieldType.NUMBER).description("소모 칼로리"),

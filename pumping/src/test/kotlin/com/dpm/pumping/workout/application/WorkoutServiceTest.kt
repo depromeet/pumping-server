@@ -57,10 +57,9 @@ class WorkoutServiceTest(
         )
 
         val request = WorkoutCreateDto.Request(
-            currentCrew = "crew01",
             timers = listOf(timerDto)
         )
-        val testUser = createUser(currentCrew = null)
+        val testUser = createUser(currentCrew = createCrew("crewO1"))
 
         val response = workoutService.createWorkout(request, testUser)
 
@@ -79,11 +78,11 @@ class WorkoutServiceTest(
         }.hasMessageContaining("아직 크루에 참여하지 않아 운동 기록이 존재하지 않습니다.")
     }
 
-    // @Test
+     @Test
     fun 각_크루별_가입일_이후_최대_7개_운동_데이터만_조회한다() {
         // given
-        val crew1 = createCrew()
-        val crew2 = createCrew()
+        val crew1 = createCrew("crew01")
+        val crew2 = createCrew("crew02")
         val testUser = createUser(currentCrew = crew1)
         val timer = createTimer(WorkoutPart.ARM)
         val crew1FirstDayWorkout = createWorkout(listOf(timer), "2023-06-22T10:00:00", crew1.crewId!!, testUser)
@@ -99,14 +98,14 @@ class WorkoutServiceTest(
         // then
         val result = response.workouts!!.toList()
         assertThat(result.size).isEqualTo(2)
-        assertThat(result[0].workoutDate).isEqualTo(crew1FirstDayWorkout.createDate)
-        assertThat(result[1].workoutDate).isEqualTo(crew1SecondDayWorkout.createDate)
+        assertThat(result[0].workoutDate).isEqualTo(crew1FirstDayWorkout.createDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+        assertThat(result[1].workoutDate).isEqualTo(crew1SecondDayWorkout.createDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
     }
 
     @Test
     fun 하루치_운동_데이터의_누적_값을_반환한다() {
         // given
-        val crew = createCrew()
+        val crew = createCrew("crew01")
         val testUser = createUser(currentCrew = crew)
         val timer1 = createTimer(WorkoutPart.ARM)
         val timer2 = createTimer(WorkoutPart.HIP)
@@ -128,7 +127,7 @@ class WorkoutServiceTest(
     @Test
     fun 하루_동안_가장_많이_운동한_부위를_반환한다() {
         // given
-        val crew = createCrew()
+        val crew = createCrew("crew01")
         val testUser = createUser(currentCrew = crew)
         val timer1 = createTimer(WorkoutPart.ARM)
         val timer2 = createTimer(WorkoutPart.CHEST)
@@ -159,7 +158,6 @@ class WorkoutServiceTest(
 
     private fun createWorkout(timers: List<Timer>, createDate: String, crewId: String, user: User): Workout {
         return Workout(
-            workoutId = "workout01",
             userId = user.uid!!,
             timers = timers,
             createDate = LocalDateTime.parse(createDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME),
@@ -167,9 +165,9 @@ class WorkoutServiceTest(
         )
     }
 
-    private fun createCrew(): Crew {
+    private fun createCrew(id: String): Crew {
         return Crew(
-            crewId = "crew01",
+            crewId = id,
             crewName = "name",
             code = "0248291",
             createDate = "2023-06-22T10:00:00",
