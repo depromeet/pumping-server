@@ -55,4 +55,9 @@ data class User(
     fun isRegistered(): Boolean {
         return (name != null && gender != null && height != null && weight != null && characterType != null)
     }
+
+    fun getCrewName(): String {
+        return currentCrew?.crewName ?: throw IllegalStateException("현재 속한 크루가 없습니다.")
+    }
+
 }
