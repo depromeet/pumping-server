@@ -5,6 +5,7 @@ import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.crew.dto.CreateCrewRequest
 import com.dpm.pumping.crew.dto.CrewResponse
+import com.dpm.pumping.support.Mocking.any
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
@@ -14,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
-import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -187,8 +187,5 @@ class CrewControllerTest (
             }
     }
 
-    fun <T> any(): T {
-        Mockito.any<T>()
-        return null as T
-    }
+
 }
