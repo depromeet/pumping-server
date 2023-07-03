@@ -1,0 +1,21 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= User
+---
+
+== 유저 조회 API
+
+`GET /api/v1/users`
+
+=== Response
+
+include::{snippets}/get-one/http-response.adoc[]
+include::{snippets}/get-one/response-fields.adoc[]
