@@ -4,7 +4,6 @@ package com.dpm.pumping.workout.dto
 class WorkoutCreateDto {
 
     data class Request(
-        val currentCrew: String,
         val timers: List<TimerDto>
     )
 

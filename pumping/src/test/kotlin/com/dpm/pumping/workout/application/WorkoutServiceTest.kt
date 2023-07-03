@@ -57,10 +57,9 @@ class WorkoutServiceTest(
         )
 
         val request = WorkoutCreateDto.Request(
-            currentCrew = "crew01",
             timers = listOf(timerDto)
         )
-        val testUser = createUser(currentCrew = null)
+        val testUser = createUser(currentCrew = createCrew("crewO1"))
 
         val response = workoutService.createWorkout(request, testUser)
 
