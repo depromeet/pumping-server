@@ -16,7 +16,7 @@ class AuthConfig(
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(AuthInterceptor(jwtTokenProvider))
             .addPathPatterns("/**")
-            .excludePathPatterns("/docs/**", "/health")
+            .excludePathPatterns("/docs/**", "/health","/error")
             .excludePathPatterns("/api/v1/oauth2/**","/api/v1/sign-up")
     }
 
