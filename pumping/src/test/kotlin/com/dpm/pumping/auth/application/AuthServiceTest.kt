@@ -58,7 +58,7 @@ class AuthServiceTest @Autowired constructor(
         val response =
             authService.signUp(SignUpRequest("haha", Gender.MALE, "12", "43", CharacterType.A, loginResponse.loginType, loginResponse.oauth2Id))
 
-        assertThat(response.accessToken).isNotNull()
-        assertThat(response.expiredTime).isNotNull()
+        assertThat(response.accessToken).isNotNull
+        assertThat(response.expiredTime).isNotNull
     }
 }
