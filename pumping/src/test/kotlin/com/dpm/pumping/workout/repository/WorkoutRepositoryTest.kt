@@ -39,7 +39,7 @@ class WorkoutRepositoryTest(
         )
 
         val savedRecord = workoutRepository.save(workout)
-        val foundRecord = workoutRepository.findById(savedRecord.workoutId)
+        val foundRecord = workoutRepository.findById(savedRecord.workoutId!!)
 
         assertThat(foundRecord.isPresent).isTrue
         assertThat(foundRecord.get()).isEqualTo(savedRecord)
