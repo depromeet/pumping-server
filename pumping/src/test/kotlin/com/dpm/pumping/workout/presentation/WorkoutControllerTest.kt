@@ -139,7 +139,7 @@ class WorkoutControllerTest(
             )
         )
 
-        given(workoutService.getWorkouts(testUser.uid!!)).willReturn(response)
+        given(workoutService.getWorkouts(any(), any())).willReturn(response)
 
         val result = mockMvc.perform(
             get("/api/v1/workout/{userId}", testUser.uid)

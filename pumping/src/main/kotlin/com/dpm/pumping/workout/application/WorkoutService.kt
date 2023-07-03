@@ -32,10 +32,8 @@ class WorkoutService(
         return WorkoutCreateDto.Response(created.workoutId)
     }
 
-    fun getWorkouts(userId: String): WorkoutGetDto.Response {
-        val user = userRepository.findById(userId)
-            .orElseThrow { throw IllegalArgumentException("${userId}에 해당하는 유저를 찾을 수 없습니다.") }
-
+    fun getWorkouts(userId: String?, loginUser: User): WorkoutGetDto.Response {
+        val user = getUser(userId, loginUser)
         val crew = user.currentCrew
             ?: throw IllegalArgumentException("아직 크루에 참여하지 않아 운동 기록이 존재하지 않습니다.")
 
@@ -49,6 +47,15 @@ class WorkoutService(
             ?.toList()
 
         return WorkoutGetDto.Response(response)
+    }
+
+    private fun getUser(userId: String?, loginUser: User): User {
+        return if (userId === null) {
+            loginUser
+        } else {
+            userRepository.findById(userId)
+                .orElseThrow { throw IllegalArgumentException("${userId}에 해당하는 유저를 찾을 수 없습니다.") }
+        }
     }
 
     private fun getWorkoutByDay(workout: Workout): WorkoutGetDto.WorkoutByDay {

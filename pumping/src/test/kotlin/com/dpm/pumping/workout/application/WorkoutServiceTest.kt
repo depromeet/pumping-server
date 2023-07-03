@@ -75,7 +75,7 @@ class WorkoutServiceTest(
 
         // when + then
         assertThatThrownBy {
-            workoutService.getWorkouts(testUser.uid!!)
+            workoutService.getWorkouts(null, testUser)
         }.hasMessageContaining("아직 크루에 참여하지 않아 운동 기록이 존재하지 않습니다.")
     }
 
@@ -94,7 +94,7 @@ class WorkoutServiceTest(
         given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
         // when
-        val response = workoutService.getWorkouts(testUser.uid!!)
+        val response = workoutService.getWorkouts(null, testUser)
 
         // then
         val result = response.workouts!!.toList()
@@ -116,7 +116,7 @@ class WorkoutServiceTest(
         given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
         // when
-        val result = workoutService.getWorkouts(testUser.uid!!)
+        val result = workoutService.getWorkouts(null, testUser)
 
         // then
         val values = result.workouts!!.toList()
@@ -139,7 +139,7 @@ class WorkoutServiceTest(
         given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
         // when
-        val result = workoutService.getWorkouts(testUser.uid!!)
+        val result = workoutService.getWorkouts(null, testUser)
 
         // then
         val values = result.workouts!!.toList()
