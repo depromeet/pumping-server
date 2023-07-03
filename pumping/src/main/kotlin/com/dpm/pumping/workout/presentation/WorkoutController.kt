@@ -30,7 +30,7 @@ class WorkoutController(
 
     @GetMapping("/{userId}")
     fun getTimers(
-        @PathVariable("userId", required = false) userId: String,
+        @PathVariable("userId", required = false) userId: String?,
         @LoginUser loginUser: User
     ): ResponseEntity<WorkoutGetDto.Response> {
         val response = workoutService.getWorkouts(userId, loginUser)
