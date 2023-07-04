@@ -2,5 +2,6 @@
 
 
 - link:/docs/auth/auth.html[로그인 관련 API]
+- link:/docs/user/user.html[유저 관련 API]
 - link:/docs/crew/crew.html[크루 관련 API]
 - link:/docs/workout/workout.html[운동 관련 API]

@@ -15,6 +15,10 @@ endif::[]
 
 `GET /api/v1/users`
 
+=== Request Header
+
+include::{snippets}/get-one/http-request.adoc[]
+
 === Response
 
 include::{snippets}/get-one/http-response.adoc[]
