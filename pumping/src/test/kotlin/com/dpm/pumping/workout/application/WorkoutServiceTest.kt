@@ -3,6 +3,7 @@ package com.dpm.pumping.workout.application
 import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.crew.Crew
+import com.dpm.pumping.support.Mocking.any
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
@@ -27,9 +28,9 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 @SpringBootTest
-class WorkoutServiceTest(
-    @Autowired private val workoutService: WorkoutService,
-    @Autowired private val workoutRepository: WorkoutRepository
+class WorkoutServiceTest @Autowired constructor(
+    private val workoutService: WorkoutService,
+    private val workoutRepository: WorkoutRepository
 ) {
 
     @MockBean
@@ -187,11 +188,6 @@ class WorkoutServiceTest(
             currentCrew = currentCrew,
             characterType = CharacterType.A
         )
-    }
-
-    fun <T> any(): T {
-        Mockito.any<T>()
-        return null as T
     }
 }
 
