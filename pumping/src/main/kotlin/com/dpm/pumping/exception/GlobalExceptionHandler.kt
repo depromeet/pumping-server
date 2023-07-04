@@ -21,7 +21,7 @@ class GlobalExceptionHandler {
     fun businessExceptionHandler(e: Exception?): ResponseEntity<Any>? {
         val currentRequestAttributes = RequestContextHolder.getRequestAttributes() as? ServletRequestAttributes
         val requestUrl = currentRequestAttributes?.request!!.requestURI
-        log.info(String.format("time:${LocalDateTime.now()},url:${requestUrl},message:${e}"))
+        log.info("time:${LocalDateTime.now()},url:${requestUrl},message:${e}")
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e!!.message)
     }
 }
