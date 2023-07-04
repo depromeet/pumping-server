@@ -32,9 +32,9 @@ import java.util.*
 
 @WebMvcTest(AuthController::class)
 @AutoConfigureRestDocs
-class AuthControllerTest(
-    @Autowired val mockMvc: MockMvc,
-    @Autowired val objectMapper: ObjectMapper,
+class AuthControllerTest @Autowired constructor(
+    private val mockMvc: MockMvc,
+    private val objectMapper: ObjectMapper,
 ) {
     @MockBean
     private lateinit var oAuth2AppleClient: OAuth2AppleClient
