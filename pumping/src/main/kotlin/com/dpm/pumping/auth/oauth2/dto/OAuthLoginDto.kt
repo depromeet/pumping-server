@@ -4,7 +4,6 @@ import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import java.time.LocalDateTime
-import java.util.*
 
 data class AppleLoginRequest(
     val idToken: String

@@ -2,11 +2,9 @@ package com.dpm.pumping.workout.domain.entity
 
 import com.dpm.pumping.workout.domain.WorkoutCategory
 import com.dpm.pumping.workout.dto.WorkoutCreateDto.TimerDto
-import org.springframework.cglib.core.Local
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Document(collection = "workout")
