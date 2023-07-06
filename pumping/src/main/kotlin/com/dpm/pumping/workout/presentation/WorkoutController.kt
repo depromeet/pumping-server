@@ -1,18 +1,13 @@
 package com.dpm.pumping.workout.presentation
 
 import com.dpm.pumping.auth.config.LoginUser
+import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.workout.application.WorkoutService
 import com.dpm.pumping.workout.dto.WorkoutCreateDto
-import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.workout.dto.WorkoutGetDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/workout")

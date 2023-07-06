@@ -1,7 +1,6 @@
 package com.dpm.pumping.auth.application
 
 import com.dpm.pumping.auth.dto.AccessTokenResponse
-import com.dpm.pumping.auth.oauth2.OAuth2AppleClaimsValidator
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.slf4j.LoggerFactory

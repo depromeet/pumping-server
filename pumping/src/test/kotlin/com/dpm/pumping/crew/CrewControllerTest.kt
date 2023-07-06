@@ -33,9 +33,9 @@ import java.util.*
 
 @WebMvcTest(CrewController::class)
 @AutoConfigureRestDocs
-class CrewControllerTest (
-    @Autowired val mockMvc: MockMvc,
-    @Autowired val mapper: ObjectMapper,
+class CrewControllerTest @Autowired constructor(
+    private val mockMvc: MockMvc,
+    private val mapper: ObjectMapper,
 ) {
     @MockBean
     private lateinit var crewService: CrewService
