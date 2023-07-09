@@ -5,12 +5,13 @@ import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.crew.dto.CreateCrewRequest
 import com.dpm.pumping.crew.dto.CrewResponse
+import com.dpm.pumping.crew.dto.GetCrewResponse
+import com.dpm.pumping.crew.dto.GetCrewsResponse
 import com.dpm.pumping.support.Mocking.any
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
-import com.dpm.pumping.workout.dto.WorkoutCreateDto.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -21,14 +22,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
-import org.springframework.restdocs.headers.HeaderDocumentation.*
+import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
+import org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
+import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
+import org.springframework.restdocs.request.RequestDocumentation.pathParameters
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @WebMvcTest(CrewController::class)
@@ -154,18 +162,62 @@ class CrewControllerTest @Autowired constructor(
     }
 
     @Test
-    fun getCrews(){
+    fun leaveCrews() {
+        val crewId = "crewId"
         val code = "123456"
 
-        val crewResponse = CrewResponse(
-            crewId = "crewId",
-            crewName = "new Crew",
-            goalCount = 5,
+        val response = CrewResponse(
+            crewId = crewId,
+            crewName = "leaved crew",
+            goalCount = 0,
             code = code,
             participants = listOf(dummyUser.uid)
         )
 
-        given(crewService.getCrews(dummyUser)).willReturn(any())
+        given(crewService.leaveCrew(any(), any())).willReturn(response)
+
+        val result = mockMvc.perform(
+            post("/api/v1/crews/leave/{crewId}", crewId)
+                .header("Authorization", "Bearer <Access Token>")
+                .accept(MediaType.APPLICATION_JSON)
+        )
+
+        result.andExpect { MockMvcResultMatchers.status().isOk }
+            .andDo (
+                document(
+                    "leave-crew",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    pathParameters(
+                        parameterWithName("crewId").description("나갈 크루 아이디")
+                            .optional()
+                    ),
+                    responseFields(
+                        fieldWithPath("crewId").type(JsonFieldType.STRING).description("크루 아이디"),
+                        fieldWithPath("crewName").type(JsonFieldType.STRING).description("크루 이름"),
+                        fieldWithPath("goalCount").type(JsonFieldType.NUMBER).description("목표 횟수"),
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("크루 코드"),
+                        fieldWithPath("participants").type(JsonFieldType.ARRAY).description("업데이트된 크루 참여자 목록"),
+                    )
+                )
+            )
+
+    }
+
+    @Test
+    fun getCrews(){
+        val code = "123456"
+
+        val crewResponse = GetCrewsResponse(
+            listOf(
+                GetCrewResponse(
+                    crewId = "crew01",
+                    crewName = "name",
+                    createDate = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                )
+        )
+
+        given(crewService.getCrews(dummyUser)).willReturn(crewResponse)
 
 
         mockMvc.get("/api/v1/crews"){
@@ -179,9 +231,11 @@ class CrewControllerTest @Autowired constructor(
                         "get-crews",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-//                        responseFields(
-//                            //TODO: dto 변환 후, 적용
-//                        )
+                        responseFields(
+                            fieldWithPath("crews[].crewId").type(JsonFieldType.STRING).description("크루 아이디"),
+                            fieldWithPath("crews[].crewName").type(JsonFieldType.STRING).description("크루 이름"),
+                            fieldWithPath("crews[].createDate").type(JsonFieldType.STRING).description("크루 생성 날짜"),
+                        )
                     )
                 )
             }

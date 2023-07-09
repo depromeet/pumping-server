@@ -12,3 +12,13 @@ data class CrewResponse(
     val code: String?,
     val participants: List<String?>
 )
+
+data class GetCrewsResponse(
+    val crews: List<GetCrewResponse>
+)
+
+data class GetCrewResponse(
+    val crewId: String?,
+    val crewName: String?,
+    val createDate: String?
+)

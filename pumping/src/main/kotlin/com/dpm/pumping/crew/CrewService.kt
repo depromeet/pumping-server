@@ -2,6 +2,8 @@ package com.dpm.pumping.crew
 
 import com.dpm.pumping.crew.dto.CreateCrewRequest
 import com.dpm.pumping.crew.dto.CrewResponse
+import com.dpm.pumping.crew.dto.GetCrewResponse
+import com.dpm.pumping.crew.dto.GetCrewsResponse
 import com.dpm.pumping.user.domain.User
 import org.springframework.stereotype.Service
 
@@ -79,18 +81,18 @@ class CrewService(
 
     // 내가 참여한 모든 크루 조회 (by userId)
     // 가장 최신 순 정렬 후 반환
-    fun getCrews(user: User): List<Map<String, String?>> {
+    fun getCrews(user: User): GetCrewsResponse {
         val userId = user.uid
         val crews = crewRepository.findAllCrewsByParticipantsContains(userId.toString())
         val sortedCrews = crews.sortedByDescending { it.createDate }
         val result = sortedCrews.map { crew: Crew ->
-            mapOf(
-                "crewName" to crew.crewName,
-                "crewId" to crew.crewId,
-                "createDate" to crew.createDate
+            GetCrewResponse(
+                crewId = crew.crewId,
+                crewName = crew.crewName,
+                createDate = crew.createDate
             )
         }
 
-        return result
+        return GetCrewsResponse(result)
     }
 }

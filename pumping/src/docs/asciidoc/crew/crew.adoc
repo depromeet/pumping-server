@@ -39,3 +39,30 @@ include::{snippets}/join-crew/http-request.adoc[]
 
 include::{snippets}/join-crew/http-response.adoc[]
 include::{snippets}/join-crew/response-fields.adoc[]
+
+== 크루 탈퇴 API
+
+`POST /api/v1/crews/leave/{crewId}`
+
+=== Request
+
+include::{snippets}/leave-crew/http-request.adoc[]
+include::{snippets}/leave-crew/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/leave-crew/http-response.adoc[]
+include::{snippets}/leave-crew/response-fields.adoc[]
+
+== 크루 조회 API
+
+`GET /api/v1/crews`
+
+=== Request
+
+include::{snippets}/get-crews/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/get-crews/http-response.adoc[]
+include::{snippets}/get-crews/response-fields.adoc[]

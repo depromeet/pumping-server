@@ -3,6 +3,7 @@ package com.dpm.pumping.crew
 import com.dpm.pumping.auth.config.LoginUser
 import com.dpm.pumping.crew.dto.CreateCrewRequest
 import com.dpm.pumping.crew.dto.CrewResponse
+import com.dpm.pumping.crew.dto.GetCrewsResponse
 import com.dpm.pumping.user.domain.User
 import io.swagger.annotations.Api
 import org.springframework.http.HttpStatus
@@ -38,7 +39,7 @@ class CrewController(
 
     // 참여한 크루 조회 (by userId)
     @GetMapping
-    fun getCrews(@LoginUser user: User): ResponseEntity<List<Map<String, String?>>> {
+    fun getCrews(@LoginUser user: User): ResponseEntity<GetCrewsResponse> {
         val response = crewService.getCrews(user)
         return ResponseEntity(response, HttpStatus.OK)
     }
