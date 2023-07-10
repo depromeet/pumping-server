@@ -10,6 +10,7 @@ import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
 import com.dpm.pumping.workout.application.WorkoutService
 import com.dpm.pumping.workout.domain.WorkoutCategory
+import com.dpm.pumping.workout.domain.WorkoutPart
 import com.dpm.pumping.workout.dto.WorkoutCreateDto.*
 import com.dpm.pumping.workout.dto.WorkoutGetDto
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -131,8 +132,8 @@ class WorkoutControllerTest(
                     totalTime = 60,
                     averageHeartbeat = 120,
                     totalCalories = 500,
-                    maxWorkoutPart = WorkoutCategory.UP.name,
-                    maxWorkoutPartTime = 100
+                    maxWorkoutCategory = WorkoutCategory.UP.name,
+                    maxWorkoutCategoryTime = 100
                 )
             )
         )
@@ -154,13 +155,13 @@ class WorkoutControllerTest(
                     pathParameters(
                         parameterWithName("userId").description("친구 아이디: 본인 운동 데이터 조회에서는 필요 X").optional()
                     ),
-                    responseFields(
+                        responseFields(
                         fieldWithPath("workouts[].workoutDate").type(JsonFieldType.STRING).description("운동 날짜"),
                         fieldWithPath("workouts[].totalTime").type(JsonFieldType.NUMBER).description("하루 동안 누적 운동 시간"),
                         fieldWithPath("workouts[].averageHeartbeat").type(JsonFieldType.NUMBER).description("하루 동안 평균 심박수"),
                         fieldWithPath("workouts[].totalCalories").type(JsonFieldType.NUMBER).description("하루 동안 누적 소모 칼로리"),
-                        fieldWithPath("workouts[].maxWorkoutPart").type(JsonFieldType.STRING).description("하루 동안 최대 운동한 부위"),
-                        fieldWithPath("workouts[].maxWorkoutPartTime").type(JsonFieldType.NUMBER).description("하루 동안 최대 운동한 부위 시간")
+                        fieldWithPath("workouts[].maxWorkoutCategory").type(JsonFieldType.STRING).description("하루 동안 최대 운동한 부위: WHOLE(전신) / UP(상체) / DOWN(하체) "),
+                        fieldWithPath("workouts[].maxWorkoutCategoryTime").type(JsonFieldType.NUMBER).description("하루 동안 최대 운동한 부위 시간")
                     )
                 )
             )

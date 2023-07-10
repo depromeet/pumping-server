@@ -19,7 +19,6 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
-import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -154,8 +153,8 @@ class WorkoutServiceTest @Autowired constructor(
 
         // then
         val values = result.workouts!!.toList()
-        assertThat(values[0].maxWorkoutPart).isEqualTo(WorkoutCategory.UP.name)
-        assertThat(values[0].maxWorkoutPartTime).isEqualTo(120)
+        assertThat(values[0].maxWorkoutCategory).isEqualTo(WorkoutCategory.UP.name)
+        assertThat(values[0].maxWorkoutCategoryTime).isEqualTo(120)
     }
 
     private fun createTimer(workoutPart: WorkoutPart): Timer {

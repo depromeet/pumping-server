@@ -69,8 +69,8 @@ class WorkoutService(
             totalTime = workout.getTotalTime(),
             averageHeartbeat = workout.getAverageHeartbeat(),
             totalCalories = workout.getTotalCalories(),
-            maxWorkoutPart = maxWorkoutData.first.name,
-            maxWorkoutPartTime = maxWorkoutData.second
+            maxWorkoutCategory = maxWorkoutData.first.name,
+            maxWorkoutCategoryTime = maxWorkoutData.second
         )
     }
 }
