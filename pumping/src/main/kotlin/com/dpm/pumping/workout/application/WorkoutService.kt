@@ -1,5 +1,6 @@
 package com.dpm.pumping.workout.application
 
+import com.dpm.pumping.crew.Crew
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
 import com.dpm.pumping.workout.domain.entity.Workout
@@ -9,7 +10,6 @@ import com.dpm.pumping.workout.repository.WorkoutRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Service
 @Transactional(readOnly = true)
@@ -20,7 +20,6 @@ class WorkoutService(
 
     companion object {
         private const val DEFAULT_CREW_DURATION = 7L
-        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
     }
 
     @Transactional
@@ -41,12 +40,12 @@ class WorkoutService(
             ?: throw IllegalArgumentException("아직 크루에 참여하지 않아 운동 기록이 존재하지 않습니다.")
 
         val startDate = LocalDateTime.parse(crew.createDate).minusDays(1L)
-        val endDate = startDate.plusDays(DEFAULT_CREW_DURATION)
+        val endDate = startDate.plusDays(DEFAULT_CREW_DURATION).plusDays(1L)
         val workoutDatas = workoutRepository
             .findAllByCurrentCrewAndUserIdAndCreateDateBetween(crew.crewId!!, user.uid!!, startDate, endDate)
 
         val response = workoutDatas
-            ?.map { workout -> getWorkoutByDay(workout) }
+            ?.map { workout -> getWorkoutByDay(workout, crew) }
             ?.toList()
 
         return WorkoutGetDto.Response(response)
@@ -61,11 +60,12 @@ class WorkoutService(
         }
     }
 
-    private fun getWorkoutByDay(workout: Workout): WorkoutGetDto.WorkoutByDay {
+    private fun getWorkoutByDay(workout: Workout, crew: Crew): WorkoutGetDto.WorkoutByDay {
         val maxWorkoutData = workout.getMaxWorkoutPart()
+        val workoutCreatedAt = workout.createDate.toLocalDate()
 
         return WorkoutGetDto.WorkoutByDay(
-            workoutDate = workout.createDate.format(dateTimeFormatter),
+            workoutDate = crew.calculateDays(workoutCreatedAt).toString(),
             totalTime = workout.getTotalTime(),
             averageHeartbeat = workout.getAverageHeartbeat(),
             totalCalories = workout.getTotalCalories(),
