@@ -16,7 +16,7 @@ class Timer(
         fun from(request: WorkoutCreateDto.TimerDto): Timer {
             return Timer(
                 timerId = UUID.randomUUID().toString(),
-                workoutPart = WorkoutPart.from(request.workoutPart).toString(),
+                workoutPart = WorkoutPart.from(request.workoutPart).name,
                 time = request.time.toString(),
                 calories = request.calories.toString(),
                 heartbeat = request.heartbeat.toString(),
