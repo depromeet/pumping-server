@@ -88,9 +88,20 @@ class WorkoutServiceTest @Autowired constructor(
         val timer = createTimer(WorkoutPart.ARM)
         val crew1FirstDayWorkout = createWorkout(listOf(timer), "2023-06-22T10:00:00", crew1.crewId!!, testUser)
         val crew1SecondDayWorkout = createWorkout(listOf(timer), "2023-06-23T10:00:00", crew1.crewId!!, testUser)
+        val crew1ThirdDayWorkout = createWorkout(listOf(timer), "2023-06-24T10:00:00", crew1.crewId!!, testUser)
+        val crew1FourthDayWorkout = createWorkout(listOf(timer), "2023-06-25T10:00:00", crew1.crewId!!, testUser)
+        val crew1FifthDayWorkout = createWorkout(listOf(timer), "2023-06-26T10:00:00", crew1.crewId!!, testUser)
+        val crew1SixDayWorkout = createWorkout(listOf(timer), "2023-06-27T10:00:00", crew1.crewId!!, testUser)
+        val crew1SevenDayWorkout = createWorkout(listOf(timer), "2023-06-28T10:00:00", crew1.crewId!!, testUser)
+        val crew1EightDayWorkout = createWorkout(listOf(timer), "2023-06-29T10:00:00", crew1.crewId!!, testUser)
+
         val crew2FirstDayWorkout = createWorkout(listOf(timer), "2023-06-23T10:00:00", crew2.crewId!!, testUser)
 
-        workoutRepository.saveAll(listOf(crew1FirstDayWorkout, crew1SecondDayWorkout, crew2FirstDayWorkout))
+        workoutRepository.saveAll(listOf(
+            crew1FirstDayWorkout, crew1SecondDayWorkout, crew2FirstDayWorkout,
+            crew1ThirdDayWorkout, crew1FourthDayWorkout, crew1FifthDayWorkout,
+            crew1SixDayWorkout, crew1SevenDayWorkout, crew1EightDayWorkout
+        ))
         given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
         // when
@@ -98,9 +109,9 @@ class WorkoutServiceTest @Autowired constructor(
 
         // then
         val result = response.workouts!!.toList()
-        assertThat(result.size).isEqualTo(2)
-        assertThat(result[0].workoutDate).isEqualTo(crew1FirstDayWorkout.createDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-        assertThat(result[1].workoutDate).isEqualTo(crew1SecondDayWorkout.createDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+        assertThat(result.size).isEqualTo(7)
+        assertThat(result[0].workoutDate).isEqualTo("1")
+        assertThat(result[1].workoutDate).isEqualTo("2")
     }
 
     @Test
