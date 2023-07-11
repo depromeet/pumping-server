@@ -46,4 +46,37 @@ class WorkoutRepositoryTest(
         assertThat(foundRecord.isPresent).isTrue
         assertThat(foundRecord.get()).isEqualTo(savedRecord)
     }
+
+    @Test
+    fun deleteAllByUserId(){
+        val timer = Timer(
+            timerId = "timer01",
+            workoutPart = WorkoutPart.CHEST.toString(),
+            time = "60",
+            calories = "100",
+            heartbeat = "80"
+        )
+
+        val workout = Workout(
+            workoutId = "workout01",
+            userId = "user01",
+            timers = listOf(timer),
+            createDate = LocalDateTime.now(),
+            currentCrew = "crew01"
+        )
+
+        val workout2 = Workout(
+            workoutId = "workout02",
+            userId = "user01",
+            timers = listOf(timer),
+            createDate = LocalDateTime.now(),
+            currentCrew = "crew01"
+        )
+
+        workoutRepository.saveAll(listOf(workout, workout2))
+
+        workoutRepository.deleteAllByUserId("user01")
+
+        assertThat(workoutRepository.findAll()).isEmpty()
+    }
 }

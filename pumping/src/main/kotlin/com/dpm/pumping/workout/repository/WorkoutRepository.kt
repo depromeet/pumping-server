@@ -9,4 +9,6 @@ interface WorkoutRepository : MongoRepository<Workout, String> {
     fun findAllByCurrentCrewAndUserIdAndCreateDateBetween(
         crewId: String, userId: String, startDate: LocalDateTime, endDate: LocalDateTime
     ): List<Workout>?
+
+    fun deleteAllByUserId(userId: String)
 }
