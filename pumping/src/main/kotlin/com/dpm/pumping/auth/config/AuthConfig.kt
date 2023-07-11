@@ -16,8 +16,10 @@ class AuthConfig(
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(AuthInterceptor(jwtTokenProvider))
             .addPathPatterns("/**")
-            .excludePathPatterns("/docs/**", "/health","/error")
-            .excludePathPatterns("/api/v1/oauth2/**","/api/v1/sign-up")
+            .excludePathPatterns("/docs/**", "/health", "/error")
+            .excludePathPatterns("/api/v1/oauth2/**", "/api/v1/sign-up")
+            // 빠른 기능 개발을 위한 임시 조치
+            .excludePathPatterns("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**")
     }
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
