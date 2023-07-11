@@ -3,7 +3,6 @@ on:
     push:
         branches:
             - develop
-            - feature/84
             
 jobs:
     ### Deprecate Deploy to NCP
