@@ -1,15 +1,18 @@
 server:
     port: 8080
+
 spring:
     data:
         mongodb:
-            uri: mongodb://127.0.0.1:27017/test
+            uri: mongodb://localhost:27017/test
+
 security:
     jwt:
         access:
-            expire-length: 1000
+            expire-length: 604800000
             secret-key: secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet132secretk12342secrtet1
+
 oauth2:
     apple:
-        iss: iss
-        client-id: client-id
+        iss: https://appleid.apple.com
+        client-id: com.depromeet.pumping
