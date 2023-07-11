@@ -11,7 +11,7 @@ class WorkoutGetDto {
         val totalTime: Int,
         val averageHeartbeat: Int,
         val totalCalories: Int,
-        val maxWorkoutPart: String,
-        val maxWorkoutPartTime: Int
+        val maxWorkoutCategory: String,
+        val maxWorkoutCategoryTime: Int
     )
 }

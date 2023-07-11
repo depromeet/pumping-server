@@ -11,7 +11,7 @@ class WorkoutSet(
     companion object {
         fun from(request: WorkoutCreateDto.WorkoutSetDto): WorkoutSet {
             return WorkoutSet(
-                machineType = MachineType.from(request.machine).toString(),
+                machineType = MachineType.from(request.machine).name,
                 kg = request.kg.toString(),
                 sets = request.sets.toString()
             )
