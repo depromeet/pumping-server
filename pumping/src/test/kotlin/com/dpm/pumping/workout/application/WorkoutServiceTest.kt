@@ -22,11 +22,13 @@ import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 @SpringBootTest
+@ActiveProfiles("test")
 class WorkoutServiceTest @Autowired constructor(
     private val workoutService: WorkoutService,
     private val workoutRepository: WorkoutRepository

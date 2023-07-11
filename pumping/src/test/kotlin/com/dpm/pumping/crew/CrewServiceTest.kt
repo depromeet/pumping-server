@@ -6,15 +6,16 @@ import com.dpm.pumping.crew.dto.CreateCrewRequest
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
+@ActiveProfiles("test")
 class CrewServiceTest @Autowired constructor(
     private val crewRepository: CrewRepository,
     private val crewService: CrewService,
