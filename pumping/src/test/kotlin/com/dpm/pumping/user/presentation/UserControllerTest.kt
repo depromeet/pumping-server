@@ -7,6 +7,7 @@ import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.auth.oauth2.OAuth2AppleClient
 import com.dpm.pumping.crew.Crew
 import com.dpm.pumping.support.Mocking.any
+import com.dpm.pumping.user.application.UserService
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
@@ -22,11 +23,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.restdocs.headers.HeaderDocumentation
+import org.springframework.restdocs.headers.HeaderDocumentation.*
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*
 import org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import java.util.*
 
@@ -41,6 +45,10 @@ class UserControllerTest(
 
     @MockBean
     private lateinit var authService: AuthService
+
+
+    @MockBean
+    private lateinit var userService: UserService
 
     @MockBean
     private lateinit var jwtTokenProvider: JwtTokenProvider
@@ -93,6 +101,27 @@ class UserControllerTest(
                             fieldWithPath("currentCrew").type(JsonFieldType.STRING)
                                 .description("유저가 현재 속한 크루 이름"),
                         )
+                    )
+                )
+            }
+    }
+
+    @Test
+    fun delete(){
+
+        mockMvc.delete("/api/v1/users") {
+            header(HttpHeaders.AUTHORIZATION, "Bearer <Access Token>")
+            contentType = MediaType.APPLICATION_JSON
+        }
+            .andExpect { status { isNoContent() } }
+            .andDo {
+                handle(
+                    document(
+                        "delete",
+                        preprocessRequest(prettyPrint()),
+                        requestHeaders(
+                            headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
                     )
                 )
             }
