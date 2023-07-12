@@ -2,15 +2,15 @@ package com.dpm.pumping.workout.application
 
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
-import com.dpm.pumping.workout.application.WorkoutStorage.*
+import com.dpm.pumping.workout.application.WorkoutStorage.WorkoutByDay
 import com.dpm.pumping.workout.domain.entity.Workout
 import com.dpm.pumping.workout.dto.WorkoutCreateDto
 import com.dpm.pumping.workout.dto.WorkoutGetDto
 import com.dpm.pumping.workout.repository.WorkoutRepository
+import com.dpm.pumping.workout.util.CalenderUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Service
 @Transactional(readOnly = true)
@@ -36,7 +36,7 @@ class WorkoutService(
         val crew = user.currentCrew
             ?: throw IllegalArgumentException("아직 크루에 참여하지 않아 운동 기록이 존재하지 않습니다.")
 
-        val startDate = LocalDateTime.parse(crew.createDate)
+        val startDate = crew.getStartDate()
         val endDate = startDate.plusDays(WorkoutStorage.DEFAULT_SIZE)
         val workoutDatas = workoutRepository
             .findAllByCurrentCrewAndUserIdAndCreateDateBetween(crew.crewId!!, user.uid!!, startDate.minusDays(1), endDate)
@@ -61,8 +61,8 @@ class WorkoutService(
 
     private fun getWorkoutDto(storage: Map<LocalDate, WorkoutByDay?>): List<WorkoutGetDto.WorkoutResponse> {
         return storage.map { (key, value) ->
-            val dayOfWeek = key.dayOfWeek
-            WorkoutGetDto.WorkoutResponse(dayOfWeek.value.toString(), value)
+            val day = CalenderUtils.getDayOfWeek(key)
+            WorkoutGetDto.WorkoutResponse(day.toString(), value)
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.dpm.pumping.crew
 
+import com.dpm.pumping.workout.application.WorkoutStorage
+import com.dpm.pumping.workout.util.CalenderUtils
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -16,6 +18,7 @@ data class Crew(
     val goalCount: Int?,
     val participants: List<String?>
 ){
+
     companion object {
         fun create(name: String, goalCount: Int, userId: String): Crew {
             return Crew(
@@ -31,6 +34,12 @@ data class Crew(
         private fun generateCrewCode(): String {
             return (1..999999).random().toString().padStart(6, '0')
         }
+    }
+
+    fun getStartDate(): LocalDateTime {
+        val startDate = LocalDateTime.parse(createDate!!)
+        val week = CalenderUtils.getWeek(startDate, LocalDateTime.now())
+        return startDate.plusDays((week - 1) * WorkoutStorage.DEFAULT_SIZE)
     }
 }
 
