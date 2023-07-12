@@ -3,6 +3,7 @@ package com.dpm.pumping.auth.application
 import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.auth.dto.AccessTokenResponse
+import com.dpm.pumping.auth.dto.SignUpResponse
 import com.dpm.pumping.auth.oauth2.dto.OAuth2LoginResponse
 import com.dpm.pumping.auth.oauth2.dto.SignUpRequest
 import com.dpm.pumping.user.domain.User
@@ -35,7 +36,7 @@ class AuthService(
         return OAuth2LoginResponse(null, null, user.platform.loginType, user.platform.oauth2Id)
     }
 
-    fun signUp(request: SignUpRequest): AccessTokenResponse {
+    fun signUp(request: SignUpRequest): SignUpResponse {
 
         val platform = LoginPlatform(request.loginType, request.oauth2Id)
         val user = userRepository.findByPlatform(platform) ?: throw IllegalArgumentException(
@@ -51,6 +52,7 @@ class AuthService(
         )
 
         val updatedUser = userRepository.save(user)
-        return jwtTokenProvider.generateAccessToken(updatedUser.uid)
+        val accessToken = jwtTokenProvider.generateAccessToken(updatedUser.uid)
+        return SignUpResponse(accessToken, updatedUser.uid!!)
     }
 }

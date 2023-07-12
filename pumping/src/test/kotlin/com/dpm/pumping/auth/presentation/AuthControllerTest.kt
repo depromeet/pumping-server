@@ -4,6 +4,7 @@ import com.dpm.pumping.auth.application.AuthService
 import com.dpm.pumping.auth.application.JwtTokenProvider
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.auth.dto.AccessTokenResponse
+import com.dpm.pumping.auth.dto.SignUpResponse
 import com.dpm.pumping.auth.oauth2.OAuth2AppleClient
 import com.dpm.pumping.auth.oauth2.dto.AppleLoginRequest
 import com.dpm.pumping.auth.oauth2.dto.OAuth2LoginResponse
@@ -93,7 +94,7 @@ class AuthControllerTest @Autowired constructor(
     @Test
     fun signUp() {
         val request = SignUpRequest("name", Gender.MALE, "180.2", "90.4", CharacterType.A, LoginType.APPLE, "id")
-        val response = AccessTokenResponse("accessToken", LocalDateTime.now().plusDays(5))
+        val response = SignUpResponse("accessToken", LocalDateTime.now().plusDays(5), "userId")
         given(authService.signUp(request)).willReturn(response)
 
         mockMvc.post("/api/v1/sign-up") {
@@ -125,6 +126,8 @@ class AuthControllerTest @Autowired constructor(
                                 .optional(),
                             fieldWithPath("expiredTime")
                                 .description("accessToken만료일, 최초 로그인이면 null").optional(),
+                            fieldWithPath("userId")
+                                .description("user의 id"),
                         )
                     )
                 )
