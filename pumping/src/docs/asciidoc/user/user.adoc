@@ -23,3 +23,19 @@ include::{snippets}/get-one/http-request.adoc[]
 
 include::{snippets}/get-one/http-response.adoc[]
 include::{snippets}/get-one/response-fields.adoc[]
+
+
+== 유저 탈퇴 API
+
+`DELETE /api/v1/users`
+
+=== Request Header
+
+include::{snippets}/delete/http-request.adoc[]
+include::{snippets}/delete/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/delete/http-response.adoc[]
+
+

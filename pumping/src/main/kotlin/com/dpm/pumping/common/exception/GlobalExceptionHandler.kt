@@ -1,4 +1,4 @@
-package com.dpm.pumping.exception
+package com.dpm.pumping.common.exception
 
 import io.jsonwebtoken.JwtException
 import org.slf4j.LoggerFactory

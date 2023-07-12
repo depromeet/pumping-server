@@ -24,7 +24,7 @@ class AuthController(
     }
 
     @PostMapping("/sign-up")
-    fun signUp(@RequestBody request: SignUpRequest): ResponseEntity<AccessTokenResponse> {
+    fun signUp(@RequestBody request: SignUpRequest): ResponseEntity<SignUpResponse> {
         return ResponseEntity.ok(authService.signUp(request))
     }
 }
