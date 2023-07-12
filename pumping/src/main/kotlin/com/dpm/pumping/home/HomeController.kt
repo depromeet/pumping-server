@@ -64,13 +64,28 @@ class HomeController(private val mongoTemplate: MongoTemplate) {
             )
         }
 
+        // 참여자 리스트 중에서 요청받은 userId를 가장 앞으로 옮긴다.
+        val participantsList = crewData.participants.toMutableList()
+        if (participantsList.contains(userId)) {
+            participantsList.remove(userId)
+        }
+        participantsList.add(0, userId)
+
+        // 참여자 리스트 중에서 요청받은 운동데이터를 가장 앞으로 옮긴다.
+        val userIndex = memberInfoList.indexOfFirst { it.userId == userId }
+        if (userIndex != -1) {
+            val userWorkoutData = memberInfoList[userIndex]
+            memberInfoList.removeAt(userIndex)
+            memberInfoList.add(0, userWorkoutData)
+        }
+
         return HomeDataResponse(
             crewId = crewData.crewId,
             crewName = crewData.crewName,
             code = crewData.code,
             createDate = crewData.createDate,
             goalCount = crewData.goalCount,
-            participants = crewData.participants,
+            participants = participantsList,
             memberInfo = memberInfoList
         )
     }
