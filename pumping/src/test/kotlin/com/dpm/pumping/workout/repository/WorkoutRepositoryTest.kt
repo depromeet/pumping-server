@@ -48,7 +48,7 @@ class WorkoutRepositoryTest(
     }
 
     @Test
-    fun deleteAllByUserId(){
+    fun deleteAllByUserId() {
         val timer = Timer(
             timerId = "timer01",
             workoutPart = WorkoutPart.CHEST.toString(),

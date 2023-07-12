@@ -31,6 +31,7 @@ import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 import org.springframework.restdocs.request.RequestDocumentation.pathParameters
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
@@ -41,6 +42,7 @@ import java.util.*
 
 @WebMvcTest(CrewController::class)
 @AutoConfigureRestDocs
+@ActiveProfiles("test")
 class CrewControllerTest @Autowired constructor(
     private val mockMvc: MockMvc,
     private val mapper: ObjectMapper,

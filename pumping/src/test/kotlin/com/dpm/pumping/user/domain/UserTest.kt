@@ -5,8 +5,6 @@ import com.dpm.pumping.auth.domain.LoginType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-
 class UserTest {
 
     @Test

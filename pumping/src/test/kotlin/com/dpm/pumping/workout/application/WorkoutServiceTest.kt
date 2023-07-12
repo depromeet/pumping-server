@@ -22,13 +22,8 @@ import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.test.context.ActiveProfiles
-import java.time.Clock
-import java.time.Instant
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.*
 import java.util.*
 
@@ -45,7 +40,7 @@ class WorkoutServiceTest @Autowired constructor(
     private val currentTime = LocalDateTime.now()
 
     @BeforeEach
-    fun init(){
+    fun init() {
         workoutRepository.deleteAll()
     }
 
@@ -96,14 +91,14 @@ class WorkoutServiceTest @Autowired constructor(
         val testUser = createUser(currentCrew = crew1)
         val timer = createTimer(WorkoutPart.ARM)
 
-        for (i in 2 .. 8) {
+        for (i in 2..8) {
             val createdDate = currentTime.plusDays(i.toLong())
             val entity = createWorkout(listOf(timer), createdDate, crew1.crewId!!, testUser)
             workoutRepository.save(entity)
         }
 
         val crew2FirstDayWorkout = createWorkout(listOf(timer), crew2StartDate, crew2.crewId!!, testUser)
-         workoutRepository.save(crew2FirstDayWorkout)
+        workoutRepository.save(crew2FirstDayWorkout)
 
         given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
@@ -170,13 +165,13 @@ class WorkoutServiceTest @Autowired constructor(
         val testUser = createUser(currentCrew = crew1)
         val timer = createTimer(WorkoutPart.ARM)
 
-        for (i in 2 .. 6) {
+        for (i in 2..6) {
             val createdDate = startDate.plusDays(i.toLong())
             val entity = createWorkout(listOf(timer), createdDate, crew1.crewId!!, testUser)
             workoutRepository.save(entity)
         }
 
-        for (i in 10 .. 12) {
+        for (i in 10..12) {
             val createdDate = startDate.plusDays(i.toLong())
             val entity = createWorkout(listOf(timer), createdDate, crew1.crewId!!, testUser)
             workoutRepository.save(entity)

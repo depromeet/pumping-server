@@ -8,22 +8,17 @@ import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
-import com.dpm.pumping.workout.application.WorkoutService
-import com.dpm.pumping.workout.application.WorkoutServiceTest
-import com.dpm.pumping.workout.domain.entity.Workout
-import com.dpm.pumping.workout.dto.WorkoutCreateDto
 import com.dpm.pumping.workout.repository.WorkoutRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.transaction.TestTransaction
-import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
+import org.springframework.test.context.ActiveProfiles
 
 
 @SpringBootTest
+@ActiveProfiles("test")
 class UserServiceTest @Autowired constructor(
     private val userService: UserService,
     private val crewRepository: CrewRepository,

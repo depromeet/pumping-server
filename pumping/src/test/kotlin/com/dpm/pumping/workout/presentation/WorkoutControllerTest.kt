@@ -31,6 +31,7 @@ import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 import org.springframework.restdocs.request.RequestDocumentation.pathParameters
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
@@ -38,6 +39,7 @@ import java.util.*
 
 @WebMvcTest(WorkoutController::class)
 @AutoConfigureRestDocs
+@ActiveProfiles("test")
 class WorkoutControllerTest(
     @Autowired val mockMvc: MockMvc,
     @Autowired val mapper: ObjectMapper
@@ -99,7 +101,7 @@ class WorkoutControllerTest(
         )
 
         result.andExpect { status().isOk }
-            .andDo (
+            .andDo(
                 document(
                     "create-workout",
                     preprocessRequest(prettyPrint()),
@@ -111,7 +113,8 @@ class WorkoutControllerTest(
                         fieldWithPath("timers[].workoutPart").type(JsonFieldType.STRING)
                             .description("운동 부위 : AEROBIC, SHOULDER, CHEST, ARM, BACK, HIP, LEG"),
                         fieldWithPath("timers[].workoutSets[].machine").type(JsonFieldType.STRING)
-                            .description("운동 기구 : SP, SLL, DSP, AHP, CP, MP, MF, BP, SIB, DK, BK, KK, AM, MK, LD, LOP, SD, BR, HA, HS, STD, LE, LGP, LK, DL, SQ").optional(),
+                            .description("운동 기구 : SP, SLL, DSP, AHP, CP, MP, MF, BP, SIB, DK, BK, KK, AM, MK, LD, LOP, SD, BR, HA, HS, STD, LE, LGP, LK, DL, SQ")
+                            .optional(),
                         fieldWithPath("timers[].workoutSets[].kg").type(JsonFieldType.NUMBER).description("무게")
                             .optional(),
                         fieldWithPath("timers[].workoutSets[].sets").type(JsonFieldType.NUMBER).description("세트")
@@ -151,7 +154,7 @@ class WorkoutControllerTest(
         )
 
         result.andExpect { status().isOk }
-            .andDo (
+            .andDo(
                 document(
                     "get-workouts",
                     preprocessRequest(prettyPrint()),
@@ -160,13 +163,19 @@ class WorkoutControllerTest(
                         parameterWithName("userId").description("친구 아이디: 본인 운동 데이터 조회에서는 필요 X").optional()
                     ),
                     responseFields(
-                        fieldWithPath("workouts[].dayOfWeek").type(JsonFieldType.STRING).description("운동 요일 (월부터 1, 일요일은 7)"),
+                        fieldWithPath("workouts[].dayOfWeek").type(JsonFieldType.STRING)
+                            .description("운동 요일 (월부터 1, 일요일은 7)"),
                         fieldWithPath("workouts[].workout.workoutDate").type(JsonFieldType.STRING).description("운동 날짜"),
-                        fieldWithPath("workouts[].workout.totalTime").type(JsonFieldType.NUMBER).description("하루 동안 누적 운동 시간"),
-                        fieldWithPath("workouts[].workout.averageHeartbeat").type(JsonFieldType.NUMBER).description("하루 동안 평균 심박수"),
-                        fieldWithPath("workouts[].workout.totalCalories").type(JsonFieldType.NUMBER).description("하루 동안 누적 소모 칼로리"),
-                        fieldWithPath("workouts[].workout.maxWorkoutCategory").type(JsonFieldType.STRING).description("하루 동안 최대 운동한 부위: WHOLE(전신) / UP(상체) / DOWN(하체) "),
-                        fieldWithPath("workouts[].workout.maxWorkoutCategoryTime").type(JsonFieldType.NUMBER).description("하루 동안 최대 운동한 부위 시간")
+                        fieldWithPath("workouts[].workout.totalTime").type(JsonFieldType.NUMBER)
+                            .description("하루 동안 누적 운동 시간"),
+                        fieldWithPath("workouts[].workout.averageHeartbeat").type(JsonFieldType.NUMBER)
+                            .description("하루 동안 평균 심박수"),
+                        fieldWithPath("workouts[].workout.totalCalories").type(JsonFieldType.NUMBER)
+                            .description("하루 동안 누적 소모 칼로리"),
+                        fieldWithPath("workouts[].workout.maxWorkoutCategory").type(JsonFieldType.STRING)
+                            .description("하루 동안 최대 운동한 부위: WHOLE(전신) / UP(상체) / DOWN(하체) "),
+                        fieldWithPath("workouts[].workout.maxWorkoutCategoryTime").type(JsonFieldType.NUMBER)
+                            .description("하루 동안 최대 운동한 부위 시간")
                     )
                 )
             )
