@@ -17,7 +17,7 @@ data class Crew(
     var createDate: String?,
     var goalCount: Int?,
     var participants: List<String?>
-){
+) {
 
     companion object {
         fun create(name: String, goalCount: Int, userId: String): Crew {

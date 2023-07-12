@@ -89,6 +89,7 @@ class CrewService(
             GetCrewResponse(
                 crewId = crew.crewId,
                 crewName = crew.crewName,
+                code = crew.code,
                 createDate = crew.createDate
             )
         }
