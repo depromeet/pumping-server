@@ -9,6 +9,7 @@ import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
 import com.dpm.pumping.workout.application.WorkoutService
+import com.dpm.pumping.workout.application.WorkoutStorage
 import com.dpm.pumping.workout.domain.WorkoutCategory
 import com.dpm.pumping.workout.domain.WorkoutPart
 import com.dpm.pumping.workout.dto.WorkoutCreateDto.*
@@ -127,13 +128,16 @@ class WorkoutControllerTest(
     fun getWorkouts() {
         val response = WorkoutGetDto.Response(
             listOf(
-                WorkoutGetDto.WorkoutByDay(
-                    workoutDate = "2023-06-22T10:00:00",
-                    totalTime = 60,
-                    averageHeartbeat = 120,
-                    totalCalories = 500,
-                    maxWorkoutCategory = WorkoutCategory.UP.name,
-                    maxWorkoutCategoryTime = 100
+                WorkoutGetDto.WorkoutResponse(
+                    dayOfWeek = "1",
+                    workout = WorkoutStorage.WorkoutByDay(
+                        workoutDate = "2023-06-22T10:00:00",
+                        totalTime = 60,
+                        averageHeartbeat = 120,
+                        totalCalories = 500,
+                        maxWorkoutCategory = WorkoutCategory.UP.name,
+                        maxWorkoutCategoryTime = 100
+                    )
                 )
             )
         )
@@ -155,13 +159,14 @@ class WorkoutControllerTest(
                     pathParameters(
                         parameterWithName("userId").description("친구 아이디: 본인 운동 데이터 조회에서는 필요 X").optional()
                     ),
-                        responseFields(
-                        fieldWithPath("workouts[].workoutDate").type(JsonFieldType.STRING).description("운동 날짜"),
-                        fieldWithPath("workouts[].totalTime").type(JsonFieldType.NUMBER).description("하루 동안 누적 운동 시간"),
-                        fieldWithPath("workouts[].averageHeartbeat").type(JsonFieldType.NUMBER).description("하루 동안 평균 심박수"),
-                        fieldWithPath("workouts[].totalCalories").type(JsonFieldType.NUMBER).description("하루 동안 누적 소모 칼로리"),
-                        fieldWithPath("workouts[].maxWorkoutCategory").type(JsonFieldType.STRING).description("하루 동안 최대 운동한 부위: WHOLE(전신) / UP(상체) / DOWN(하체) "),
-                        fieldWithPath("workouts[].maxWorkoutCategoryTime").type(JsonFieldType.NUMBER).description("하루 동안 최대 운동한 부위 시간")
+                    responseFields(
+                        fieldWithPath("workouts[].dayOfWeek").type(JsonFieldType.STRING).description("운동 요일 (월부터 1, 일요일은 7)"),
+                        fieldWithPath("workouts[].workout.workoutDate").type(JsonFieldType.STRING).description("운동 날짜"),
+                        fieldWithPath("workouts[].workout.totalTime").type(JsonFieldType.NUMBER).description("하루 동안 누적 운동 시간"),
+                        fieldWithPath("workouts[].workout.averageHeartbeat").type(JsonFieldType.NUMBER).description("하루 동안 평균 심박수"),
+                        fieldWithPath("workouts[].workout.totalCalories").type(JsonFieldType.NUMBER).description("하루 동안 누적 소모 칼로리"),
+                        fieldWithPath("workouts[].workout.maxWorkoutCategory").type(JsonFieldType.STRING).description("하루 동안 최대 운동한 부위: WHOLE(전신) / UP(상체) / DOWN(하체) "),
+                        fieldWithPath("workouts[].workout.maxWorkoutCategoryTime").type(JsonFieldType.NUMBER).description("하루 동안 최대 운동한 부위 시간")
                     )
                 )
             )

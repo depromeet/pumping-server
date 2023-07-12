@@ -22,9 +22,14 @@ import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.test.context.ActiveProfiles
+import java.time.Clock
+import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter.*
 import java.util.*
 
 @SpringBootTest
@@ -36,6 +41,8 @@ class WorkoutServiceTest @Autowired constructor(
 
     @MockBean
     lateinit var userRepository: UserRepository
+
+    private val currentTime = LocalDateTime.now()
 
     @BeforeEach
     fun init(){
@@ -61,7 +68,7 @@ class WorkoutServiceTest @Autowired constructor(
         val request = WorkoutCreateDto.Request(
             timers = listOf(timerDto)
         )
-        val testUser = createUser(currentCrew = createCrew("crewO1"))
+        val testUser = createUser(currentCrew = createCrew("crewO1", currentTime))
 
         val response = workoutService.createWorkout(request, testUser)
 
@@ -80,49 +87,46 @@ class WorkoutServiceTest @Autowired constructor(
         }.hasMessageContaining("아직 크루에 참여하지 않아 운동 기록이 존재하지 않습니다.")
     }
 
-     @Test
+    @Test
     fun 각_크루별_가입일_이후_최대_7개_운동_데이터만_조회한다() {
         // given
-        val crew1 = createCrew("crew01")
-        val crew2 = createCrew("crew02")
+        val crew1 = createCrew("crew01", currentTime)
+        val crew2StartDate = currentTime.plusDays(1)
+        val crew2 = createCrew("crew02", crew2StartDate)
         val testUser = createUser(currentCrew = crew1)
         val timer = createTimer(WorkoutPart.ARM)
-        val crew1FirstDayWorkout = createWorkout(listOf(timer), "2023-06-22T10:00:00", crew1.crewId!!, testUser)
-        val crew1SecondDayWorkout = createWorkout(listOf(timer), "2023-06-23T10:00:00", crew1.crewId!!, testUser)
-        val crew1ThirdDayWorkout = createWorkout(listOf(timer), "2023-06-24T10:00:00", crew1.crewId!!, testUser)
-        val crew1FourthDayWorkout = createWorkout(listOf(timer), "2023-06-25T10:00:00", crew1.crewId!!, testUser)
-        val crew1FifthDayWorkout = createWorkout(listOf(timer), "2023-06-26T10:00:00", crew1.crewId!!, testUser)
-        val crew1SixDayWorkout = createWorkout(listOf(timer), "2023-06-27T10:00:00", crew1.crewId!!, testUser)
-        val crew1SevenDayWorkout = createWorkout(listOf(timer), "2023-06-28T10:00:00", crew1.crewId!!, testUser)
-        val crew1EightDayWorkout = createWorkout(listOf(timer), "2023-06-29T10:00:00", crew1.crewId!!, testUser)
 
-        val crew2FirstDayWorkout = createWorkout(listOf(timer), "2023-06-23T10:00:00", crew2.crewId!!, testUser)
+        for (i in 2 .. 8) {
+            val createdDate = currentTime.plusDays(i.toLong())
+            val entity = createWorkout(listOf(timer), createdDate, crew1.crewId!!, testUser)
+            workoutRepository.save(entity)
+        }
 
-        workoutRepository.saveAll(listOf(
-            crew1FirstDayWorkout, crew1SecondDayWorkout, crew2FirstDayWorkout,
-            crew1ThirdDayWorkout, crew1FourthDayWorkout, crew1FifthDayWorkout,
-            crew1SixDayWorkout, crew1SevenDayWorkout, crew1EightDayWorkout
-        ))
+        val crew2FirstDayWorkout = createWorkout(listOf(timer), crew2StartDate, crew2.crewId!!, testUser)
+         workoutRepository.save(crew2FirstDayWorkout)
+
         given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
         // when
         val response = workoutService.getWorkouts(null, testUser)
 
         // then
-        val result = response.workouts!!.toList()
+        val result = response.workouts
         assertThat(result.size).isEqualTo(7)
-        assertThat(result[0].workoutDate).isEqualTo("1")
-        assertThat(result[1].workoutDate).isEqualTo("2")
+        assertThat(result[3].workout!!.workoutDate).isEqualTo("4")
+        assertThat(result[4].workout!!.workoutDate).isEqualTo("5")
+        assertThat(result[5].workout!!.workoutDate).isEqualTo("6")
+        assertThat(result[6].workout!!.workoutDate).isEqualTo("7")
     }
 
     @Test
     fun 하루치_운동_데이터의_누적_값을_반환한다() {
         // given
-        val crew = createCrew("crew01")
+        val crew = createCrew("crew01", currentTime)
         val testUser = createUser(currentCrew = crew)
         val timer1 = createTimer(WorkoutPart.ARM)
         val timer2 = createTimer(WorkoutPart.HIP)
-        val workout = createWorkout(listOf(timer1, timer2), "2023-06-22T10:00:00", crew.crewId!!, testUser)
+        val workout = createWorkout(listOf(timer1, timer2), currentTime, crew.crewId!!, testUser)
 
         workoutRepository.save(workout)
         given(userRepository.findById(any())).willReturn(Optional.of(testUser))
@@ -131,21 +135,21 @@ class WorkoutServiceTest @Autowired constructor(
         val result = workoutService.getWorkouts(null, testUser)
 
         // then
-        val values = result.workouts!!.toList()
-        assertThat(values[0].totalTime).isEqualTo(120)
-        assertThat(values[0].averageHeartbeat).isEqualTo(80)
-        assertThat(values[0].totalCalories).isEqualTo(200)
+        val values = result.workouts
+        assertThat(values[0].workout!!.totalTime).isEqualTo(120)
+        assertThat(values[0].workout!!.averageHeartbeat).isEqualTo(80)
+        assertThat(values[0].workout!!.totalCalories).isEqualTo(200)
     }
 
     @Test
     fun 하루_동안_가장_많이_운동한_부위를_반환한다() {
         // given
-        val crew = createCrew("crew01")
+        val crew = createCrew("crew01", currentTime)
         val testUser = createUser(currentCrew = crew)
         val timer1 = createTimer(WorkoutPart.ARM)
         val timer2 = createTimer(WorkoutPart.CHEST)
         val timer3 = createTimer(WorkoutPart.LEG)
-        val workout = createWorkout(listOf(timer1, timer2, timer3), "2023-06-22T10:00:00", crew.crewId!!, testUser)
+        val workout = createWorkout(listOf(timer1, timer2, timer3), currentTime, crew.crewId!!, testUser)
 
         workoutRepository.save(workout)
         given(userRepository.findById(any())).willReturn(Optional.of(testUser))
@@ -154,9 +158,41 @@ class WorkoutServiceTest @Autowired constructor(
         val result = workoutService.getWorkouts(null, testUser)
 
         // then
-        val values = result.workouts!!.toList()
-        assertThat(values[0].maxWorkoutCategory).isEqualTo(WorkoutCategory.UP.name)
-        assertThat(values[0].maxWorkoutCategoryTime).isEqualTo(120)
+        val values = result.workouts
+        assertThat(values[0].workout!!.maxWorkoutCategory).isEqualTo(WorkoutCategory.UP.name)
+        assertThat(values[0].workout!!.maxWorkoutCategoryTime).isEqualTo(120)
+    }
+
+    @Test
+    fun `2주차_데이터를_반환한다`() {
+        val startDate = currentTime.minusDays(10)
+        val crew1 = createCrew("crew01", startDate)
+        val testUser = createUser(currentCrew = crew1)
+        val timer = createTimer(WorkoutPart.ARM)
+
+        for (i in 2 .. 6) {
+            val createdDate = startDate.plusDays(i.toLong())
+            val entity = createWorkout(listOf(timer), createdDate, crew1.crewId!!, testUser)
+            workoutRepository.save(entity)
+        }
+
+        for (i in 10 .. 12) {
+            val createdDate = startDate.plusDays(i.toLong())
+            val entity = createWorkout(listOf(timer), createdDate, crew1.crewId!!, testUser)
+            workoutRepository.save(entity)
+        }
+
+        given(userRepository.findById(any())).willReturn(Optional.of(testUser))
+
+        // when
+        val response = workoutService.getWorkouts(null, testUser)
+
+        // then
+        val result = response.workouts
+        assertThat(result.size).isEqualTo(7)
+        assertThat(result[3].workout!!.workoutDate).isEqualTo("4")
+        assertThat(result[4].workout!!.workoutDate).isEqualTo("5")
+        assertThat(result[5].workout!!.workoutDate).isEqualTo("6")
     }
 
     private fun createTimer(workoutPart: WorkoutPart): Timer {
@@ -169,21 +205,21 @@ class WorkoutServiceTest @Autowired constructor(
         )
     }
 
-    private fun createWorkout(timers: List<Timer>, createDate: String, crewId: String, user: User): Workout {
+    private fun createWorkout(timers: List<Timer>, createDate: LocalDateTime, crewId: String, user: User): Workout {
         return Workout(
             userId = user.uid!!,
             timers = timers,
-            createDate = LocalDateTime.parse(createDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+            createDate = createDate,
             currentCrew = crewId
         )
     }
 
-    private fun createCrew(id: String): Crew {
+    private fun createCrew(id: String, createdAt: LocalDateTime): Crew {
         return Crew(
             crewId = id,
             crewName = "name",
             code = "0248291",
-            createDate = "2023-06-22T10:00:00",
+            createDate = createdAt.format(ISO_LOCAL_DATE_TIME),
             goalCount = 5,
             participants = listOf("user01")
         )
