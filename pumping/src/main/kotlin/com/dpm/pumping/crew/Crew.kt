@@ -11,12 +11,12 @@ import java.util.*
 @Document(collection = "crew")
 data class Crew(
     @Id
-    val crewId: String?,
-    val crewName: String?,
-    val code: String?,
-    val createDate: String?,
-    val goalCount: Int?,
-    val participants: List<String?>
+    var crewId: String?,
+    var crewName: String?,
+    var code: String?,
+    var createDate: String?,
+    var goalCount: Int?,
+    var participants: List<String?>
 ){
     companion object {
         fun create(name: String, goalCount: Int, userId: String): Crew {

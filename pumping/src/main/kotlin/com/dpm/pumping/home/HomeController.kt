@@ -3,13 +3,14 @@ package com.dpm.pumping.home
 import com.dpm.pumping.auth.config.LoginUser
 import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
+import com.dpm.pumping.crew.Crew
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
+import com.dpm.pumping.user.domain.User
+import com.dpm.pumping.workout.domain.entity.Workout
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.http.HttpStatus
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDateTime
 import java.util.*
 
 @RestController
@@ -48,14 +48,18 @@ class HomeController(private val mongoTemplate: MongoTemplate) {
         crewData.participants.forEach { participantId ->
             val userData = participantId?.let { fetchUserData(it) }
             val workoutData = participantId?.let { fetchWorkoutData(crewId, it) }
+
+            val workoutCount = workoutData?.timers?.size
+            val workoutTotalTime = workoutData?.timers?.sumOf { it.time.toInt() }
+
             memberInfoList.add(
                 MemberInfo(
                     userId = participantId,
-                    userName = "userName",
-                    profileImage = "profileImage",
-                    workoutCount = 1,
-                    goalCount = 1,
-                    workoutTime = 1
+                    userName = userData?.name,
+                    profileImage = userData?.characterType,
+                    workoutCount = workoutCount,
+                    goalCount = crewData.goalCount,
+                    workoutTime = workoutTotalTime
                 )
             )
         }
@@ -67,16 +71,7 @@ class HomeController(private val mongoTemplate: MongoTemplate) {
             createDate = crewData.createDate,
             goalCount = crewData.goalCount,
             participants = crewData.participants,
-            memberInfo = listOf(
-                MemberInfo(
-                    userId = "userId",
-                    userName = "userName",
-                    profileImage = "profileImage",
-                    workoutCount = 1,
-                    goalCount = 1,
-                    workoutTime = 1
-                )
-            )
+            memberInfo = memberInfoList
         )
     }
 
@@ -92,8 +87,13 @@ class HomeController(private val mongoTemplate: MongoTemplate) {
         return mongoTemplate.findOne(query, User::class.java, "user")
     }
 
-    private fun fetchWorkoutData(crewId: String, userId: String): String {
-        return "workoutData"
+    private fun fetchWorkoutData(crewId: String, userId: String): Workout? {
+        val query = Query().addCriteria(
+            Criteria.where("currentCrew").`is`(crewId).andOperator(
+                Criteria.where("userId").`is`(userId)
+            )
+        )
+        return mongoTemplate.findOne(query, Workout::class.java, "workout")
     }
 
     @PostMapping("/create/random/user")
@@ -177,33 +177,9 @@ class HomeController(private val mongoTemplate: MongoTemplate) {
     data class MemberInfo(
         val userId: String?,
         val userName: String?,
-        val profileImage: String?,
+        val profileImage: CharacterType?,
         val workoutCount: Int?,
         val goalCount: Int?,
         val workoutTime: Int?
-    )
-
-    @Document(collection = "crew")
-    data class Crew(
-        @Id
-        val crewId: String?,
-        val crewName: String?,
-        val code: String?,
-        val createDate: String?,
-        val goalCount: Int?,
-        var participants: List<String?>
-    )
-
-    @Document(collection = "user")
-    data class User(
-        @Id
-        var uid: String?,
-        var name: String?,
-        var gender: Gender?,
-        var height: String?,
-        var weight: String?,
-        var platform: LoginPlatform,
-        var characterType: CharacterType?,
-        var currentCrew: Crew?
     )
 }
