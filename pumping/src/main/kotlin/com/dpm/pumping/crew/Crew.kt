@@ -2,9 +2,7 @@ package com.dpm.pumping.crew
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -33,12 +31,6 @@ data class Crew(
         private fun generateCrewCode(): String {
             return (1..999999).random().toString().padStart(6, '0')
         }
-    }
-
-    fun calculateDays(workoutCreatedAt: LocalDate): Int {
-        val crewCreatedAt = LocalDate.parse(createDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-        val period = Period.between(crewCreatedAt, workoutCreatedAt)
-        return period.days + 1
     }
 }
 

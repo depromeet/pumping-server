@@ -87,32 +87,26 @@ class WorkoutServiceTest @Autowired constructor(
         val crew2 = createCrew("crew02")
         val testUser = createUser(currentCrew = crew1)
         val timer = createTimer(WorkoutPart.ARM)
-        val crew1FirstDayWorkout = createWorkout(listOf(timer), "2023-06-22T10:00:00", crew1.crewId!!, testUser)
-        val crew1SecondDayWorkout = createWorkout(listOf(timer), "2023-06-23T10:00:00", crew1.crewId!!, testUser)
-        val crew1ThirdDayWorkout = createWorkout(listOf(timer), "2023-06-24T10:00:00", crew1.crewId!!, testUser)
-        val crew1FourthDayWorkout = createWorkout(listOf(timer), "2023-06-25T10:00:00", crew1.crewId!!, testUser)
-        val crew1FifthDayWorkout = createWorkout(listOf(timer), "2023-06-26T10:00:00", crew1.crewId!!, testUser)
-        val crew1SixDayWorkout = createWorkout(listOf(timer), "2023-06-27T10:00:00", crew1.crewId!!, testUser)
-        val crew1SevenDayWorkout = createWorkout(listOf(timer), "2023-06-28T10:00:00", crew1.crewId!!, testUser)
-        val crew1EightDayWorkout = createWorkout(listOf(timer), "2023-06-29T10:00:00", crew1.crewId!!, testUser)
+        for (i in 2 .. 8) {
+            val entity = createWorkout(listOf(timer), "2023-06-2${i}T10:00:00", crew1.crewId!!, testUser)
+            workoutRepository.save(entity)
+        }
 
         val crew2FirstDayWorkout = createWorkout(listOf(timer), "2023-06-23T10:00:00", crew2.crewId!!, testUser)
+         workoutRepository.save(crew2FirstDayWorkout)
 
-        workoutRepository.saveAll(listOf(
-            crew1FirstDayWorkout, crew1SecondDayWorkout, crew2FirstDayWorkout,
-            crew1ThirdDayWorkout, crew1FourthDayWorkout, crew1FifthDayWorkout,
-            crew1SixDayWorkout, crew1SevenDayWorkout, crew1EightDayWorkout
-        ))
         given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
         // when
         val response = workoutService.getWorkouts(null, testUser)
 
         // then
-        val result = response.workouts!!.toList()
+        val result = response.workouts
         assertThat(result.size).isEqualTo(7)
-        assertThat(result[0].workoutDate).isEqualTo("1")
-        assertThat(result[1].workoutDate).isEqualTo("2")
+        assertThat(result[0].dayOfWeek).isEqualTo("4")
+        assertThat(result[0].workout!!.workoutDate).isEqualTo("1")
+        assertThat(result[1].dayOfWeek).isEqualTo("5")
+        assertThat(result[1].workout!!.workoutDate).isEqualTo("2")
     }
 
     @Test
@@ -131,10 +125,10 @@ class WorkoutServiceTest @Autowired constructor(
         val result = workoutService.getWorkouts(null, testUser)
 
         // then
-        val values = result.workouts!!.toList()
-        assertThat(values[0].totalTime).isEqualTo(120)
-        assertThat(values[0].averageHeartbeat).isEqualTo(80)
-        assertThat(values[0].totalCalories).isEqualTo(200)
+        val values = result.workouts
+        assertThat(values[0].workout!!.totalTime).isEqualTo(120)
+        assertThat(values[0].workout!!.averageHeartbeat).isEqualTo(80)
+        assertThat(values[0].workout!!.totalCalories).isEqualTo(200)
     }
 
     @Test
@@ -154,9 +148,9 @@ class WorkoutServiceTest @Autowired constructor(
         val result = workoutService.getWorkouts(null, testUser)
 
         // then
-        val values = result.workouts!!.toList()
-        assertThat(values[0].maxWorkoutCategory).isEqualTo(WorkoutCategory.UP.name)
-        assertThat(values[0].maxWorkoutCategoryTime).isEqualTo(120)
+        val values = result.workouts
+        assertThat(values[0].workout!!.maxWorkoutCategory).isEqualTo(WorkoutCategory.UP.name)
+        assertThat(values[0].workout!!.maxWorkoutCategoryTime).isEqualTo(120)
     }
 
     private fun createTimer(workoutPart: WorkoutPart): Timer {

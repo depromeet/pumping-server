@@ -1,14 +1,15 @@
 package com.dpm.pumping.workout.application
 
-import com.dpm.pumping.crew.Crew
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
+import com.dpm.pumping.workout.application.WorkoutStorage.*
 import com.dpm.pumping.workout.domain.entity.Workout
 import com.dpm.pumping.workout.dto.WorkoutCreateDto
 import com.dpm.pumping.workout.dto.WorkoutGetDto
 import com.dpm.pumping.workout.repository.WorkoutRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Service
@@ -17,10 +18,6 @@ class WorkoutService(
     private val workoutRepository: WorkoutRepository,
     private val userRepository: UserRepository
 ){
-
-    companion object {
-        private const val DEFAULT_CREW_DURATION = 7L
-    }
 
     @Transactional
     fun createWorkout(
@@ -39,16 +36,18 @@ class WorkoutService(
         val crew = user.currentCrew
             ?: throw IllegalArgumentException("아직 크루에 참여하지 않아 운동 기록이 존재하지 않습니다.")
 
-        val startDate = LocalDateTime.parse(crew.createDate).minusDays(1L)
-        val endDate = startDate.plusDays(DEFAULT_CREW_DURATION).plusDays(1L)
+        val startDate = LocalDateTime.parse(crew.createDate)
+        val endDate = startDate.plusDays(WorkoutStorage.DEFAULT_SIZE)
         val workoutDatas = workoutRepository
-            .findAllByCurrentCrewAndUserIdAndCreateDateBetween(crew.crewId!!, user.uid!!, startDate, endDate)
+            .findAllByCurrentCrewAndUserIdAndCreateDateBetween(crew.crewId!!, user.uid!!, startDate.minusDays(1), endDate)
 
-        val response = workoutDatas
-            ?.map { workout -> getWorkoutByDay(workout, crew) }
-            ?.toList()
+        val storage = WorkoutStorage(startDate.toLocalDate())
+        workoutDatas?.forEach {
+            storage.save(it)
+        }
 
-        return WorkoutGetDto.Response(response)
+        val result = getWorkoutDto(storage.get())
+        return WorkoutGetDto.Response(result)
     }
 
     private fun getUser(userId: String?, loginUser: User): User {
@@ -60,17 +59,10 @@ class WorkoutService(
         }
     }
 
-    private fun getWorkoutByDay(workout: Workout, crew: Crew): WorkoutGetDto.WorkoutByDay {
-        val maxWorkoutData = workout.getMaxWorkoutPart()
-        val workoutCreatedAt = workout.createDate.toLocalDate()
-
-        return WorkoutGetDto.WorkoutByDay(
-            workoutDate = crew.calculateDays(workoutCreatedAt).toString(),
-            totalTime = workout.getTotalTime(),
-            averageHeartbeat = workout.getAverageHeartbeat(),
-            totalCalories = workout.getTotalCalories(),
-            maxWorkoutCategory = maxWorkoutData.first.name,
-            maxWorkoutCategoryTime = maxWorkoutData.second
-        )
+    private fun getWorkoutDto(storage: Map<LocalDate, WorkoutByDay?>): List<WorkoutGetDto.WorkoutResponse> {
+        return storage.map { (key, value) ->
+            val dayOfWeek = key.dayOfWeek
+            WorkoutGetDto.WorkoutResponse(dayOfWeek.value.toString(), value)
+        }
     }
 }

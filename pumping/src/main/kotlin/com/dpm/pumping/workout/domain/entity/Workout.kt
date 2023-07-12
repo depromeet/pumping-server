@@ -4,7 +4,10 @@ import com.dpm.pumping.workout.domain.WorkoutCategory
 import com.dpm.pumping.workout.dto.WorkoutCreateDto.TimerDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Document(collection = "workout")
@@ -48,6 +51,12 @@ data class Workout(
         return timers.groupBy { WorkoutCategory.getByPart(it.workoutPart) }
             .map { it.key to it.value.sumOf { timer -> timer.time.toInt() } }
             .maxByOrNull { v -> v.second }!!
+    }
+
+    fun calculateDays(crewCreatedAt: LocalDate): Int {
+        val workoutCreatedAt = createDate.toLocalDate()
+        val period = Period.between(crewCreatedAt, workoutCreatedAt)
+        return period.days + 1
     }
 
 
