@@ -34,7 +34,9 @@ class DataInitializer(
             "끊어야할 건 담배, 술, 헬스회원권"
         )
 
-        val entities = messages.map { Message(content = it) }
+        val entities = messages.mapIndexed {
+                idx, message -> Message(content = message, index = idx)
+        }
         messageRepository.saveAll(entities)
     }
 }

@@ -8,5 +8,7 @@ data class Message(
     @Id
     val id: String? = null,
 
+    val index: Int,
+
     val content: String
 )
