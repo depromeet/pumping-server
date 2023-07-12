@@ -4,6 +4,7 @@ import com.dpm.pumping.auth.config.LoginUser
 import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.crew.Crew
+import com.dpm.pumping.message.MessageService
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
 import com.dpm.pumping.user.domain.User
@@ -23,7 +24,10 @@ import java.util.*
 
 @RestController
 @RequestMapping("/bypass")
-class HomeController(private val mongoTemplate: MongoTemplate) {
+class HomeController(
+    private val mongoTemplate: MongoTemplate,
+    private val messageService: MessageService
+) {
     private val logger: Logger = LoggerFactory.getLogger(HomeController::class.java)
 
     @PostMapping("/check/uid")
@@ -78,6 +82,7 @@ class HomeController(private val mongoTemplate: MongoTemplate) {
             memberInfoList.removeAt(userIndex)
             memberInfoList.add(0, userWorkoutData)
         }
+        val message = messageService.getMessage()
 
         return HomeDataResponse(
             crewId = crewData.crewId,
@@ -85,6 +90,7 @@ class HomeController(private val mongoTemplate: MongoTemplate) {
             code = crewData.code,
             createDate = crewData.createDate,
             goalCount = crewData.goalCount,
+            message = message,
             participants = participantsList,
             memberInfo = memberInfoList
         )
@@ -185,6 +191,7 @@ class HomeController(private val mongoTemplate: MongoTemplate) {
         val code: String?,
         val createDate: String?,
         val goalCount: Int?,
+        val message: String?,
         val participants: List<String?>,
         val memberInfo: List<MemberInfo?>
     )
