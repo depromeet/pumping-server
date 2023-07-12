@@ -20,5 +20,6 @@ data class GetCrewsResponse(
 data class GetCrewResponse(
     val crewId: String?,
     val crewName: String?,
+    val code: String?,
     val createDate: String?
 )

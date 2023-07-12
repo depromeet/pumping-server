@@ -71,6 +71,7 @@ class CrewControllerTest @Autowired constructor(
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1")
         given(userRepository.findById(any())).willReturn(Optional.of(dummyUser))
     }
+
     @Test
     fun createCrew() {
         val request = CreateCrewRequest(
@@ -89,12 +90,12 @@ class CrewControllerTest @Autowired constructor(
         given(crewService.create(request, dummyUser)).willReturn(crewResponse)
 
 
-        mockMvc.post("/api/v1/crews"){
+        mockMvc.post("/api/v1/crews") {
             header(HttpHeaders.AUTHORIZATION, "Bearer <Access Token>")
             contentType = MediaType.APPLICATION_JSON
             content = mapper.writeValueAsString(request)
         }
-        .andExpect { status{ isCreated()} }
+            .andExpect { status { isCreated() } }
             .andDo {
                 handle(
                     document(
@@ -123,7 +124,7 @@ class CrewControllerTest @Autowired constructor(
 
 
     @Test
-    fun joinCrew(){
+    fun joinCrew() {
         val code = "123456"
 
         val crewResponse = CrewResponse(
@@ -137,11 +138,11 @@ class CrewControllerTest @Autowired constructor(
         given(crewService.joinCrew(code, dummyUser)).willReturn(crewResponse)
 
 
-        mockMvc.post("/api/v1/crews/join/{code}", code){
+        mockMvc.post("/api/v1/crews/join/{code}", code) {
             header(HttpHeaders.AUTHORIZATION, "Bearer <Access Token>")
             contentType = MediaType.APPLICATION_JSON
         }
-            .andExpect { status{ isOk() } }
+            .andExpect { status { isOk() } }
             .andDo {
                 handle(
                     document(
@@ -183,7 +184,7 @@ class CrewControllerTest @Autowired constructor(
         )
 
         result.andExpect { MockMvcResultMatchers.status().isOk }
-            .andDo (
+            .andDo(
                 document(
                     "leave-crew",
                     preprocessRequest(prettyPrint()),
@@ -205,7 +206,7 @@ class CrewControllerTest @Autowired constructor(
     }
 
     @Test
-    fun getCrews(){
+    fun getCrews() {
         val code = "123456"
 
         val crewResponse = GetCrewsResponse(
@@ -213,18 +214,20 @@ class CrewControllerTest @Autowired constructor(
                 GetCrewResponse(
                     crewId = "crew01",
                     crewName = "name",
-                    createDate = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                    code = "123456",
+                    createDate = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                 )
+            )
         )
 
         given(crewService.getCrews(dummyUser)).willReturn(crewResponse)
 
 
-        mockMvc.get("/api/v1/crews"){
+        mockMvc.get("/api/v1/crews") {
             header(HttpHeaders.AUTHORIZATION, "Bearer <Access Token>")
             contentType = MediaType.APPLICATION_JSON
         }
-            .andExpect { status{ isOk() } }
+            .andExpect { status { isOk() } }
             .andDo {
                 handle(
                     document(
@@ -234,6 +237,7 @@ class CrewControllerTest @Autowired constructor(
                         responseFields(
                             fieldWithPath("crews[].crewId").type(JsonFieldType.STRING).description("크루 아이디"),
                             fieldWithPath("crews[].crewName").type(JsonFieldType.STRING).description("크루 이름"),
+                            fieldWithPath("crews[].code").type(JsonFieldType.STRING).description("크루 코드"),
                             fieldWithPath("crews[].createDate").type(JsonFieldType.STRING).description("크루 생성 날짜"),
                         )
                     )
