@@ -23,7 +23,7 @@ class WorkoutController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/", "/{userId}")
     fun getTimers(
         @PathVariable("userId", required = false) userId: String?,
         @LoginUser loginUser: User
