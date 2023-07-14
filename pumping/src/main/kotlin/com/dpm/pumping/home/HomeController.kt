@@ -153,7 +153,7 @@ class HomeController(
         val userId = request.userId
 
         val crewData = fetchCrewData(crewId)
-        logger.info("[+] Fetched crewData: $crewData")
+        logger.info("[+] POST /bypass/crew/join ${request.toString()} crewData: $crewData")
         if (crewData == null) {
             logger.error("[-] Failed to fetch crewData")
             return "해당 크루 정보를 찾을 수 없습니다."
@@ -177,6 +177,32 @@ class HomeController(
         mongoTemplate.save(crewData)
 
         return "크루 참가에 성공했습니다."
+    }
+
+    @PostMapping("/crew/switch")
+    fun switchCrew(@RequestBody request: HomeDataRequest): Any {
+        val crewId = request.crewId
+        val userId = request.userId
+
+        val crewData = fetchCrewData(crewId)
+        logger.info("[+] Fetched crewData: $crewData")
+        if (crewData == null) {
+            logger.error("[-] Failed to fetch crewData")
+            return "해당 크루 정보를 찾을 수 없습니다."
+        }
+
+        val userData = fetchUserData(userId)
+        logger.info("[+] Fetched userData: $userData")
+        if (userData == null) {
+            logger.error("[-] Failed to fetch userData")
+            return "해당 유저 정보를 찾을 수 없습니다."
+        }
+
+        userData.currentCrew = crewId
+        mongoTemplate.save(userData)
+
+        logger.info("[+] POST /crew/switch ${request.toString()} userData: $userData")
+        return "크루 변경에 성공했습니다."
     }
 
 

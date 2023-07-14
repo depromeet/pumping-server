@@ -68,8 +68,8 @@ class UserServiceTest @Autowired constructor(
             participants = listOf(user1.uid, user2.uid)
         )
 
-        user1.currentCrew = crew
-        user2.currentCrew = crew
+        user1.currentCrew = crew.crewId
+        user2.currentCrew = crew.crewId
 
         user1 = userRepository.save(user1)
         user2 = userRepository.save(user2)

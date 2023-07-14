@@ -209,8 +209,6 @@ class CrewControllerTest @Autowired constructor(
 
     @Test
     fun getCrews() {
-        val code = "123456"
-
         val crewResponse = GetCrewsResponse(
             listOf(
                 GetCrewResponse(

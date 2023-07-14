@@ -15,7 +15,7 @@ data class User(
     var weight: String?,
     var platform: LoginPlatform,
     var characterType: CharacterType?,
-    var currentCrew: Crew?
+    var currentCrew: String?
 ) {
 
     companion object {
@@ -38,7 +38,7 @@ data class User(
     }
 
     fun getCrewName(): String {
-        return currentCrew?.crewName ?: throw IllegalStateException("현재 속한 크루가 없습니다.")
+        return currentCrew ?: throw IllegalStateException("현재 속한 크루가 없습니다.")
     }
 
     fun update(
