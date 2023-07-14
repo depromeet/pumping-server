@@ -48,8 +48,15 @@ class HomeController(
             logger.error("[-] Failed to fetch crewData")
             return "해당 크루 정보를 찾을 수 없습니다."
         }
+        logger.info("[+] Fetched crewData: $crewData")
 
         val memberInfoList = mutableListOf<MemberInfo>()
+        if (crewData.participants.isEmpty()) {
+            logger.error("[-] Failed to fetch memberInfoList")
+            return "참여자 정보를 찾을 수 없습니다."
+        }
+        logger.info("[+] Fetched memberInfoList: $memberInfoList")
+
         crewData.participants.forEach { participantId ->
             val userData = participantId?.let { fetchUserData(it) }
             val workoutData = participantId?.let { fetchWorkoutData(crewId, it) }
@@ -68,6 +75,7 @@ class HomeController(
                 )
             )
         }
+        logger.info("[+] Fetched memberInfoList after forEach: $memberInfoList")
 
         // 참여자 리스트 중에서 요청받은 userId를 가장 앞으로 옮긴다.
         val participantsList = crewData.participants.toMutableList()
@@ -84,6 +92,7 @@ class HomeController(
             memberInfoList.add(0, userWorkoutData)
         }
         val message = messageService.getMessage()
+        
 
         return HomeDataResponse(
             crewId = crewData.crewId,
