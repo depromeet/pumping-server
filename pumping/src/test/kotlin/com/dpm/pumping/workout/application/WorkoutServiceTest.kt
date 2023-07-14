@@ -3,6 +3,8 @@ package com.dpm.pumping.workout.application
 import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.auth.domain.LoginType
 import com.dpm.pumping.crew.Crew
+import com.dpm.pumping.crew.CrewRepository
+import com.dpm.pumping.home.HomeController
 import com.dpm.pumping.support.Mocking.any
 import com.dpm.pumping.user.domain.CharacterType
 import com.dpm.pumping.user.domain.Gender
@@ -19,6 +21,8 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -33,11 +37,15 @@ class WorkoutServiceTest @Autowired constructor(
     private val workoutService: WorkoutService,
     private val workoutRepository: WorkoutRepository
 ) {
+    private val logger: Logger = LoggerFactory.getLogger(HomeController::class.java)
 
     @MockBean
     lateinit var userRepository: UserRepository
 
     private val currentTime = LocalDateTime.now()
+
+    @Autowired
+    private lateinit var crewRepository: CrewRepository
 
     @BeforeEach
     fun init() {
@@ -63,7 +71,7 @@ class WorkoutServiceTest @Autowired constructor(
         val request = WorkoutCreateDto.Request(
             timers = listOf(timerDto)
         )
-        val testUser = createUser(currentCrew = createCrew("crewO1", currentTime))
+        val testUser = createUser(currentCrewId = createCrew("crewO1", currentTime).crewId!!)
 
         val response = workoutService.createWorkout(request, testUser)
 
@@ -73,7 +81,7 @@ class WorkoutServiceTest @Autowired constructor(
     @Test
     fun 크루에_참여하지_않았다면_예외가_발생한다() {
         // given
-        val testUser = createUser(currentCrew = null)
+        val testUser = createUser(currentCrewId = null)
         given(userRepository.findById(any())).willReturn(Optional.of(testUser))
 
         // when + then
@@ -88,7 +96,7 @@ class WorkoutServiceTest @Autowired constructor(
         val crew1 = createCrew("crew01", currentTime)
         val crew2StartDate = currentTime.plusDays(1)
         val crew2 = createCrew("crew02", crew2StartDate)
-        val testUser = createUser(currentCrew = crew1)
+        val testUser = createUser(currentCrewId = crew1.crewId!!)
         val timer = createTimer(WorkoutPart.ARM)
 
         for (i in 2..8) {
@@ -118,7 +126,7 @@ class WorkoutServiceTest @Autowired constructor(
     fun 하루치_운동_데이터의_누적_값을_반환한다() {
         // given
         val crew = createCrew("crew01", currentTime)
-        val testUser = createUser(currentCrew = crew)
+        val testUser = createUser(currentCrewId = crew.crewId!!)
         val timer1 = createTimer(WorkoutPart.ARM)
         val timer2 = createTimer(WorkoutPart.HIP)
         val workout = createWorkout(listOf(timer1, timer2), currentTime, crew.crewId!!, testUser)
@@ -140,7 +148,7 @@ class WorkoutServiceTest @Autowired constructor(
     fun 하루_동안_가장_많이_운동한_부위를_반환한다() {
         // given
         val crew = createCrew("crew01", currentTime)
-        val testUser = createUser(currentCrew = crew)
+        val testUser = createUser(currentCrewId = crew.crewId!!)
         val timer1 = createTimer(WorkoutPart.ARM)
         val timer2 = createTimer(WorkoutPart.CHEST)
         val timer3 = createTimer(WorkoutPart.LEG)
@@ -162,7 +170,7 @@ class WorkoutServiceTest @Autowired constructor(
     fun `2주차_데이터를_반환한다`() {
         val startDate = currentTime.minusDays(10)
         val crew1 = createCrew("crew01", startDate)
-        val testUser = createUser(currentCrew = crew1)
+        val testUser = createUser(currentCrewId = crew1.crewId!!)
         val timer = createTimer(WorkoutPart.ARM)
 
         for (i in 2..6) {
@@ -210,7 +218,7 @@ class WorkoutServiceTest @Autowired constructor(
     }
 
     private fun createCrew(id: String, createdAt: LocalDateTime): Crew {
-        return Crew(
+        val crew = Crew(
             crewId = id,
             crewName = "name",
             code = "0248291",
@@ -218,19 +226,23 @@ class WorkoutServiceTest @Autowired constructor(
             goalCount = 5,
             participants = listOf("user01")
         )
+        crewRepository.save(crew)
+        return crew
     }
 
-    private fun createUser(currentCrew: Crew?): User {
-        return User(
+    private fun createUser(currentCrewId: String?): User {
+        val user = User(
             uid = "user01",
             name = "name",
             gender = Gender.FEMALE,
             height = "160",
             weight = "50",
             platform = LoginPlatform(LoginType.APPLE, "oauth2Id"),
-            currentCrew = currentCrew,
+            currentCrew = currentCrewId,
             characterType = CharacterType.A
         )
+        userRepository.save(user)
+        return user
     }
 }
 

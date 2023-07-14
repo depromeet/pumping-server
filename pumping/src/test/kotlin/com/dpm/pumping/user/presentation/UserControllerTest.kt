@@ -62,7 +62,7 @@ class UserControllerTest(
         height = "160",
         weight = "50",
         platform = LoginPlatform(LoginType.APPLE, "oauth2Id"),
-        currentCrew = Crew("111", "어쩌구저쩌구", "123456", "2019-09-09", 5, listOf()),
+        currentCrew = "111",
         characterType = CharacterType.A
     )
 
@@ -76,11 +76,12 @@ class UserControllerTest(
     @Test
     fun getOne() {
 
-        val userResponse = UserResponse(
-            name = dummyUser.name,
-            characterType = dummyUser.characterType,
-            currentCrew = dummyUser.getCrewName()
-        )
+//        val userResponse = UserResponse(
+//            name = dummyUser.name,
+//            characterType = dummyUser.characterType,
+//            currentCrew = dummyUser.getCrewName()
+//        )
+
 
 
         mockMvc.get("/api/v1/users") {

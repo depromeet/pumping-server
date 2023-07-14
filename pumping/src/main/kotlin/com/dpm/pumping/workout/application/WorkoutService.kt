@@ -1,5 +1,6 @@
 package com.dpm.pumping.workout.application
 
+import com.dpm.pumping.crew.Crew
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
 import com.dpm.pumping.workout.application.WorkoutStorage.WorkoutByDay
@@ -8,6 +9,9 @@ import com.dpm.pumping.workout.dto.WorkoutCreateDto
 import com.dpm.pumping.workout.dto.WorkoutGetDto
 import com.dpm.pumping.workout.repository.WorkoutRepository
 import com.dpm.pumping.workout.util.CalenderUtils
+import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -16,16 +20,23 @@ import java.time.LocalDate
 @Transactional(readOnly = true)
 class WorkoutService(
     private val workoutRepository: WorkoutRepository,
-    private val userRepository: UserRepository
-){
+    private val userRepository: UserRepository,
+    private val mongoTemplate: MongoTemplate,
+) {
+    private fun fetchCrewData(crewId: String): Crew? {
+        // DB에서 해당 crewId에 맞는 데이터를 가져온다.
+        val query = Query().addCriteria(Criteria.where("_id").`is`(crewId))
+        return mongoTemplate.findOne(query, Crew::class.java, "crew")
+    }
 
     @Transactional
     fun createWorkout(
         request: WorkoutCreateDto.Request, user: User
     ): WorkoutCreateDto.Response {
-        val crew = user.currentCrew
+        val crewId = user.currentCrew
             ?: throw IllegalArgumentException("아직 크루에 참여하지 않아 운동 기록을 저장할 수 없습니다.")
 
+        val crew = fetchCrewData(crewId) ?: throw IllegalArgumentException("크루 정보를 찾을 수 없습니다.")
         val workout = Workout.of(user.uid!!, crew.crewId!!, request.timers)
         val created = workoutRepository.save(workout)
         return WorkoutCreateDto.Response(created.workoutId!!)
@@ -33,13 +44,19 @@ class WorkoutService(
 
     fun getWorkouts(userId: String?, loginUser: User): WorkoutGetDto.Response {
         val user = getUser(userId, loginUser)
-        val crew = user.currentCrew
+        val crewId = user.currentCrew
             ?: throw IllegalArgumentException("아직 크루에 참여하지 않아 운동 기록이 존재하지 않습니다.")
 
+        val crew = fetchCrewData(crewId) ?: throw IllegalArgumentException("크루 정보를 찾을 수 없습니다.")
         val startDate = crew.getStartDate()
         val endDate = startDate.plusDays(WorkoutStorage.DEFAULT_SIZE)
         val workoutDatas = workoutRepository
-            .findAllByCurrentCrewAndUserIdAndCreateDateBetween(crew.crewId!!, user.uid!!, startDate.minusDays(1), endDate)
+            .findAllByCurrentCrewAndUserIdAndCreateDateBetween(
+                crew.crewId!!,
+                user.uid!!,
+                startDate.minusDays(1),
+                endDate
+            )
 
         val storage = WorkoutStorage(startDate.toLocalDate())
         workoutDatas?.forEach {

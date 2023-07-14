@@ -6,10 +6,9 @@ import com.dpm.pumping.crew.dto.CreateCrewRequest
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
@@ -46,6 +45,8 @@ class CrewServiceTest @Autowired constructor(
     fun `크루 탈퇴 테스트`(){
         val crewResponse = crewService.create(CreateCrewRequest("HI crew", 5), user)
         val response = crewService.leaveCrew(crewResponse.crewId!!, user)
+
+        assertThat(response.participants).doesNotContain(user.uid)
     }
 
     @Test
