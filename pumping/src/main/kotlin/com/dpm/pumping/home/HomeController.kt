@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import software.amazon.awssdk.services.ssm.endpoints.internal.Value.Str
 import java.util.*
 
 @RestController
@@ -145,6 +146,30 @@ class HomeController(
         mongoTemplate.save(user)
 
         return user.uid.toString()
+    }
+
+    @PostMapping("/create/random/crew")
+    fun createRandomCrew(): String {
+        val randomId = (1..999999).random().toString()
+        val randomName = "Crew-$randomId"
+        val randomCode = (1000..9999).random().toString()
+        val randomGoalCount = (1..10).random()
+        val randomParticipants = mutableListOf<String>()
+
+        val crew = Crew(
+            crewId = randomId,
+            crewName = randomName,
+            code = randomCode,
+            createDate = Date().toString(),
+            goalCount = randomGoalCount,
+            participants = randomParticipants
+        )
+
+        logger.info("[+] Created random crew: $crew")
+
+        mongoTemplate.save(crew)
+
+        return crew.crewId.toString()
     }
 
     @PostMapping("/crew/join")
