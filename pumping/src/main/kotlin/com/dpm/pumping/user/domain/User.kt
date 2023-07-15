@@ -4,6 +4,7 @@ import com.dpm.pumping.auth.domain.LoginPlatform
 import com.dpm.pumping.crew.Crew
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import java.util.*
 
 @Document(collection = "user")
 data class User(
@@ -21,7 +22,7 @@ data class User(
     companion object {
         fun createWithOAuth(platform: LoginPlatform): User {
             return User(
-                uid = null,
+                uid = UUID.randomUUID().toString(),
                 name = null,
                 gender = null,
                 height = null,
