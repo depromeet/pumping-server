@@ -100,7 +100,7 @@ class HomeController(
             code = crewData.code,
             createDate = crewData.createDate,
             goalCount = crewData.goalCount,
-            message = message,
+            message = "아이 맛있다 오늘 내 근육",
             participants = participantsList,
             memberInfo = memberInfoList
         )
