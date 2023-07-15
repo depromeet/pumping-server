@@ -30,6 +30,15 @@ class CrewService(
         val crew = Crew.create(name = request.crewName, goalCount = request.goalCount, userId = user.uid!!)
         val createdCrew = crewRepository.save(crew)
 
+        // 유저 업데이트
+        val updatedUser = user.copy(currentCrew = crew.crewId)
+        try{
+            mongoTemplate.save(updatedUser)
+            logger.info("유저 업데이트 성공")
+        }catch (e: Exception){
+            logger.info("유저 업데이트 실패")
+        }
+
         return CrewResponse(
             crewId = createdCrew.crewId,
             crewName = createdCrew.crewName,
