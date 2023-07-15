@@ -50,3 +50,26 @@ jobs:
                       cd ~/pumping-server/pumping
                       cat Makefile
                       make build-and-run-aws
+
+    ### Deploy to AWS
+    deploy-large-aws:
+        name:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Executing remote ssh commands using password
+              uses: appleboy/ssh-action@v0.1.10
+              with:
+                  host: ${{ secrets.AWS_LARGE_HOST_IP }}
+                  username: ${{ secrets.AWS_USERNAME }}
+                  key: ${{ secrets.AWS_SSH_KEY }}
+                  port: ${{ secrets.AWS_SSH_PORT }}
+                  script: |
+                      whoami
+                      echo "Action runtime history: $(date)" >> ~/history.txt
+                      cd ~/pumping-server
+                      git fetch --all
+                      git reset --hard origin/develop
+                      kill -9 $(sudo lsof -t -i:8080)
+                      cd ~/pumping-server/pumping
+                      cat Makefile
+                      make build-and-run-aws
