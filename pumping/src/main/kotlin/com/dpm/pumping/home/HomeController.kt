@@ -209,6 +209,15 @@ class HomeController(
         crewData.participants = crewParticipants.toMutableList()
 
         mongoTemplate.save(crewData)
+        
+        // 유저 업데이트
+        val updatedUser = userData.copy(currentCrew = crewData.crewId)
+        try{
+            mongoTemplate.save(updatedUser)
+            logger.info("유저 업데이트 성공")
+        }catch (e: Exception){
+            logger.info("유저 업데이트 실패")
+        }
 
         return "크루 참가에 성공했습니다."
     }
