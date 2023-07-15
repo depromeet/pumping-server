@@ -91,7 +91,7 @@ class HomeController(
             memberInfoList.removeAt(userIndex)
             memberInfoList.add(0, userWorkoutData)
         }
-        val message = "messageService.getMessage()"
+        val message = messageService.getMessage()
 
 
         return HomeDataResponse(
@@ -205,7 +205,7 @@ class HomeController(
             logger.error("[-] User is already in the crew")
             return "이미 해당 크루에 참가하고 있습니다."
         }
-        crewParticipants.add(userId.toString())
+        crewParticipants.add(userId)
         crewData.participants = crewParticipants.toMutableList()
 
         mongoTemplate.save(crewData)
@@ -235,7 +235,7 @@ class HomeController(
         userData.currentCrew = crewId
         mongoTemplate.save(userData)
 
-        logger.info("[+] POST /crew/switch ${request.toString()} userData: $userData")
+        logger.info("[+] POST /crew/switch $request userData: $userData")
         return "크루 변경에 성공했습니다."
     }
 
