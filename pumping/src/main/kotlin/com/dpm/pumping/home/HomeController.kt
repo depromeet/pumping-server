@@ -91,7 +91,7 @@ class HomeController(
             memberInfoList.removeAt(userIndex)
             memberInfoList.add(0, userWorkoutData)
         }
-        val message = messageService.getMessage()
+        // val message = messageService.getMessage()
 
 
         return HomeDataResponse(
