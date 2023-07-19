@@ -16,7 +16,7 @@ class WorkoutGetDto {
         var totalTime: Int,
         var averageHeartbeat: Int,
         var totalCalories: Int,
-        var maxWorkoutCategory: String?,
+        var maxWorkoutCategory: String,
         var maxWorkoutCategoryTime: Int
     )
 }

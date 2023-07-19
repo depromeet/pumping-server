@@ -3,6 +3,7 @@ package com.dpm.pumping.workout.application
 import com.dpm.pumping.crew.Crew
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
+import com.dpm.pumping.workout.domain.WorkoutCategory
 import com.dpm.pumping.workout.domain.entity.Workout
 import com.dpm.pumping.workout.dto.WorkoutCreateDto
 import com.dpm.pumping.workout.dto.WorkoutGetDto
@@ -78,7 +79,7 @@ class WorkoutService(
                     totalTime = value?.let { value.getTotalTime() } ?: 0,
                     averageHeartbeat = value?.let { value.getAverageHeartbeat() } ?: 0,
                     totalCalories = value?.let { value.getTotalCalories() } ?: 0,
-                    maxWorkoutCategory = value?.let {  value.getMaxWorkoutPart().first.name },
+                    maxWorkoutCategory = value?.let {  value.getMaxWorkoutPart().first.name } ?: WorkoutCategory.UP.name,
                     maxWorkoutCategoryTime = value?.let { value.getMaxWorkoutPart().second } ?: 0
                 )
             )
