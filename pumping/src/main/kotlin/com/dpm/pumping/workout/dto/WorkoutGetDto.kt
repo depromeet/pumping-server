@@ -1,7 +1,5 @@
 package com.dpm.pumping.workout.dto
 
-import com.dpm.pumping.workout.application.WorkoutStorage
-
 class WorkoutGetDto {
 
     data class Response(
@@ -10,6 +8,15 @@ class WorkoutGetDto {
 
     data class WorkoutResponse(
         val dayOfWeek: String,
-        val workout: WorkoutStorage.WorkoutByDay?
+        val workout: DailyWorkout?
+    )
+
+    data class DailyWorkout(
+        val workoutDate: String,
+        var totalTime: Int,
+        var averageHeartbeat: Int,
+        var totalCalories: Int,
+        var maxWorkoutCategory: String?,
+        var maxWorkoutCategoryTime: Int
     )
 }

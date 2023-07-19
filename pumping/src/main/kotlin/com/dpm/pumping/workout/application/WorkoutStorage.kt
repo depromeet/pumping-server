@@ -11,45 +11,46 @@ data class WorkoutStorage(
         const val DEFAULT_SIZE = 7L
     }
 
-    private val storage = mutableMapOf<LocalDate, WorkoutByDay?>()
+    private val storage = mutableMapOf<Date, Workout?>()
 
     init {
         for (i in 0 until DEFAULT_SIZE) {
-            val key = crewCreatedAt.plusDays(i)
+            val key = Date(crewCreatedAt.plusDays(i), (i+1).toInt())
             storage[key] = null
         }
     }
 
     fun save(workout: Workout) {
-        val key = workout.createDate.toLocalDate()
-        val data = WorkoutByDay.from(workout, crewCreatedAt)
-        storage[key] = data
+        val workoutDate = workout.createDate.toLocalDate()
+        val workoutDayCount = workout.calculateDays(crewCreatedAt)
+        val key = Date(workoutDate, workoutDayCount)
+        storage[key] = workout
     }
 
-    data class WorkoutByDay(
-        val workoutDate: String,
-        val totalTime: Int,
-        val averageHeartbeat: Int,
-        val totalCalories: Int,
-        val maxWorkoutCategory: String,
-        val maxWorkoutCategoryTime: Int
-    ) {
-        companion object {
-            fun from(workout: Workout, crewCreatedAt: LocalDate): WorkoutByDay {
-                val maxWorkoutData = workout.getMaxWorkoutPart()
-                return WorkoutByDay(
-                    workoutDate = workout.calculateDays(crewCreatedAt).toString(),
-                    totalTime = workout.getTotalTime(),
-                    averageHeartbeat = workout.getAverageHeartbeat(),
-                    totalCalories = workout.getTotalCalories(),
-                    maxWorkoutCategory = maxWorkoutData.first.name,
-                    maxWorkoutCategoryTime = maxWorkoutData.second
-                )
-            }
-        }
-    }
-
-    fun get(): Map<LocalDate, WorkoutByDay?> {
+    fun get(): Map<Date, Workout?> {
         return storage.toMap()
+    }
+
+    data class Date(
+        val workoutDate: LocalDate,
+        val workoutDayCount: Int
+    ) {
+
+        override fun equals(other: Any?): Boolean {
+            if (other === this)
+                return true
+
+            if (other !is Date)
+                return false
+
+            return other.workoutDate == workoutDate
+                    && other.workoutDayCount == workoutDayCount
+        }
+
+        override fun hashCode(): Int {
+            var result = workoutDate.hashCode()
+            result = 31 * result + workoutDayCount
+            return result
+        }
     }
 }

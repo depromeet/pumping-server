@@ -3,7 +3,6 @@ package com.dpm.pumping.workout.application
 import com.dpm.pumping.crew.Crew
 import com.dpm.pumping.user.domain.User
 import com.dpm.pumping.user.domain.UserRepository
-import com.dpm.pumping.workout.application.WorkoutStorage.WorkoutByDay
 import com.dpm.pumping.workout.domain.entity.Workout
 import com.dpm.pumping.workout.dto.WorkoutCreateDto
 import com.dpm.pumping.workout.dto.WorkoutGetDto
@@ -14,7 +13,6 @@ import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
 
 @Service
 @Transactional(readOnly = true)
@@ -51,20 +49,15 @@ class WorkoutService(
         val startDate = crew.getStartDate()
         val endDate = startDate.plusDays(WorkoutStorage.DEFAULT_SIZE)
         val workoutDatas = workoutRepository
-            .findAllByCurrentCrewAndUserIdAndCreateDateBetween(
-                crew.crewId!!,
-                user.uid!!,
-                startDate.minusDays(1),
-                endDate
-            )
+            .findAllByCurrentCrewAndUserIdAndCreateDateBetween(crew.crewId!!, user.uid!!, startDate.minusDays(1), endDate)
 
         val storage = WorkoutStorage(startDate.toLocalDate())
         workoutDatas?.forEach {
             storage.save(it)
         }
 
-        val result = getWorkoutDto(storage.get())
-        return WorkoutGetDto.Response(result)
+        val workoutResponse = mapWorkoutResponseDto(storage.get())
+        return WorkoutGetDto.Response(workoutResponse)
     }
 
     private fun getUser(userId: String?, loginUser: User): User {
@@ -76,10 +69,19 @@ class WorkoutService(
         }
     }
 
-    private fun getWorkoutDto(storage: Map<LocalDate, WorkoutByDay?>): List<WorkoutGetDto.WorkoutResponse> {
+    private fun mapWorkoutResponseDto(storage: Map<WorkoutStorage.Date, Workout?>): List<WorkoutGetDto.WorkoutResponse> {
         return storage.map { (key, value) ->
-            val day = CalenderUtils.getDayOfWeek(key)
-            WorkoutGetDto.WorkoutResponse(day.toString(), value)
+            WorkoutGetDto.WorkoutResponse(
+                dayOfWeek =  CalenderUtils.getDayOfWeek(key.workoutDate).toString(),
+                workout = WorkoutGetDto.DailyWorkout(
+                    workoutDate = key.workoutDayCount.toString(),
+                    totalTime = value?.let { value.getTotalTime() } ?: 0,
+                    averageHeartbeat = value?.let { value.getAverageHeartbeat() } ?: 0,
+                    totalCalories = value?.let { value.getTotalCalories() } ?: 0,
+                    maxWorkoutCategory = value?.let {  value.getMaxWorkoutPart().first.name },
+                    maxWorkoutCategoryTime = value?.let { value.getMaxWorkoutPart().second } ?: 0
+                )
+            )
         }
     }
 }

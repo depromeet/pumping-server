@@ -133,14 +133,14 @@ class WorkoutControllerTest(
             listOf(
                 WorkoutGetDto.WorkoutResponse(
                     dayOfWeek = "1",
-                    workout = WorkoutStorage.WorkoutByDay(
-                        workoutDate = "2023-06-22T10:00:00",
+                    workout = WorkoutGetDto.DailyWorkout(
+                        workoutDate = "3",
                         totalTime = 60,
                         averageHeartbeat = 120,
                         totalCalories = 500,
                         maxWorkoutCategory = WorkoutCategory.UP.name,
                         maxWorkoutCategoryTime = 100
-                    )
+                    ),
                 )
             )
         )
@@ -165,7 +165,7 @@ class WorkoutControllerTest(
                     responseFields(
                         fieldWithPath("workouts[].dayOfWeek").type(JsonFieldType.STRING)
                             .description("운동 요일 (월부터 1, 일요일은 7)"),
-                        fieldWithPath("workouts[].workout.workoutDate").type(JsonFieldType.STRING).description("운동 날짜"),
+                        fieldWithPath("workouts[].workout.workoutDate").type(JsonFieldType.STRING).description("운동 일차"),
                         fieldWithPath("workouts[].workout.totalTime").type(JsonFieldType.NUMBER)
                             .description("하루 동안 누적 운동 시간"),
                         fieldWithPath("workouts[].workout.averageHeartbeat").type(JsonFieldType.NUMBER)
