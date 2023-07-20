@@ -4,6 +4,7 @@ plugins {
 	id("org.springframework.boot") version "3.0.4"
 	id("io.spring.dependency-management") version "1.1.0"
 	id("org.asciidoctor.jvm.convert") version "3.3.2"
+	id("jacoco")
 	kotlin("jvm") version "1.7.20"
 	kotlin("plugin.spring") version "1.7.20"
 }
@@ -48,9 +49,8 @@ val snippetsDir by extra {
 	file("build/generated-snippets")
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
-	outputs.dir(snippetsDir)
+jacoco {
+	toolVersion = "0.8.9"
 }
 
 tasks {
@@ -73,5 +73,43 @@ tasks {
 			into("BOOT-INF/classes/static/docs")
 		}
 		duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	}
+
+	test {
+		useJUnitPlatform()
+		outputs.dir(snippetsDir)
+		finalizedBy(jacocoTestReport)   // report is always generated after tests run
+	}
+
+	jacocoTestReport {
+		reports {
+			html.required.set(true)
+			xml.required.set(false)
+			csv.required.set(true)   // sonarcube
+		}
+
+		finalizedBy("jacocoTestCoverageVerification")
+	}
+
+	jacocoTestCoverageVerification {
+		violationRules {
+			rule {
+				isEnabled = true
+				element = "CLASS"
+				includes = listOf("org.gradle.*")
+
+				limit {
+					counter = "BRANCH"
+					value = "COVEREDRATIO"
+					maximum = "0.7".toBigDecimal()
+				}
+
+				limit {
+					counter = "LINE"
+					value = "COVEREDRATIO"
+					maximum = "0.7".toBigDecimal()
+				}
+			}
+		}
 	}
 }
