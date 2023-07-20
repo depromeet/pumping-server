@@ -78,14 +78,14 @@ tasks {
 	test {
 		useJUnitPlatform()
 		outputs.dir(snippetsDir)
-		finalizedBy(jacocoTestReport)   // report is always generated after tests run
+		finalizedBy(jacocoTestReport)
 	}
 
 	jacocoTestReport {
 		reports {
 			html.required.set(true)
 			xml.required.set(false)
-			csv.required.set(true)   // sonarcube
+			csv.required.set(true)
 		}
 
 		finalizedBy("jacocoTestCoverageVerification")
